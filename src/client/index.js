@@ -359,6 +359,43 @@ export class UndClient {
   }
 
   /**
+   *
+   * @param {String} withdrawAddress
+   * @param {Object} fee
+   * @param {String} delegator optional delegator
+   * @param {String} memo optional memo
+   * @param {Number} sequence optional sequence
+   * @returns {Promise<*>}
+   */
+  async modifyWithdrawAddress(withdrawAddress, fee, delegator = this.address, memo = "", sequence = null) {
+    if (!delegator) {
+      throw new Error("delegator should not be empty")
+    }
+    if(!crypto.checkAddress(delegator, CONFIG.BECH32_PREFIX)) {
+      throw new Error("invalid delegator")
+    }
+    if (!withdrawAddress) {
+      throw new Error("withdrawAddress should not be empty")
+    }
+    if(!crypto.checkAddress(withdrawAddress, CONFIG.BECH32_PREFIX)) {
+      throw new Error("invalid withdrawAddress")
+    }
+
+    // generate MsgModifyWithdrawAddress
+    let msgData = {
+      type: "MsgModifyWithdrawAddress",
+      delegator_address: delegator,
+      withdraw_address: withdrawAddress
+    }
+
+    const sendMsg = new GenMsg(msgData)
+
+    const signedTx = await this._prepareTx(sendMsg, delegator, fee, sequence, memo)
+
+    return this._broadcastDelegate(signedTx)
+  }
+
+  /**
    * Withdraw Delegator rewards
    * @param {String} validator
    * @param {Object} fee

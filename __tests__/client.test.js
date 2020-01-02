@@ -446,6 +446,41 @@ it("withdraw delegation rewards", async () => {
   expect(res2.result.events[1].type).toBe("transfer")
 })
 
+it("modify delegation withdraw address", async () => {
+  const client = await getClient(false)
+  const addr = crypto.getAddressFromPrivateKey(client.privateKey)
+  const account = await client._httpClient.request(
+    "get",
+    `/auth/accounts/${addr}`
+  )
+
+  let fee = {
+    "amount": [
+      {
+        "denom": "nund",
+        "amount": "8105"
+      }
+    ],
+    "gas": "324177"
+  }
+
+  const sequence = account.result && account.result.result.account.value.sequence
+  const res = await client.modifyWithdrawAddress(
+    targetAddress,
+    fee,
+    addr,
+    "modify",
+    sequence
+  )
+
+  expect(res.status).toBe(200)
+
+  await wait(6000)
+  const hash = res.result.txhash
+  const res2 = await client.getTx(hash)
+  expect(res2.result.events[1].type).toBe("set_withdraw_address")
+})
+
 it("get account", async () => {
   const client = await getClient(false)
   const res = await client.getAccount(targetAddress)
