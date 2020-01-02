@@ -149,6 +149,12 @@ export class UndClient {
     if(amount === 0) {
       throw new Error("amount should not be zero")
     }
+    if(!crypto.checkAddress(toAddress, CONFIG.BECH32_PREFIX)) {
+      throw new Error("invalid toAddress")
+    }
+    if(!crypto.checkAddress(fromAddress, CONFIG.BECH32_PREFIX)) {
+      throw new Error("invalid fromAddress")
+    }
 
     checkNumber(amount, "amount")
 
@@ -178,9 +184,12 @@ export class UndClient {
    * @param sequence
    * @returns {Promise<*>}
    */
-  async enterpriseRaisePO(amount, fee, denom = "nund", fromAddress = this.address, memo = "", sequence = null) {
+  async raiseEnterprisePO(amount, fee, denom = "nund", fromAddress = this.address, memo = "", sequence = null) {
     if (!fromAddress) {
       throw new Error("fromAddress should not be empty")
+    }
+    if(!crypto.checkAddress(fromAddress, CONFIG.BECH32_PREFIX)) {
+      throw new Error("invalid fromAddress")
     }
     if(amount === 0) {
       throw new Error("amount should not be zero")

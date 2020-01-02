@@ -263,7 +263,7 @@ it("raise nund enterprise purchase order", async () => {
   }
 
   const sequence = account.result && account.result.result.account.value.sequence
-  const res = await client.enterpriseRaisePO(
+  const res = await client.raiseEnterprisePO(
     amount,
     fee,
     coin,
