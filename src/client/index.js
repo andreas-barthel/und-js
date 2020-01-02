@@ -153,8 +153,50 @@ export class UndClient {
     checkNumber(amount, "amount")
 
     // generate MsgSend
-    const msg = new GenMsg()
-    let sendMsg = msg.generateSendMsg(fromAddress, toAddress, amount, denom)
+    let msgData = {
+      type: "MsgSend",
+      from: fromAddress,
+      to: toAddress,
+      amount: amount,
+      denom: denom
+    }
+
+    const sendMsg = new GenMsg(msgData)
+
+    const signedTx = await this._prepareTx(sendMsg, fromAddress, fee, sequence, memo)
+
+    return this._broadcastDelegate(signedTx)
+  }
+
+  /**
+   * Raise an Enterprise UND Purchase Order
+   * @param amount
+   * @param fee
+   * @param denom
+   * @param fromAddress
+   * @param memo
+   * @param sequence
+   * @returns {Promise<*>}
+   */
+  async enterpriseRaisePO(amount, fee, denom = "nund", fromAddress = this.address, memo = "", sequence = null) {
+    if (!fromAddress) {
+      throw new Error("fromAddress should not be empty")
+    }
+    if(amount === 0) {
+      throw new Error("amount should not be zero")
+    }
+
+    checkNumber(amount, "amount")
+
+    // generate MsgSend
+    let msgData = {
+      type: "PurchaseUnd",
+      from: fromAddress,
+      amount: amount,
+      denom: denom
+    }
+
+    const sendMsg = new GenMsg(msgData)
 
     const signedTx = await this._prepareTx(sendMsg, fromAddress, fee, sequence, memo)
 

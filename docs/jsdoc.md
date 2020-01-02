@@ -37,6 +37,7 @@
         * [.useDefaultSigningDelegate()](#module_client.UndClient+useDefaultSigningDelegate) ⇒ <code>UndClient</code>
         * [.useDefaultBroadcastDelegate()](#module_client.UndClient+useDefaultBroadcastDelegate) ⇒ <code>UndClient</code>
         * [.transferUnd(toAddress, amount, fee, denom, fromAddress, memo, sequence)](#module_client.UndClient+transferUnd) ⇒ <code>Promise.&lt;\*&gt;</code>
+        * [.enterpriseRaisePO(amount, fee, denom, fromAddress, memo, sequence)](#module_client.UndClient+enterpriseRaisePO) ⇒ <code>Promise.&lt;\*&gt;</code>
         * [.sendTransaction(tx, sync)](#module_client.UndClient+sendTransaction) ⇒ <code>Promise</code>
         * [.sendRawTransaction(signedBz, sync)](#module_client.UndClient+sendRawTransaction) ⇒ <code>Promise</code>
         * [._sendTransaction(msg, stdSignMsg, address, sequence, memo, sync)](#module_client.UndClient+_sendTransaction) ⇒ <code>Promise</code>
@@ -72,6 +73,7 @@ The UND Mainchain client.
     * [.useDefaultSigningDelegate()](#module_client.UndClient+useDefaultSigningDelegate) ⇒ <code>UndClient</code>
     * [.useDefaultBroadcastDelegate()](#module_client.UndClient+useDefaultBroadcastDelegate) ⇒ <code>UndClient</code>
     * [.transferUnd(toAddress, amount, fee, denom, fromAddress, memo, sequence)](#module_client.UndClient+transferUnd) ⇒ <code>Promise.&lt;\*&gt;</code>
+    * [.enterpriseRaisePO(amount, fee, denom, fromAddress, memo, sequence)](#module_client.UndClient+enterpriseRaisePO) ⇒ <code>Promise.&lt;\*&gt;</code>
     * [.sendTransaction(tx, sync)](#module_client.UndClient+sendTransaction) ⇒ <code>Promise</code>
     * [.sendRawTransaction(signedBz, sync)](#module_client.UndClient+sendRawTransaction) ⇒ <code>Promise</code>
     * [._sendTransaction(msg, stdSignMsg, address, sequence, memo, sync)](#module_client.UndClient+_sendTransaction) ⇒ <code>Promise</code>
@@ -175,6 +177,22 @@ Transfer UND to an address
 | Param | Default |
 | --- | --- |
 | toAddress |  | 
+| amount |  | 
+| fee |  | 
+| denom | <code>nund</code> | 
+| fromAddress |  | 
+| memo |  | 
+| sequence | <code></code> | 
+
+<a name="module_client.UndClient+enterpriseRaisePO"></a>
+
+#### undClient.enterpriseRaisePO(amount, fee, denom, fromAddress, memo, sequence) ⇒ <code>Promise.&lt;\*&gt;</code>
+Raise an Enterprise UND Purchase Order
+
+**Kind**: instance method of [<code>UndClient</code>](#module_client.UndClient)  
+
+| Param | Default |
+| --- | --- |
 | amount |  | 
 | fee |  | 
 | denom | <code>nund</code> | 

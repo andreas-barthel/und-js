@@ -2,11 +2,33 @@ import Big from "big.js"
 
 const CONFIG = require("../config")
 
+const SupportedMsgs = {
+  MsgSend: "cosmos-sdk/MsgSend",
+  PurchaseUnd: "enterprise/PurchaseUnd"
+}
+
 class GenMsg {
-  constructor() {
+  constructor(data) {
+    if(!SupportedMsgs[data.type]) {
+      throw new TypeError(`does not support transaction type: ${data.type}`)
+    }
+
+    let msg = {
+      type: SupportedMsgs[data.type],
+      value: null
+    }
+
+    switch(data.type) {
+      case "MsgSend":
+        msg.value = this._generateSendMsg(data)
+        return msg
+      case "PurchaseUnd":
+        msg.value = this._generateRaiseEnterprisePurchaseOrder(data)
+        return msg
+    }
   }
 
-  generateSendMsg(fromAddress, toAddress, amount, denom) {
+  _generateCoinobj(amount, denom) {
     amount = new Big(amount)
 
     if(denom === "und") {
@@ -19,16 +41,29 @@ class GenMsg {
       amount: amount.toString(),
     }
 
-    const msg = {
-      type: "cosmos-sdk/MsgSend",
-      value: {
-        from_address: fromAddress,
-        to_address: toAddress,
-        amount: [coin]
-      }
+    return coin
+  }
+
+  _generateSendMsg(data) {
+    const coin = this._generateCoinobj(data.amount, data.denom)
+
+    const value = {
+      from_address: data.from,
+      to_address: data.to,
+      amount: [coin]
+    }
+    return value
+  }
+
+  _generateRaiseEnterprisePurchaseOrder(data) {
+    const coin = this._generateCoinobj(data.amount, data.denom)
+
+    const value = {
+      purchaser: data.from,
+      amount: coin
     }
 
-    return msg
+    return value
   }
 }
 

@@ -46,6 +46,14 @@ const keystores = {
 
 const targetAddress = "und150xrwj6ca9kyzz20e4x0qj6zm0206jhe4tk7nf"
 
+const wait = ms => {
+  return new Promise(function(resolve) {
+    setTimeout(function() {
+      resolve()
+    }, ms)
+  })
+}
+
 const getClient = async (
   useAwaitSetPrivateKey = true,
   doNotSetPrivateKey = false
@@ -66,7 +74,6 @@ const getClient = async (
   return client
 }
 
-// describe("checkNumber", async () => {
 it("ensures that the number is positive", async () => {
   expect(() => checkNumber(-100, "-100")).toThrowError(
     "-100 should be a positive number"
@@ -81,9 +88,6 @@ it("ensures that the number is less than 2^63", async () => {
     "2^63 should be less than 2^63"
   )
 })
-// })
-
-// describe("UndClient test", async () => {
 
 beforeEach(() => {
   jest.setTimeout(50000)
@@ -155,7 +159,7 @@ it("transfer nund", async () => {
   jest.setTimeout(30000)
 
   const coin = "nund"
-  let amount = 200177011
+  let amount = 2001770112
   const client = await getClient(false)
   const addr = crypto.getAddressFromPrivateKey(client.privateKey)
   const account = await client._httpClient.request(
@@ -185,15 +189,12 @@ it("transfer nund", async () => {
   )
   expect(res.status).toBe(200)
 
-  try {
-    const hash = res.result[0].hash
-    const res2 = await client._httpClient.get(`/txs/${hash}?format=json`)
-    const sendAmount =
-      res2.result.tx.value.msg[0].value.inputs[0].coins[0].amount
-    expect(sendAmount).toBe(200177011)
-  } catch (err) {
-    //
-  }
+  await wait(6000)
+  const hash = res.result.txhash
+  const res2 = await client.getTx(hash)
+  const sendAmount =
+    res2.result.tx.value.msg[0].value.amount[0].amount
+  expect(parseInt(sendAmount)).toBe(amount)
 })
 
 it("transfer und with presicion", async () => {
@@ -230,15 +231,54 @@ it("transfer und with presicion", async () => {
   )
   expect(res.status).toBe(200)
 
-  try {
-    const hash = res.result[0].hash
-    const res2 = await client._httpClient.get(`/txs/${hash}?format=json`)
-    const sendAmount =
-      res2.result.tx.value.msg[0].value.inputs[0].coins[0].amount
-    expect(sendAmount).toBe(2001770112)
-  } catch (err) {
-    //
+  await wait(6000)
+  const hash = res.result.txhash
+  const res2 = await client.getTx(hash)
+  const sendAmount =
+    res2.result.tx.value.msg[0].value.amount[0].amount
+  expect(parseInt(sendAmount)).toBe(2001770112)
+})
+
+
+it("raise nund enterprise purchase order", async () => {
+  jest.setTimeout(30000)
+
+  const coin = "nund"
+  let amount = 2001770112
+  const client = await getClient(false)
+  const addr = crypto.getAddressFromPrivateKey(client.privateKey)
+  const account = await client._httpClient.request(
+    "get",
+    `/auth/accounts/${addr}`
+  )
+
+  let fee = {
+    "amount": [
+      {
+        "denom": "nund",
+        "amount": "2500"
+      }
+    ],
+    "gas": "90000"
   }
+
+  const sequence = account.result && account.result.result.account.value.sequence
+  const res = await client.enterpriseRaisePO(
+    amount,
+    fee,
+    coin,
+    addr,
+    "po evidence",
+    sequence
+  )
+  expect(res.status).toBe(200)
+
+  await wait(6000)
+  const hash = res.result.txhash
+  const res2 = await client.getTx(hash)
+  const sendAmount =
+    res2.result.tx.value.msg[0].value.amount.amount
+  expect(parseInt(sendAmount)).toBe(2001770112)
 })
 
 it("get account", async () => {
@@ -332,6 +372,3 @@ it("check number when transfer", async () => {
     expect(err.message).toBe("amount should be less than 2^63")
   }
 })
-
-
-// })
