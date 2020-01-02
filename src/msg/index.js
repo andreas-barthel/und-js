@@ -4,7 +4,12 @@ const CONFIG = require("../config")
 
 const SupportedMsgs = {
   MsgSend: "cosmos-sdk/MsgSend",
-  PurchaseUnd: "enterprise/PurchaseUnd"
+  PurchaseUnd: "enterprise/PurchaseUnd",
+  MsgDelegate: "cosmos-sdk/MsgDelegate",
+  MsgUndelegate: "cosmos-sdk/MsgUndelegate",
+  MsgWithdrawDelegationReward: "cosmos-sdk/MsgWithdrawDelegationReward",
+  MsgBeginRedelegate: "cosmos-sdk/MsgBeginRedelegate",
+  MsgModifyWithdrawAddress: "cosmos-sdk/MsgModifyWithdrawAddress"
 }
 
 class GenMsg {
@@ -24,6 +29,19 @@ class GenMsg {
         return msg
       case "PurchaseUnd":
         msg.value = this._generateRaiseEnterprisePurchaseOrder(data)
+        return msg
+      case "MsgDelegate":
+      case "MsgUndelegate":
+        msg.value = this._generateMsgDelegate(data)
+        return msg
+      case "MsgWithdrawDelegationReward":
+        msg.value = this._generateMsgWithdrawDelegationReward(data)
+        return msg
+      case "MsgBeginRedelegate":
+        msg.value = this._generateMsgBeginRedelegate(data)
+        return msg
+      case "MsgModifyWithdrawAddress":
+        msg.value = this._generateMsgModifyWithdrawAddress(data)
         return msg
     }
   }
@@ -61,6 +79,48 @@ class GenMsg {
     const value = {
       purchaser: data.from,
       amount: coin
+    }
+
+    return value
+  }
+
+  _generateMsgDelegate(data) {
+    const coin = this._generateCoinobj(data.amount, data.denom)
+
+    const value = {
+      amount: coin,
+      delegator_address: data.delegator_address,
+      validator_address: data.validator_address
+    }
+
+    return value
+  }
+
+  _generateMsgWithdrawDelegationReward(data) {
+    const value = {
+      delegator_address: data.delegator_address,
+      validator_address: data.validator_address
+    }
+
+    return value
+  }
+
+  _generateMsgBeginRedelegate(data) {
+    const coin = this._generateCoinobj(data.amount, data.denom)
+    const value = {
+      amount: coin,
+      delegator_address: data.delegator_address,
+      validator_dst_address: data.validator_dst_address,
+      validator_src_address: data.validator_src_address
+    }
+
+    return value
+  }
+
+  _generateMsgModifyWithdrawAddress(data) {
+    const value = {
+      delegator_address: data.delegator_address,
+      withdraw_address: data.withdraw_address
     }
 
     return value
