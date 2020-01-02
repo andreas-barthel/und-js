@@ -543,9 +543,9 @@ export class UndClient {
    * @param {Number} offset from beggining, default 0
    * @return {Promise} resolves with http response
    */
-  async getTransactions(address = this.address, offset = 0) {
+  async getTransactions(address = this.address, page = 1, limit = 100) {
     try {
-      const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_TXS}?address=${address}&offset=${offset}`)
+      const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_TXS}?message.sender=${address}&page=${page}&limit=${limit}`)
       return data
     } catch (err) {
       console.warn("getTransactions error", err)
