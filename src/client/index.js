@@ -233,6 +233,9 @@ export class UndClient {
     if (!validator) {
       throw new Error("validator should not be empty")
     }
+    if(!crypto.checkAddress(validator, CONFIG.BECH32_VAL_PREFIX)) {
+      throw new Error("invalid validator")
+    }
     if(amount === 0) {
       throw new Error("amount should not be zero")
     }
@@ -276,6 +279,9 @@ export class UndClient {
     if (!validator) {
       throw new Error("validator should not be empty")
     }
+    if(!crypto.checkAddress(validator, CONFIG.BECH32_VAL_PREFIX)) {
+      throw new Error("invalid validator")
+    }
     if(amount === 0) {
       throw new Error("amount should not be zero")
     }
@@ -287,6 +293,60 @@ export class UndClient {
       type: "MsgUndelegate",
       delegator_address: delegator,
       validator_address: validator,
+      amount: amount,
+      denom: denom
+    }
+
+    const sendMsg = new GenMsg(msgData)
+
+    const signedTx = await this._prepareTx(sendMsg, delegator, fee, sequence, memo)
+
+    return this._broadcastDelegate(signedTx)
+  }
+
+  /**
+   * Redelegate UND from one validator to another
+   * @param {String} validatorFrom
+   * @param {String} validatorTo
+   * @param {Number} amount
+   * @param {Object} fee
+   * @param {String} denom optional denom
+   * @param {String} delegator optional delegator
+   * @param {String} memo optional memo
+   * @param {Number} sequence optional sequence
+   * @returns {Promise<*>}
+   */
+  async redelegate(validatorFrom, validatorTo, amount, fee, denom = "nund", delegator = this.address, memo = "", sequence = null) {
+    if (!delegator) {
+      throw new Error("delegator should not be empty")
+    }
+    if(!crypto.checkAddress(delegator, CONFIG.BECH32_PREFIX)) {
+      throw new Error("invalid delegator")
+    }
+    if (!validatorFrom) {
+      throw new Error("validator should not be empty")
+    }
+    if(!crypto.checkAddress(validatorFrom, CONFIG.BECH32_VAL_PREFIX)) {
+      throw new Error("invalid validatorFrom")
+    }
+    if (!validatorTo) {
+      throw new Error("validator should not be empty")
+    }
+    if(!crypto.checkAddress(validatorTo, CONFIG.BECH32_VAL_PREFIX)) {
+      throw new Error("invalid validatorTo")
+    }
+    if(amount === 0) {
+      throw new Error("amount should not be zero")
+    }
+
+    checkNumber(amount, "amount")
+
+    // generate MsgBeginRedelegate
+    let msgData = {
+      type: "MsgBeginRedelegate",
+      delegator_address: delegator,
+      validator_dst_address: validatorTo,
+      validator_src_address: validatorFrom,
       amount: amount,
       denom: denom
     }

@@ -47,6 +47,7 @@ const keystores = {
 const targetAddress = "und150xrwj6ca9kyzz20e4x0qj6zm0206jhe4tk7nf"
 const delAddress = "und1x8pl6wzqf9atkm77ymc5vn5dnpl5xytmn200xy"
 const valAddress = "undvaloper1eq239sgefyzm4crl85nfyvt7kw83vrna6lrjet"
+const redelValAddress = "undvaloper13lyhcfekkdczaugqaexya60ckn23l5wazf07px"
 
 const wait = ms => {
   return new Promise(function(resolve) {
@@ -329,7 +330,7 @@ it("undelegate und", async () => {
   jest.setTimeout(30000)
 
   const coin = "nund"
-  let amount = 2001770112
+  let amount = 10000
   const client = await getClient(false)
   const addr = crypto.getAddressFromPrivateKey(client.privateKey)
   const account = await client._httpClient.request(
@@ -365,7 +366,49 @@ it("undelegate und", async () => {
   const res2 = await client.getTx(hash)
   const sendAmount =
     res2.result.tx.value.msg[0].value.amount.amount
-  expect(parseInt(sendAmount)).toBe(2001770112)
+  expect(parseInt(sendAmount)).toBe(10000)
+})
+
+it("redelegate und", async () => {
+  jest.setTimeout(30000)
+
+  const coin = "nund"
+  let amount = 10000
+  const client = await getClient(false)
+  const addr = crypto.getAddressFromPrivateKey(client.privateKey)
+  const account = await client._httpClient.request(
+    "get",
+    `/auth/accounts/${addr}`
+  )
+
+  let fee = {
+    "amount": [
+      {
+        "denom": "nund",
+        "amount": "8105"
+      }
+    ],
+    "gas": "324177"
+  }
+
+  const sequence = account.result && account.result.result.account.value.sequence
+  const res = await client.redelegate(
+    valAddress,
+    redelValAddress,
+    amount,
+    fee,
+    coin,
+    addr,
+    "",
+    sequence
+  )
+
+  expect(res.status).toBe(200)
+
+  await wait(6000)
+  const hash = res.result.txhash
+  const res2 = await client.getTx(hash)
+  expect(res2.result.events[1].type).toBe("redelegate")
 })
 
 it("withdraw delegation rewards", async () => {

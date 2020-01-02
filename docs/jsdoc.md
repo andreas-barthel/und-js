@@ -40,6 +40,7 @@
         * [.raiseEnterprisePO(amount, fee, denom, fromAddress, memo, sequence)](#module_client.UndClient+raiseEnterprisePO) ⇒ <code>Promise.&lt;\*&gt;</code>
         * [.delegate(validator, amount, fee, denom, delegator, memo, sequence)](#module_client.UndClient+delegate) ⇒ <code>Promise.&lt;\*&gt;</code>
         * [.undelegate(validator, amount, fee, denom, delegator, memo, sequence)](#module_client.UndClient+undelegate) ⇒ <code>Promise.&lt;\*&gt;</code>
+        * [.redelegate(validatorFrom, validatorTo, amount, fee, denom, delegator, memo, sequence)](#module_client.UndClient+redelegate) ⇒ <code>Promise.&lt;\*&gt;</code>
         * [.withdrawDelegarionReward(validator, fee, delegator, memo, sequence)](#module_client.UndClient+withdrawDelegarionReward) ⇒ <code>Promise.&lt;\*&gt;</code>
         * [.sendTransaction(tx, sync)](#module_client.UndClient+sendTransaction) ⇒ <code>Promise</code>
         * [.sendRawTransaction(signedBz, sync)](#module_client.UndClient+sendRawTransaction) ⇒ <code>Promise</code>
@@ -79,6 +80,7 @@ The UND Mainchain client.
     * [.raiseEnterprisePO(amount, fee, denom, fromAddress, memo, sequence)](#module_client.UndClient+raiseEnterprisePO) ⇒ <code>Promise.&lt;\*&gt;</code>
     * [.delegate(validator, amount, fee, denom, delegator, memo, sequence)](#module_client.UndClient+delegate) ⇒ <code>Promise.&lt;\*&gt;</code>
     * [.undelegate(validator, amount, fee, denom, delegator, memo, sequence)](#module_client.UndClient+undelegate) ⇒ <code>Promise.&lt;\*&gt;</code>
+    * [.redelegate(validatorFrom, validatorTo, amount, fee, denom, delegator, memo, sequence)](#module_client.UndClient+redelegate) ⇒ <code>Promise.&lt;\*&gt;</code>
     * [.withdrawDelegarionReward(validator, fee, delegator, memo, sequence)](#module_client.UndClient+withdrawDelegarionReward) ⇒ <code>Promise.&lt;\*&gt;</code>
     * [.sendTransaction(tx, sync)](#module_client.UndClient+sendTransaction) ⇒ <code>Promise</code>
     * [.sendRawTransaction(signedBz, sync)](#module_client.UndClient+sendRawTransaction) ⇒ <code>Promise</code>
@@ -233,6 +235,24 @@ Undelegate UND from a validator
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
 | validator | <code>String</code> |  |  |
+| amount | <code>Number</code> |  |  |
+| fee | <code>Object</code> |  |  |
+| denom | <code>String</code> | <code>nund</code> | optional denom |
+| delegator | <code>String</code> |  | optional delegator |
+| memo | <code>String</code> |  | optional memo |
+| sequence | <code>Number</code> | <code></code> | optional sequence |
+
+<a name="module_client.UndClient+redelegate"></a>
+
+#### undClient.redelegate(validatorFrom, validatorTo, amount, fee, denom, delegator, memo, sequence) ⇒ <code>Promise.&lt;\*&gt;</code>
+Redelegate UND from one validator to another
+
+**Kind**: instance method of [<code>UndClient</code>](#module_client.UndClient)  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| validatorFrom | <code>String</code> |  |  |
+| validatorTo | <code>String</code> |  |  |
 | amount | <code>Number</code> |  |  |
 | fee | <code>Object</code> |  |  |
 | denom | <code>String</code> | <code>nund</code> | optional denom |
