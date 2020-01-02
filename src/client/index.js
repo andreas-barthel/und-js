@@ -299,6 +299,40 @@ export class UndClient {
   }
 
   /**
+   * Withdraw Delegator rewards
+   * @param {String} validator
+   * @param {Object} fee
+   * @param {String} delegator optional delegator
+   * @param {String} memo optional memo
+   * @param {Number} sequence optional sequence
+   * @returns {Promise<*>}
+   */
+  async withdrawDelegarionReward(validator, fee, delegator = this.address, memo = "", sequence = null) {
+    if (!delegator) {
+      throw new Error("delegator should not be empty")
+    }
+    if(!crypto.checkAddress(delegator, CONFIG.BECH32_PREFIX)) {
+      throw new Error("invalid delegator")
+    }
+    if (!validator) {
+      throw new Error("validator should not be empty")
+    }
+
+    // generate MsgWithdrawDelegationReward
+    let msgData = {
+      type: "MsgWithdrawDelegationReward",
+      delegator_address: delegator,
+      validator_address: validator
+    }
+
+    const sendMsg = new GenMsg(msgData)
+
+    const signedTx = await this._prepareTx(sendMsg, delegator, fee, sequence, memo)
+
+    return this._broadcastDelegate(signedTx)
+  }
+
+  /**
    * Prepare a raw transaction for sending to the blockchain.
    * @param msg
    * @param address

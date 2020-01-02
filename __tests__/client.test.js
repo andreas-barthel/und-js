@@ -298,10 +298,10 @@ it("delegate und", async () => {
     "amount": [
       {
         "denom": "nund",
-        "amount": "30000"
+        "amount": "4872"
       }
     ],
-    "gas": "110000"
+    "gas": "194680"
   }
 
   const sequence = account.result && account.result.result.account.value.sequence
@@ -341,10 +341,10 @@ it("undelegate und", async () => {
     "amount": [
       {
         "denom": "nund",
-        "amount": "30000"
+        "amount": "4872"
       }
     ],
-    "gas": "110000"
+    "gas": "194680"
   }
 
   const sequence = account.result && account.result.result.account.value.sequence
@@ -366,6 +366,41 @@ it("undelegate und", async () => {
   const sendAmount =
     res2.result.tx.value.msg[0].value.amount.amount
   expect(parseInt(sendAmount)).toBe(2001770112)
+})
+
+it("withdraw delegation rewards", async () => {
+  const client = await getClient(false)
+  const addr = crypto.getAddressFromPrivateKey(client.privateKey)
+  const account = await client._httpClient.request(
+    "get",
+    `/auth/accounts/${addr}`
+  )
+
+  let fee = {
+    "amount": [
+      {
+        "denom": "nund",
+        "amount": "4872"
+      }
+    ],
+    "gas": "194680"
+  }
+
+  const sequence = account.result && account.result.result.account.value.sequence
+  const res = await client.withdrawDelegarionReward(
+    valAddress,
+    fee,
+    addr,
+    "withdraw",
+    sequence
+  )
+
+  expect(res.status).toBe(200)
+
+  await wait(6000)
+  const hash = res.result.txhash
+  const res2 = await client.getTx(hash)
+  expect(res2.result.events[1].type).toBe("transfer")
 })
 
 it("get account", async () => {
