@@ -16,7 +16,7 @@ export const checkNumber = (value, name = "input number") => {
 
 /**
  * basic validation of coins
- * @param {Array} coins 
+ * @param {Array} coins
  */
 export const checkCoins = (coins) => {
   coins = coins || []
@@ -40,25 +40,3 @@ export const validateSymbol = (symbol) => {
     throw new Error("symbol length is limited to 3~10")
   }
 }
-
-export const validateTradingPair = (pair) => {
-  const symbols = pair.split("_")
-  if (symbols.length !== 2) {
-    throw new Error("the pair should in format \"symbol1_symbol2\"")
-  }
-
-  validateSymbol(symbols[0])
-  validateSymbol(symbols[1])
-}
-
-export const validateOffsetLimit = (offset, limit) => {
-  if (offset < 0) {
-    throw new Error("offset can't be less than 0")
-  }
-
-  if (limit < 0) {
-    throw new Error("limit can't be less than 0")
-  }
-}
-
-

@@ -8,7 +8,6 @@ import is from "is_js"
 
 import { UVarInt } from "./varint"
 import typeToTyp3 from "../utils/encoderHelper"
-import { TypePrefixes } from "../tx/"
 
 const VarString = vstruct.VarString(UVarInt)
 
@@ -166,12 +165,6 @@ export const encodeObjectBinary = (obj, isByteLenPrefix) => {
   })
 
   let bytes = Buffer.concat(bufferArr)
-
-  // add prefix
-  if(TypePrefixes[obj.msgType]) {
-    const prefix = Buffer.from(TypePrefixes[obj.msgType], "hex")
-    bytes = Buffer.concat([prefix, bytes])
-  }
 
   // Write byte-length prefixed.
   if(isByteLenPrefix) {

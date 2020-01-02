@@ -1,17 +1,27 @@
 {
-  "name": "@binance-chain/javascript-sdk",
-  "version": "2.16.2",
-  "license": "Apache-2.0",
+  "name": "@unification-com/und-js",
+  "version": "1.0.0",
+  "description": "Unification Mainchain Wallet SDK",
   "main": "lib/index.js",
   "scripts": {
     "test": "cross-env NODE_ENV=test jest",
-    "test:ledger": "qunit --require babel-polyfill tests-ledger/tests.js",
-    "test:ledger:browser": "./tests-ledger/run-browser-tests.sh",
     "build": "rm -rf lib && npx babel src -d lib",
     "build:docs": "npx jsdoc-to-markdown -f src/**/*.js > docs/jsdoc.md",
     "prepublishOnly": "npm run build",
     "lint": "eslint --fix src __tests__"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/unification-com/und-js.git"
+  },
+  "keywords": [
+    "UND"
+  ],
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/unification-com/und-js/issues"
+  },
+  "homepage": "https://github.com/unification-com/und-js#readme",
   "dependencies": {
     "@babel/runtime": "^7.4.4",
     "@ledgerhq/hw-transport-u2f": "^4.78.0",

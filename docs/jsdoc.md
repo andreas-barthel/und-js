@@ -5,30 +5,10 @@
 <dd></dd>
 <dt><a href="#module_crypto">crypto</a></dt>
 <dd></dd>
-<dt><a href="#amino.module_decode">decode</a></dt>
-<dd></dd>
 <dt><a href="#amino.module_encode">encode</a></dt>
-<dd></dd>
-<dt><a href="#module_gov">gov</a></dt>
-<dd></dd>
-<dt><a href="#module_ledger">ledger</a></dt>
-<dd></dd>
-<dt><a href="#module_rpc">rpc</a></dt>
-<dd></dd>
-<dt><a href="#module_Swap">Swap</a></dt>
-<dd></dd>
-<dt><a href="#module_Token">Token</a></dt>
 <dd></dd>
 <dt><a href="#module_utils">utils</a></dt>
 <dd></dd>
-</dl>
-
-## Classes
-
-<dl>
-<dt><a href="#Transaction">Transaction</a></dt>
-<dd><p>Creates a new transaction object.</p>
-</dd>
 </dl>
 
 ## Constants
@@ -47,341 +27,185 @@
 ## client
 
 * [client](#module_client)
-    * _static_
-        * [.BncClient](#module_client.BncClient)
-            * [new exports.BncClient(server, useAsyncBroadcast, source)](#new_module_client.BncClient_new)
-            * [.initChain()](#module_client.BncClient+initChain) ⇒ <code>Promise</code>
-            * [.chooseNetwork(network)](#module_client.BncClient+chooseNetwork)
-            * [.setPrivateKey(privateKey, localOnly)](#module_client.BncClient+setPrivateKey) ⇒ <code>Promise</code>
-            * [.setAccountNumber(accountNumber)](#module_client.BncClient+setAccountNumber)
-            * [.useAsyncBroadcast(useAsyncBroadcast)](#module_client.BncClient+useAsyncBroadcast) ⇒ <code>BncClient</code>
-            * [.setSigningDelegate(delegate)](#module_client.BncClient+setSigningDelegate) ⇒ <code>BncClient</code>
-            * [.setBroadcastDelegate(delegate)](#module_client.BncClient+setBroadcastDelegate) ⇒ <code>BncClient</code>
-            * [.useDefaultSigningDelegate()](#module_client.BncClient+useDefaultSigningDelegate) ⇒ <code>BncClient</code>
-            * [.useDefaultBroadcastDelegate()](#module_client.BncClient+useDefaultBroadcastDelegate) ⇒ <code>BncClient</code>
-            * [.useLedgerSigningDelegate(ledgerApp, preSignCb, postSignCb, errCb)](#module_client.BncClient+useLedgerSigningDelegate) ⇒ <code>BncClient</code>
-            * [.transfer(fromAddress, toAddress, amount, asset, memo, sequence)](#module_client.BncClient+transfer) ⇒ <code>Promise</code>
-            * [.multiSend(fromAddress, outputs, memo, sequence)](#module_client.BncClient+multiSend) ⇒ <code>Promise</code>
-            * [.cancelOrder(fromAddress, symbol, refid, sequence)](#module_client.BncClient+cancelOrder) ⇒ <code>Promise</code>
-            * [.placeOrder(address, symbol, side, price, quantity, sequence, timeinforce)](#module_client.BncClient+placeOrder) ⇒ <code>Promise</code>
-            * [.list(address, proposalId, baseAsset, quoteAsset, initPrice, sequence)](#module_client.BncClient+list) ⇒ <code>Promise</code>
-            * [._prepareTransaction(msg, stdSignMsg, address, sequence, memo)](#module_client.BncClient+_prepareTransaction) ⇒ [<code>Transaction</code>](#Transaction)
-            * [.sendTransaction(tx, sync)](#module_client.BncClient+sendTransaction) ⇒ <code>Promise</code>
-            * [.sendRawTransaction(signedBz, sync)](#module_client.BncClient+sendRawTransaction) ⇒ <code>Promise</code>
-            * [._sendTransaction(msg, stdSignMsg, address, sequence, memo, sync)](#module_client.BncClient+_sendTransaction) ⇒ <code>Promise</code>
-            * [.getAccount(address)](#module_client.BncClient+getAccount) ⇒ <code>Promise</code>
-            * [.getBalance(address)](#module_client.BncClient+getBalance) ⇒ <code>Promise</code>
-            * [.getMarkets(offset, limit,)](#module_client.BncClient+getMarkets) ⇒ <code>Promise</code>
-            * [.getTransactions(address, offset)](#module_client.BncClient+getTransactions) ⇒ <code>Promise</code>
-            * [.getTx(hash)](#module_client.BncClient+getTx) ⇒ <code>Promise</code>
-            * [.getDepth(symbol)](#module_client.BncClient+getDepth) ⇒ <code>Promise</code>
-            * [.getOpenOrders(address, symbol)](#module_client.BncClient+getOpenOrders) ⇒ <code>Promise</code>
-            * [.getSwapByID(swapID:)](#module_client.BncClient+getSwapByID) ⇒ <code>Promise</code>
-            * [.getSwapByCreator(creator:, offset, limit,)](#module_client.BncClient+getSwapByCreator) ⇒ <code>Promise</code>
-            * [.getSwapByRecipient(recipient:, offset, limit,)](#module_client.BncClient+getSwapByRecipient) ⇒ <code>Promise</code>
-            * [.createAccount()](#module_client.BncClient+createAccount) ⇒ <code>object</code>
-            * [.createAccountWithKeystore(password)](#module_client.BncClient+createAccountWithKeystore)
-            * [.createAccountWithMneomnic()](#module_client.BncClient+createAccountWithMneomnic) ⇒ <code>object</code>
-            * [.recoverAccountFromKeystore(keystore, password)](#module_client.BncClient+recoverAccountFromKeystore)
-            * [.recoverAccountFromMnemonic(mneomnic)](#module_client.BncClient+recoverAccountFromMnemonic)
-            * [.recoverAccountFromPrivateKey(privateKey)](#module_client.BncClient+recoverAccountFromPrivateKey)
-            * [.checkAddress(address, prefix)](#module_client.BncClient+checkAddress) ⇒ <code>Boolean</code>
-            * [.getClientKeyAddress()](#module_client.BncClient+getClientKeyAddress) ⇒ <code>String</code>
-        * [.DefaultSigningDelegate](#module_client.DefaultSigningDelegate) ⇒ [<code>Transaction</code>](#Transaction)
-        * [.DefaultBroadcastDelegate](#module_client.DefaultBroadcastDelegate)
-        * [.LedgerSigningDelegate](#module_client.LedgerSigningDelegate) ⇒ <code>function</code>
-    * _inner_
-        * [~checkOutputs(outputs)](#module_client..checkOutputs)
-        * [~calInputCoins(inputs, coins)](#module_client..calInputCoins)
+    * [.UndClient](#module_client.UndClient)
+        * [new exports.UndClient(server, useAsyncBroadcast, source)](#new_module_client.UndClient_new)
+        * [.initChain()](#module_client.UndClient+initChain) ⇒ <code>Promise</code>
+        * [.setPrivateKey(privateKey, localOnly)](#module_client.UndClient+setPrivateKey) ⇒ <code>Promise</code>
+        * [.setAccountNumber(accountNumber)](#module_client.UndClient+setAccountNumber)
+        * [.setSigningDelegate(delegate)](#module_client.UndClient+setSigningDelegate) ⇒ <code>UndClient</code>
+        * [.setBroadcastDelegate(delegate)](#module_client.UndClient+setBroadcastDelegate) ⇒ <code>UndClient</code>
+        * [.useDefaultSigningDelegate()](#module_client.UndClient+useDefaultSigningDelegate) ⇒ <code>UndClient</code>
+        * [.useDefaultBroadcastDelegate()](#module_client.UndClient+useDefaultBroadcastDelegate) ⇒ <code>UndClient</code>
+        * [.transferUnd(toAddress, amount, fee, denom, fromAddress, memo, sequence)](#module_client.UndClient+transferUnd) ⇒ <code>Promise.&lt;\*&gt;</code>
+        * [.enterpriseRaisePO(amount, fee, denom, fromAddress, memo, sequence)](#module_client.UndClient+enterpriseRaisePO) ⇒ <code>Promise.&lt;\*&gt;</code>
+        * [.sendTransaction(tx, sync)](#module_client.UndClient+sendTransaction) ⇒ <code>Promise</code>
+        * [.sendRawTransaction(signedBz, sync)](#module_client.UndClient+sendRawTransaction) ⇒ <code>Promise</code>
+        * [._sendTransaction(msg, stdSignMsg, address, sequence, memo, sync)](#module_client.UndClient+_sendTransaction) ⇒ <code>Promise</code>
+        * [.getAccount(address)](#module_client.UndClient+getAccount) ⇒ <code>Promise</code>
+        * [.getBalance(address)](#module_client.UndClient+getBalance) ⇒ <code>Promise</code>
+        * [.getTransactions(address, offset)](#module_client.UndClient+getTransactions) ⇒ <code>Promise</code>
+        * [.getTx(hash)](#module_client.UndClient+getTx) ⇒ <code>Promise</code>
+        * [.createAccount()](#module_client.UndClient+createAccount) ⇒ <code>object</code>
+        * [.createAccountWithKeystore(password)](#module_client.UndClient+createAccountWithKeystore)
+        * [.createAccountWithMneomnic()](#module_client.UndClient+createAccountWithMneomnic) ⇒ <code>object</code>
+        * [.recoverAccountFromKeystore(keystore, password)](#module_client.UndClient+recoverAccountFromKeystore)
+        * [.recoverAccountFromMnemonic(mneomnic)](#module_client.UndClient+recoverAccountFromMnemonic)
+        * [.recoverAccountFromPrivateKey(privateKey)](#module_client.UndClient+recoverAccountFromPrivateKey)
+        * [.checkAddress(address, prefix)](#module_client.UndClient+checkAddress) ⇒ <code>Boolean</code>
+        * [.getClientKeyAddress()](#module_client.UndClient+getClientKeyAddress) ⇒ <code>String</code>
+    * [.DefaultSigningDelegate](#module_client.DefaultSigningDelegate) ⇒ <code>Transaction</code>
+    * [.DefaultBroadcastDelegate](#module_client.DefaultBroadcastDelegate)
 
-<a name="module_client.BncClient"></a>
+<a name="module_client.UndClient"></a>
 
-### client.BncClient
-The Binance Chain client.
+### client.UndClient
+The UND Mainchain client.
 
 **Kind**: static class of [<code>client</code>](#module_client)  
 
-* [.BncClient](#module_client.BncClient)
-    * [new exports.BncClient(server, useAsyncBroadcast, source)](#new_module_client.BncClient_new)
-    * [.initChain()](#module_client.BncClient+initChain) ⇒ <code>Promise</code>
-    * [.chooseNetwork(network)](#module_client.BncClient+chooseNetwork)
-    * [.setPrivateKey(privateKey, localOnly)](#module_client.BncClient+setPrivateKey) ⇒ <code>Promise</code>
-    * [.setAccountNumber(accountNumber)](#module_client.BncClient+setAccountNumber)
-    * [.useAsyncBroadcast(useAsyncBroadcast)](#module_client.BncClient+useAsyncBroadcast) ⇒ <code>BncClient</code>
-    * [.setSigningDelegate(delegate)](#module_client.BncClient+setSigningDelegate) ⇒ <code>BncClient</code>
-    * [.setBroadcastDelegate(delegate)](#module_client.BncClient+setBroadcastDelegate) ⇒ <code>BncClient</code>
-    * [.useDefaultSigningDelegate()](#module_client.BncClient+useDefaultSigningDelegate) ⇒ <code>BncClient</code>
-    * [.useDefaultBroadcastDelegate()](#module_client.BncClient+useDefaultBroadcastDelegate) ⇒ <code>BncClient</code>
-    * [.useLedgerSigningDelegate(ledgerApp, preSignCb, postSignCb, errCb)](#module_client.BncClient+useLedgerSigningDelegate) ⇒ <code>BncClient</code>
-    * [.transfer(fromAddress, toAddress, amount, asset, memo, sequence)](#module_client.BncClient+transfer) ⇒ <code>Promise</code>
-    * [.multiSend(fromAddress, outputs, memo, sequence)](#module_client.BncClient+multiSend) ⇒ <code>Promise</code>
-    * [.cancelOrder(fromAddress, symbol, refid, sequence)](#module_client.BncClient+cancelOrder) ⇒ <code>Promise</code>
-    * [.placeOrder(address, symbol, side, price, quantity, sequence, timeinforce)](#module_client.BncClient+placeOrder) ⇒ <code>Promise</code>
-    * [.list(address, proposalId, baseAsset, quoteAsset, initPrice, sequence)](#module_client.BncClient+list) ⇒ <code>Promise</code>
-    * [._prepareTransaction(msg, stdSignMsg, address, sequence, memo)](#module_client.BncClient+_prepareTransaction) ⇒ [<code>Transaction</code>](#Transaction)
-    * [.sendTransaction(tx, sync)](#module_client.BncClient+sendTransaction) ⇒ <code>Promise</code>
-    * [.sendRawTransaction(signedBz, sync)](#module_client.BncClient+sendRawTransaction) ⇒ <code>Promise</code>
-    * [._sendTransaction(msg, stdSignMsg, address, sequence, memo, sync)](#module_client.BncClient+_sendTransaction) ⇒ <code>Promise</code>
-    * [.getAccount(address)](#module_client.BncClient+getAccount) ⇒ <code>Promise</code>
-    * [.getBalance(address)](#module_client.BncClient+getBalance) ⇒ <code>Promise</code>
-    * [.getMarkets(offset, limit,)](#module_client.BncClient+getMarkets) ⇒ <code>Promise</code>
-    * [.getTransactions(address, offset)](#module_client.BncClient+getTransactions) ⇒ <code>Promise</code>
-    * [.getTx(hash)](#module_client.BncClient+getTx) ⇒ <code>Promise</code>
-    * [.getDepth(symbol)](#module_client.BncClient+getDepth) ⇒ <code>Promise</code>
-    * [.getOpenOrders(address, symbol)](#module_client.BncClient+getOpenOrders) ⇒ <code>Promise</code>
-    * [.getSwapByID(swapID:)](#module_client.BncClient+getSwapByID) ⇒ <code>Promise</code>
-    * [.getSwapByCreator(creator:, offset, limit,)](#module_client.BncClient+getSwapByCreator) ⇒ <code>Promise</code>
-    * [.getSwapByRecipient(recipient:, offset, limit,)](#module_client.BncClient+getSwapByRecipient) ⇒ <code>Promise</code>
-    * [.createAccount()](#module_client.BncClient+createAccount) ⇒ <code>object</code>
-    * [.createAccountWithKeystore(password)](#module_client.BncClient+createAccountWithKeystore)
-    * [.createAccountWithMneomnic()](#module_client.BncClient+createAccountWithMneomnic) ⇒ <code>object</code>
-    * [.recoverAccountFromKeystore(keystore, password)](#module_client.BncClient+recoverAccountFromKeystore)
-    * [.recoverAccountFromMnemonic(mneomnic)](#module_client.BncClient+recoverAccountFromMnemonic)
-    * [.recoverAccountFromPrivateKey(privateKey)](#module_client.BncClient+recoverAccountFromPrivateKey)
-    * [.checkAddress(address, prefix)](#module_client.BncClient+checkAddress) ⇒ <code>Boolean</code>
-    * [.getClientKeyAddress()](#module_client.BncClient+getClientKeyAddress) ⇒ <code>String</code>
+* [.UndClient](#module_client.UndClient)
+    * [new exports.UndClient(server, useAsyncBroadcast, source)](#new_module_client.UndClient_new)
+    * [.initChain()](#module_client.UndClient+initChain) ⇒ <code>Promise</code>
+    * [.setPrivateKey(privateKey, localOnly)](#module_client.UndClient+setPrivateKey) ⇒ <code>Promise</code>
+    * [.setAccountNumber(accountNumber)](#module_client.UndClient+setAccountNumber)
+    * [.setSigningDelegate(delegate)](#module_client.UndClient+setSigningDelegate) ⇒ <code>UndClient</code>
+    * [.setBroadcastDelegate(delegate)](#module_client.UndClient+setBroadcastDelegate) ⇒ <code>UndClient</code>
+    * [.useDefaultSigningDelegate()](#module_client.UndClient+useDefaultSigningDelegate) ⇒ <code>UndClient</code>
+    * [.useDefaultBroadcastDelegate()](#module_client.UndClient+useDefaultBroadcastDelegate) ⇒ <code>UndClient</code>
+    * [.transferUnd(toAddress, amount, fee, denom, fromAddress, memo, sequence)](#module_client.UndClient+transferUnd) ⇒ <code>Promise.&lt;\*&gt;</code>
+    * [.enterpriseRaisePO(amount, fee, denom, fromAddress, memo, sequence)](#module_client.UndClient+enterpriseRaisePO) ⇒ <code>Promise.&lt;\*&gt;</code>
+    * [.sendTransaction(tx, sync)](#module_client.UndClient+sendTransaction) ⇒ <code>Promise</code>
+    * [.sendRawTransaction(signedBz, sync)](#module_client.UndClient+sendRawTransaction) ⇒ <code>Promise</code>
+    * [._sendTransaction(msg, stdSignMsg, address, sequence, memo, sync)](#module_client.UndClient+_sendTransaction) ⇒ <code>Promise</code>
+    * [.getAccount(address)](#module_client.UndClient+getAccount) ⇒ <code>Promise</code>
+    * [.getBalance(address)](#module_client.UndClient+getBalance) ⇒ <code>Promise</code>
+    * [.getTransactions(address, offset)](#module_client.UndClient+getTransactions) ⇒ <code>Promise</code>
+    * [.getTx(hash)](#module_client.UndClient+getTx) ⇒ <code>Promise</code>
+    * [.createAccount()](#module_client.UndClient+createAccount) ⇒ <code>object</code>
+    * [.createAccountWithKeystore(password)](#module_client.UndClient+createAccountWithKeystore)
+    * [.createAccountWithMneomnic()](#module_client.UndClient+createAccountWithMneomnic) ⇒ <code>object</code>
+    * [.recoverAccountFromKeystore(keystore, password)](#module_client.UndClient+recoverAccountFromKeystore)
+    * [.recoverAccountFromMnemonic(mneomnic)](#module_client.UndClient+recoverAccountFromMnemonic)
+    * [.recoverAccountFromPrivateKey(privateKey)](#module_client.UndClient+recoverAccountFromPrivateKey)
+    * [.checkAddress(address, prefix)](#module_client.UndClient+checkAddress) ⇒ <code>Boolean</code>
+    * [.getClientKeyAddress()](#module_client.UndClient+getClientKeyAddress) ⇒ <code>String</code>
 
-<a name="new_module_client.BncClient_new"></a>
+<a name="new_module_client.UndClient_new"></a>
 
-#### new exports.BncClient(server, useAsyncBroadcast, source)
-
-| Param | Type | Default | Description |
-| --- | --- | --- | --- |
-| server | <code>String</code> |  | Binance Chain public url |
-| useAsyncBroadcast | <code>Boolean</code> | <code>false</code> | use async broadcast mode, faster but less guarantees (default off) |
-| source | <code>Number</code> | <code>0</code> | where does this transaction come from (default 0) |
-
-<a name="module_client.BncClient+initChain"></a>
-
-#### bncClient.initChain() ⇒ <code>Promise</code>
-Initialize the client with the chain's ID. Asynchronous.
-
-**Kind**: instance method of [<code>BncClient</code>](#module_client.BncClient)  
-<a name="module_client.BncClient+chooseNetwork"></a>
-
-#### bncClient.chooseNetwork(network)
-Sets the client network (testnet or mainnet).
-
-**Kind**: instance method of [<code>BncClient</code>](#module_client.BncClient)  
+#### new exports.UndClient(server, useAsyncBroadcast, source)
 
 | Param | Type | Description |
 | --- | --- | --- |
-| network | <code>String</code> | Indicate testnet or mainnet |
+| server | <code>String</code> | UND Mainchain public url |
+| useAsyncBroadcast | <code>Boolean</code> | use async broadcast mode, faster but less guarantees (default off) |
+| source | <code>Number</code> | where does this transaction come from (default 0) |
 
-<a name="module_client.BncClient+setPrivateKey"></a>
+<a name="module_client.UndClient+initChain"></a>
 
-#### bncClient.setPrivateKey(privateKey, localOnly) ⇒ <code>Promise</code>
+#### undClient.initChain() ⇒ <code>Promise</code>
+Initialize the client with the chain's ID. Asynchronous.
+
+**Kind**: instance method of [<code>UndClient</code>](#module_client.UndClient)  
+<a name="module_client.UndClient+setPrivateKey"></a>
+
+#### undClient.setPrivateKey(privateKey, localOnly) ⇒ <code>Promise</code>
 Sets the client's private key for calls made by this client. Asynchronous.
 
-**Kind**: instance method of [<code>BncClient</code>](#module_client.BncClient)  
+**Kind**: instance method of [<code>UndClient</code>](#module_client.UndClient)  
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
 | privateKey | <code>string</code> |  | the private key hexstring |
 | localOnly | <code>boolean</code> | <code>false</code> | set this to true if you will supply an account_number yourself via `setAccountNumber`. Warning: You must do that if you set this to true! |
 
-<a name="module_client.BncClient+setAccountNumber"></a>
+<a name="module_client.UndClient+setAccountNumber"></a>
 
-#### bncClient.setAccountNumber(accountNumber)
+#### undClient.setAccountNumber(accountNumber)
 Sets the client's account number.
 
-**Kind**: instance method of [<code>BncClient</code>](#module_client.BncClient)  
+**Kind**: instance method of [<code>UndClient</code>](#module_client.UndClient)  
 
 | Param | Type |
 | --- | --- |
 | accountNumber | <code>boolean</code> | 
 
-<a name="module_client.BncClient+useAsyncBroadcast"></a>
+<a name="module_client.UndClient+setSigningDelegate"></a>
 
-#### bncClient.useAsyncBroadcast(useAsyncBroadcast) ⇒ <code>BncClient</code>
-Use async broadcast mode. Broadcasts faster with less guarantees (default off)
-
-**Kind**: instance method of [<code>BncClient</code>](#module_client.BncClient)  
-**Returns**: <code>BncClient</code> - this instance (for chaining)  
-
-| Param | Type | Default |
-| --- | --- | --- |
-| useAsyncBroadcast | <code>Boolean</code> | <code>true</code> | 
-
-<a name="module_client.BncClient+setSigningDelegate"></a>
-
-#### bncClient.setSigningDelegate(delegate) ⇒ <code>BncClient</code>
+#### undClient.setSigningDelegate(delegate) ⇒ <code>UndClient</code>
 Sets the signing delegate (for wallet integrations).
 
-**Kind**: instance method of [<code>BncClient</code>](#module_client.BncClient)  
-**Returns**: <code>BncClient</code> - this instance (for chaining)  
+**Kind**: instance method of [<code>UndClient</code>](#module_client.UndClient)  
+**Returns**: <code>UndClient</code> - this instance (for chaining)  
 
 | Param | Type |
 | --- | --- |
 | delegate | <code>function</code> | 
 
-<a name="module_client.BncClient+setBroadcastDelegate"></a>
+<a name="module_client.UndClient+setBroadcastDelegate"></a>
 
-#### bncClient.setBroadcastDelegate(delegate) ⇒ <code>BncClient</code>
+#### undClient.setBroadcastDelegate(delegate) ⇒ <code>UndClient</code>
 Sets the broadcast delegate (for wallet integrations).
 
-**Kind**: instance method of [<code>BncClient</code>](#module_client.BncClient)  
-**Returns**: <code>BncClient</code> - this instance (for chaining)  
+**Kind**: instance method of [<code>UndClient</code>](#module_client.UndClient)  
+**Returns**: <code>UndClient</code> - this instance (for chaining)  
 
 | Param | Type |
 | --- | --- |
 | delegate | <code>function</code> | 
 
-<a name="module_client.BncClient+useDefaultSigningDelegate"></a>
+<a name="module_client.UndClient+useDefaultSigningDelegate"></a>
 
-#### bncClient.useDefaultSigningDelegate() ⇒ <code>BncClient</code>
+#### undClient.useDefaultSigningDelegate() ⇒ <code>UndClient</code>
 Applies the default signing delegate.
 
-**Kind**: instance method of [<code>BncClient</code>](#module_client.BncClient)  
-**Returns**: <code>BncClient</code> - this instance (for chaining)  
-<a name="module_client.BncClient+useDefaultBroadcastDelegate"></a>
+**Kind**: instance method of [<code>UndClient</code>](#module_client.UndClient)  
+**Returns**: <code>UndClient</code> - this instance (for chaining)  
+<a name="module_client.UndClient+useDefaultBroadcastDelegate"></a>
 
-#### bncClient.useDefaultBroadcastDelegate() ⇒ <code>BncClient</code>
+#### undClient.useDefaultBroadcastDelegate() ⇒ <code>UndClient</code>
 Applies the default broadcast delegate.
 
-**Kind**: instance method of [<code>BncClient</code>](#module_client.BncClient)  
-**Returns**: <code>BncClient</code> - this instance (for chaining)  
-<a name="module_client.BncClient+useLedgerSigningDelegate"></a>
+**Kind**: instance method of [<code>UndClient</code>](#module_client.UndClient)  
+**Returns**: <code>UndClient</code> - this instance (for chaining)  
+<a name="module_client.UndClient+transferUnd"></a>
 
-#### bncClient.useLedgerSigningDelegate(ledgerApp, preSignCb, postSignCb, errCb) ⇒ <code>BncClient</code>
-Applies the Ledger signing delegate.
+#### undClient.transferUnd(toAddress, amount, fee, denom, fromAddress, memo, sequence) ⇒ <code>Promise.&lt;\*&gt;</code>
+Transfer UND to an address
 
-**Kind**: instance method of [<code>BncClient</code>](#module_client.BncClient)  
-**Returns**: <code>BncClient</code> - this instance (for chaining)  
+**Kind**: instance method of [<code>UndClient</code>](#module_client.UndClient)  
 
-| Param | Type |
+| Param | Default |
 | --- | --- |
-| ledgerApp | <code>function</code> | 
-| preSignCb | <code>function</code> | 
-| postSignCb | <code>function</code> | 
-| errCb | <code>function</code> | 
+| toAddress |  | 
+| amount |  | 
+| fee |  | 
+| denom | <code>nund</code> | 
+| fromAddress |  | 
+| memo |  | 
+| sequence | <code></code> | 
 
-<a name="module_client.BncClient+transfer"></a>
+<a name="module_client.UndClient+enterpriseRaisePO"></a>
 
-#### bncClient.transfer(fromAddress, toAddress, amount, asset, memo, sequence) ⇒ <code>Promise</code>
-Transfer tokens from one address to another.
+#### undClient.enterpriseRaisePO(amount, fee, denom, fromAddress, memo, sequence) ⇒ <code>Promise.&lt;\*&gt;</code>
+Raise an Enterprise UND Purchase Order
 
-**Kind**: instance method of [<code>BncClient</code>](#module_client.BncClient)  
-**Returns**: <code>Promise</code> - resolves with response (success or fail)  
+**Kind**: instance method of [<code>UndClient</code>](#module_client.UndClient)  
 
-| Param | Type | Default | Description |
-| --- | --- | --- | --- |
-| fromAddress | <code>String</code> |  |  |
-| toAddress | <code>String</code> |  |  |
-| amount | <code>Number</code> |  |  |
-| asset | <code>String</code> |  |  |
-| memo | <code>String</code> |  | optional memo |
-| sequence | <code>Number</code> | <code></code> | optional sequence |
+| Param | Default |
+| --- | --- |
+| amount |  | 
+| fee |  | 
+| denom | <code>nund</code> | 
+| fromAddress |  | 
+| memo |  | 
+| sequence | <code></code> | 
 
-<a name="module_client.BncClient+multiSend"></a>
+<a name="module_client.UndClient+sendTransaction"></a>
 
-#### bncClient.multiSend(fromAddress, outputs, memo, sequence) ⇒ <code>Promise</code>
-Create and sign a multi send tx
-
-**Kind**: instance method of [<code>BncClient</code>](#module_client.BncClient)  
-**Returns**: <code>Promise</code> - resolves with response (success or fail)  
-
-| Param | Type | Default | Description |
-| --- | --- | --- | --- |
-| fromAddress | <code>String</code> |  |  |
-| outputs | <code>Array</code> |  |  |
-| memo | <code>String</code> |  | optional memo |
-| sequence | <code>Number</code> | <code></code> | optional sequence |
-
-**Example**  
-```js
-const outputs = [
-{
-  "to": "tbnb1p4kpnj5qz5spsaf0d2555h6ctngse0me5q57qe",
-  "coins": [{
-    "denom": "BNB",
-    "amount": 10
-  },{
-    "denom": "BTC",
-    "amount": 10
-  }]
-},
-{
-  "to": "tbnb1scjj8chhhp7lngdeflltzex22yaf9ep59ls4gk",
-  "coins": [{
-    "denom": "BTC",
-    "amount": 10
-  },{
-    "denom": "BNB",
-    "amount": 10
-  }]
-}]
-```
-<a name="module_client.BncClient+cancelOrder"></a>
-
-#### bncClient.cancelOrder(fromAddress, symbol, refid, sequence) ⇒ <code>Promise</code>
-Cancel an order.
-
-**Kind**: instance method of [<code>BncClient</code>](#module_client.BncClient)  
-**Returns**: <code>Promise</code> - resolves with response (success or fail)  
-
-| Param | Type | Default | Description |
-| --- | --- | --- | --- |
-| fromAddress | <code>String</code> |  |  |
-| symbol | <code>String</code> |  | the market pair |
-| refid | <code>String</code> |  | the order ID of the order to cancel |
-| sequence | <code>Number</code> | <code></code> | optional sequence |
-
-<a name="module_client.BncClient+placeOrder"></a>
-
-#### bncClient.placeOrder(address, symbol, side, price, quantity, sequence, timeinforce) ⇒ <code>Promise</code>
-Place an order.
-
-**Kind**: instance method of [<code>BncClient</code>](#module_client.BncClient)  
-**Returns**: <code>Promise</code> - resolves with response (success or fail)  
-
-| Param | Type | Default | Description |
-| --- | --- | --- | --- |
-| address | <code>String</code> |  |  |
-| symbol | <code>String</code> |  | the market pair |
-| side | <code>Number</code> |  | (1-Buy, 2-Sell) |
-| price | <code>Number</code> |  |  |
-| quantity | <code>Number</code> |  |  |
-| sequence | <code>Number</code> | <code></code> | optional sequence |
-| timeinforce | <code>Number</code> | <code>1</code> | (1-GTC(Good Till Expire), 3-IOC(Immediate or Cancel)) |
-
-<a name="module_client.BncClient+list"></a>
-
-#### bncClient.list(address, proposalId, baseAsset, quoteAsset, initPrice, sequence) ⇒ <code>Promise</code>
-**Kind**: instance method of [<code>BncClient</code>](#module_client.BncClient)  
-**Returns**: <code>Promise</code> - resolves with response (success or fail)  
-
-| Param | Type | Default | Description |
-| --- | --- | --- | --- |
-| address | <code>String</code> |  |  |
-| proposalId | <code>Number</code> |  |  |
-| baseAsset | <code>String</code> |  |  |
-| quoteAsset | <code>String</code> |  |  |
-| initPrice | <code>Number</code> |  |  |
-| sequence | <code>Number</code> | <code></code> | optional sequence |
-
-<a name="module_client.BncClient+_prepareTransaction"></a>
-
-#### bncClient.\_prepareTransaction(msg, stdSignMsg, address, sequence, memo) ⇒ [<code>Transaction</code>](#Transaction)
-Prepare a serialized raw transaction for sending to the blockchain.
-
-**Kind**: instance method of [<code>BncClient</code>](#module_client.BncClient)  
-**Returns**: [<code>Transaction</code>](#Transaction) - signed transaction  
-
-| Param | Type | Default | Description |
-| --- | --- | --- | --- |
-| msg | <code>Object</code> |  | the msg object |
-| stdSignMsg | <code>Object</code> |  | the sign doc object used to generate a signature |
-| address | <code>String</code> |  |  |
-| sequence | <code>Number</code> | <code></code> | optional sequence |
-| memo | <code>String</code> |  | optional memo |
-
-<a name="module_client.BncClient+sendTransaction"></a>
-
-#### bncClient.sendTransaction(tx, sync) ⇒ <code>Promise</code>
+#### undClient.sendTransaction(tx, sync) ⇒ <code>Promise</code>
 Broadcast a transaction to the blockchain.
 
-**Kind**: instance method of [<code>BncClient</code>](#module_client.BncClient)  
+**Kind**: instance method of [<code>UndClient</code>](#module_client.UndClient)  
 **Returns**: <code>Promise</code> - resolves with response (success or fail)  
 
 | Param | Type | Description |
@@ -389,12 +213,12 @@ Broadcast a transaction to the blockchain.
 | tx | <code>signedTx</code> | signed Transaction object |
 | sync | <code>Boolean</code> | use synchronous mode, optional |
 
-<a name="module_client.BncClient+sendRawTransaction"></a>
+<a name="module_client.UndClient+sendRawTransaction"></a>
 
-#### bncClient.sendRawTransaction(signedBz, sync) ⇒ <code>Promise</code>
+#### undClient.sendRawTransaction(signedBz, sync) ⇒ <code>Promise</code>
 Broadcast a raw transaction to the blockchain.
 
-**Kind**: instance method of [<code>BncClient</code>](#module_client.BncClient)  
+**Kind**: instance method of [<code>UndClient</code>](#module_client.UndClient)  
 **Returns**: <code>Promise</code> - resolves with response (success or fail)  
 
 | Param | Type | Description |
@@ -402,12 +226,12 @@ Broadcast a raw transaction to the blockchain.
 | signedBz | <code>String</code> | signed and serialized raw transaction |
 | sync | <code>Boolean</code> | use synchronous mode, optional |
 
-<a name="module_client.BncClient+_sendTransaction"></a>
+<a name="module_client.UndClient+_sendTransaction"></a>
 
-#### bncClient.\_sendTransaction(msg, stdSignMsg, address, sequence, memo, sync) ⇒ <code>Promise</code>
+#### undClient.\_sendTransaction(msg, stdSignMsg, address, sequence, memo, sync) ⇒ <code>Promise</code>
 Broadcast a raw transaction to the blockchain.
 
-**Kind**: instance method of [<code>BncClient</code>](#module_client.BncClient)  
+**Kind**: instance method of [<code>UndClient</code>](#module_client.UndClient)  
 **Returns**: <code>Promise</code> - resolves with response (success or fail)  
 
 | Param | Type | Default | Description |
@@ -419,49 +243,36 @@ Broadcast a raw transaction to the blockchain.
 | memo | <code>String</code> |  | optional memo |
 | sync | <code>Boolean</code> |  | use synchronous mode, optional |
 
-<a name="module_client.BncClient+getAccount"></a>
+<a name="module_client.UndClient+getAccount"></a>
 
-#### bncClient.getAccount(address) ⇒ <code>Promise</code>
+#### undClient.getAccount(address) ⇒ <code>Promise</code>
 get account
 
-**Kind**: instance method of [<code>BncClient</code>](#module_client.BncClient)  
+**Kind**: instance method of [<code>UndClient</code>](#module_client.UndClient)  
 **Returns**: <code>Promise</code> - resolves with http response  
 
 | Param | Type |
 | --- | --- |
 | address | <code>String</code> | 
 
-<a name="module_client.BncClient+getBalance"></a>
+<a name="module_client.UndClient+getBalance"></a>
 
-#### bncClient.getBalance(address) ⇒ <code>Promise</code>
+#### undClient.getBalance(address) ⇒ <code>Promise</code>
 get balances
 
-**Kind**: instance method of [<code>BncClient</code>](#module_client.BncClient)  
+**Kind**: instance method of [<code>UndClient</code>](#module_client.UndClient)  
 **Returns**: <code>Promise</code> - resolves with http response  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | address | <code>String</code> | optional address |
 
-<a name="module_client.BncClient+getMarkets"></a>
+<a name="module_client.UndClient+getTransactions"></a>
 
-#### bncClient.getMarkets(offset, limit,) ⇒ <code>Promise</code>
-get markets
-
-**Kind**: instance method of [<code>BncClient</code>](#module_client.BncClient)  
-**Returns**: <code>Promise</code> - resolves with http response  
-
-| Param | Type | Default | Description |
-| --- | --- | --- | --- |
-| offset | <code>Number</code> | <code>0</code> | from beggining, default 0 |
-| limit, | <code>Number</code> |  | max 1000 is default |
-
-<a name="module_client.BncClient+getTransactions"></a>
-
-#### bncClient.getTransactions(address, offset) ⇒ <code>Promise</code>
+#### undClient.getTransactions(address, offset) ⇒ <code>Promise</code>
 get transactions for an account
 
-**Kind**: instance method of [<code>BncClient</code>](#module_client.BncClient)  
+**Kind**: instance method of [<code>UndClient</code>](#module_client.UndClient)  
 **Returns**: <code>Promise</code> - resolves with http response  
 
 | Param | Type | Default | Description |
@@ -469,178 +280,113 @@ get transactions for an account
 | address | <code>String</code> |  | optional address |
 | offset | <code>Number</code> | <code>0</code> | from beggining, default 0 |
 
-<a name="module_client.BncClient+getTx"></a>
+<a name="module_client.UndClient+getTx"></a>
 
-#### bncClient.getTx(hash) ⇒ <code>Promise</code>
+#### undClient.getTx(hash) ⇒ <code>Promise</code>
 get transaction
 
-**Kind**: instance method of [<code>BncClient</code>](#module_client.BncClient)  
+**Kind**: instance method of [<code>UndClient</code>](#module_client.UndClient)  
 **Returns**: <code>Promise</code> - resolves with http response  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | hash | <code>String</code> | the transaction hash |
 
-<a name="module_client.BncClient+getDepth"></a>
+<a name="module_client.UndClient+createAccount"></a>
 
-#### bncClient.getDepth(symbol) ⇒ <code>Promise</code>
-get depth for a given market
-
-**Kind**: instance method of [<code>BncClient</code>](#module_client.BncClient)  
-**Returns**: <code>Promise</code> - resolves with http response  
-
-| Param | Type | Default | Description |
-| --- | --- | --- | --- |
-| symbol | <code>String</code> | <code>BNB_BUSD-BD1</code> | the market pair |
-
-<a name="module_client.BncClient+getOpenOrders"></a>
-
-#### bncClient.getOpenOrders(address, symbol) ⇒ <code>Promise</code>
-get open orders for an address
-
-**Kind**: instance method of [<code>BncClient</code>](#module_client.BncClient)  
-**Returns**: <code>Promise</code> - resolves with http response  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| address | <code>String</code> | binance address |
-| symbol | <code>String</code> | binance BEP2 symbol |
-
-<a name="module_client.BncClient+getSwapByID"></a>
-
-#### bncClient.getSwapByID(swapID:) ⇒ <code>Promise</code>
-get atomic swap
-
-**Kind**: instance method of [<code>BncClient</code>](#module_client.BncClient)  
-**Returns**: <code>Promise</code> - AtomicSwap  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| swapID: | <code>String</code> | ID of an existing swap |
-
-<a name="module_client.BncClient+getSwapByCreator"></a>
-
-#### bncClient.getSwapByCreator(creator:, offset, limit,) ⇒ <code>Promise</code>
-query atomic swap list by creator address
-
-**Kind**: instance method of [<code>BncClient</code>](#module_client.BncClient)  
-**Returns**: <code>Promise</code> - Array of AtomicSwap  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| creator: | <code>String</code> | swap creator address |
-| offset | <code>Number</code> | from beginning, default 0 |
-| limit, | <code>Number</code> | max 1000 is default |
-
-<a name="module_client.BncClient+getSwapByRecipient"></a>
-
-#### bncClient.getSwapByRecipient(recipient:, offset, limit,) ⇒ <code>Promise</code>
-query atomic swap list by recipient address
-
-**Kind**: instance method of [<code>BncClient</code>](#module_client.BncClient)  
-**Returns**: <code>Promise</code> - Array of AtomicSwap  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| recipient: | <code>String</code> | the recipient address of the swap |
-| offset | <code>Number</code> | from beginning, default 0 |
-| limit, | <code>Number</code> | max 1000 is default |
-
-<a name="module_client.BncClient+createAccount"></a>
-
-#### bncClient.createAccount() ⇒ <code>object</code>
+#### undClient.createAccount() ⇒ <code>object</code>
 Creates a private key and returns it and its address.
 
-**Kind**: instance method of [<code>BncClient</code>](#module_client.BncClient)  
+**Kind**: instance method of [<code>UndClient</code>](#module_client.UndClient)  
 **Returns**: <code>object</code> - the private key and address in an object.
 {
  address,
  privateKey
 }  
-<a name="module_client.BncClient+createAccountWithKeystore"></a>
+<a name="module_client.UndClient+createAccountWithKeystore"></a>
 
-#### bncClient.createAccountWithKeystore(password)
+#### undClient.createAccountWithKeystore(password)
 Creates an account keystore object, and returns the private key and address.
 
-**Kind**: instance method of [<code>BncClient</code>](#module_client.BncClient)  
+**Kind**: instance method of [<code>UndClient</code>](#module_client.UndClient)  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | password | <code>String</code> | {  privateKey,  address,  keystore } |
 
-<a name="module_client.BncClient+createAccountWithMneomnic"></a>
+<a name="module_client.UndClient+createAccountWithMneomnic"></a>
 
-#### bncClient.createAccountWithMneomnic() ⇒ <code>object</code>
+#### undClient.createAccountWithMneomnic() ⇒ <code>object</code>
 Creates an account from mnemonic seed phrase.
 
-**Kind**: instance method of [<code>BncClient</code>](#module_client.BncClient)  
+**Kind**: instance method of [<code>UndClient</code>](#module_client.UndClient)  
 **Returns**: <code>object</code> - {
  privateKey,
  address,
  mnemonic
 }  
-<a name="module_client.BncClient+recoverAccountFromKeystore"></a>
+<a name="module_client.UndClient+recoverAccountFromKeystore"></a>
 
-#### bncClient.recoverAccountFromKeystore(keystore, password)
+#### undClient.recoverAccountFromKeystore(keystore, password)
 Recovers an account from a keystore object.
 
-**Kind**: instance method of [<code>BncClient</code>](#module_client.BncClient)  
+**Kind**: instance method of [<code>UndClient</code>](#module_client.UndClient)  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | keystore | <code>object</code> | object. |
 | password | <code>string</code> | password. { privateKey, address } |
 
-<a name="module_client.BncClient+recoverAccountFromMnemonic"></a>
+<a name="module_client.UndClient+recoverAccountFromMnemonic"></a>
 
-#### bncClient.recoverAccountFromMnemonic(mneomnic)
+#### undClient.recoverAccountFromMnemonic(mneomnic)
 Recovers an account from a mnemonic seed phrase.
 
-**Kind**: instance method of [<code>BncClient</code>](#module_client.BncClient)  
+**Kind**: instance method of [<code>UndClient</code>](#module_client.UndClient)  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | mneomnic | <code>string</code> | { privateKey, address } |
 
-<a name="module_client.BncClient+recoverAccountFromPrivateKey"></a>
+<a name="module_client.UndClient+recoverAccountFromPrivateKey"></a>
 
-#### bncClient.recoverAccountFromPrivateKey(privateKey)
+#### undClient.recoverAccountFromPrivateKey(privateKey)
 Recovers an account using private key.
 
-**Kind**: instance method of [<code>BncClient</code>](#module_client.BncClient)  
+**Kind**: instance method of [<code>UndClient</code>](#module_client.UndClient)  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | privateKey | <code>String</code> | { privateKey, address } |
 
-<a name="module_client.BncClient+checkAddress"></a>
+<a name="module_client.UndClient+checkAddress"></a>
 
-#### bncClient.checkAddress(address, prefix) ⇒ <code>Boolean</code>
+#### undClient.checkAddress(address, prefix) ⇒ <code>Boolean</code>
 Validates an address.
 
-**Kind**: instance method of [<code>BncClient</code>](#module_client.BncClient)  
+**Kind**: instance method of [<code>UndClient</code>](#module_client.UndClient)  
 
 | Param | Type |
 | --- | --- |
 | address | <code>String</code> | 
 | prefix | <code>String</code> | 
 
-<a name="module_client.BncClient+getClientKeyAddress"></a>
+<a name="module_client.UndClient+getClientKeyAddress"></a>
 
-#### bncClient.getClientKeyAddress() ⇒ <code>String</code>
+#### undClient.getClientKeyAddress() ⇒ <code>String</code>
 Returns the address for the current account if setPrivateKey has been called on this client.
 
-**Kind**: instance method of [<code>BncClient</code>](#module_client.BncClient)  
+**Kind**: instance method of [<code>UndClient</code>](#module_client.UndClient)  
 <a name="module_client.DefaultSigningDelegate"></a>
 
-### client.DefaultSigningDelegate ⇒ [<code>Transaction</code>](#Transaction)
+### client.DefaultSigningDelegate ⇒ <code>Transaction</code>
 The default signing delegate which uses the local private key.
 
 **Kind**: static constant of [<code>client</code>](#module_client)  
 
 | Param | Type | Description |
 | --- | --- | --- |
-| tx | [<code>Transaction</code>](#Transaction) | the transaction |
+| tx | <code>Transaction</code> | the transaction |
 | signMsg | <code>Object</code> | the canonical sign bytes for the msg |
 
 <a name="module_client.DefaultBroadcastDelegate"></a>
@@ -652,44 +398,7 @@ The default broadcast delegate which immediately broadcasts a transaction.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| signedTx | [<code>Transaction</code>](#Transaction) | the signed transaction |
-
-<a name="module_client.LedgerSigningDelegate"></a>
-
-### client.LedgerSigningDelegate ⇒ <code>function</code>
-The Ledger signing delegate.
-
-**Kind**: static constant of [<code>client</code>](#module_client)  
-
-| Param | Type |
-| --- | --- |
-| ledgerApp | <code>LedgerApp</code> | 
-| function | <code>preSignCb</code> | 
-| function | <code>postSignCb</code> | 
-| function | <code>errCb</code> | 
-
-<a name="module_client..checkOutputs"></a>
-
-### client~checkOutputs(outputs)
-validate the input number.
-
-**Kind**: inner method of [<code>client</code>](#module_client)  
-
-| Param | Type |
-| --- | --- |
-| outputs | <code>Array</code> | 
-
-<a name="module_client..calInputCoins"></a>
-
-### client~calInputCoins(inputs, coins)
-sum corresponding input coin
-
-**Kind**: inner method of [<code>client</code>](#module_client)  
-
-| Param | Type |
-| --- | --- |
-| inputs | <code>Array</code> | 
-| coins | <code>Array</code> | 
+| signedTx | <code>Transaction</code> | the signed transaction |
 
 <a name="module_crypto"></a>
 
@@ -704,6 +413,7 @@ sum corresponding input coin
     * [.getPublicKey](#module_crypto.getPublicKey) ⇒ <code>Elliptic.PublicKey</code>
     * [.getPublicKeyFromPrivateKey](#module_crypto.getPublicKeyFromPrivateKey) ⇒ <code>string</code>
     * [.generatePubKey](#module_crypto.generatePubKey) ⇒ <code>Elliptic.PublicKey</code>
+    * [.generatePubKeyCompressed](#module_crypto.generatePubKeyCompressed) ⇒ <code>\*</code>
     * [.getAddressFromPublicKey](#module_crypto.getAddressFromPublicKey)
     * [.getAddressFromPrivateKey](#module_crypto.getAddressFromPrivateKey)
     * [.generateSignature](#module_crypto.generateSignature) ⇒ <code>Buffer</code>
@@ -807,6 +517,18 @@ generator point to get the pubkey.
 | Param | Type |
 | --- | --- |
 | privateKey | <code>Buffer</code> | 
+
+<a name="module_crypto.generatePubKeyCompressed"></a>
+
+### crypto.generatePubKeyCompressed ⇒ <code>\*</code>
+generatePubKeyCompressed performs the point-scalar multiplication from the
+privKey on the generator point to get the pubkey.
+
+**Kind**: static constant of [<code>crypto</code>](#module_crypto)  
+
+| Param |
+| --- |
+| privateKey | 
 
 <a name="module_crypto.getAddressFromPublicKey"></a>
 
@@ -915,38 +637,6 @@ Get a private key from mnemonic words.
 | derive | <code>Boolean</code> | derive a private key using the default HD path (default: true) |
 | index | <code>number</code> | the bip44 address index (default: 0) |
 | password | <code>string</code> | according to bip39 |
-
-<a name="amino.module_decode"></a>
-
-## decode
-
-* [decode](#amino.module_decode)
-    * [.unMarshalBinaryLengthPrefixed](#amino.module_decode.unMarshalBinaryLengthPrefixed) ⇒ <code>Object</code>
-    * [.unMarshalBinaryBare](#amino.module_decode.unMarshalBinaryBare) ⇒ <code>Object</code>
-
-<a name="amino.module_decode.unMarshalBinaryLengthPrefixed"></a>
-
-### decode.unMarshalBinaryLengthPrefixed ⇒ <code>Object</code>
-js amino UnmarshalBinaryLengthPrefixed
-
-**Kind**: static constant of [<code>decode</code>](#amino.module_decode)  
-
-| Param | Type |
-| --- | --- |
-| bytes | <code>Buffer</code> | 
-| type | <code>Object</code> | 
-
-<a name="amino.module_decode.unMarshalBinaryBare"></a>
-
-### decode.unMarshalBinaryBare ⇒ <code>Object</code>
-js amino UnmarshalBinaryBare
-
-**Kind**: static constant of [<code>decode</code>](#amino.module_decode)  
-
-| Param | Type |
-| --- | --- |
-| bytes | <code>Buffer</code> | 
-| type | <code>Object</code> | 
 
 <a name="amino.module_encode"></a>
 
@@ -1089,649 +779,6 @@ prefixed with bytes length
 | arr | <code>Array</code> |  |
 | isByteLenPrefix | <code>Boolean</code> |  |
 
-<a name="module_gov"></a>
-
-## gov
-
-* [gov](#module_gov)
-    * _static_
-        * [.voteOption](#module_gov.voteOption)
-    * _inner_
-        * [~Gov](#module_gov..Gov)
-            * [new Gov(bncClient)](#new_module_gov..Gov_new)
-            * [.submitListProposal(listParams)](#module_gov..Gov+submitListProposal)
-            * [.submitProposal(address, title, description, proposalType, initialDeposit, votingPeriod)](#module_gov..Gov+submitProposal) ⇒ <code>Promise</code>
-            * [.deposit(proposalId, address, coins)](#module_gov..Gov+deposit)
-            * [.vote(proposalId, voter, option)](#module_gov..Gov+vote)
-
-<a name="module_gov.voteOption"></a>
-
-### gov.voteOption
-VoteOption
-
-**Kind**: static constant of [<code>gov</code>](#module_gov)  
-**Example**  
-```js
-OptionEmpty - 0x00
-OptionYes - 0x01
-OptionAbstain - 0x02
-OptionNo - 0x03
-OptionNoWithVeto - 0x04
-```
-<a name="module_gov..Gov"></a>
-
-### gov~Gov
-**Kind**: inner class of [<code>gov</code>](#module_gov)  
-
-* [~Gov](#module_gov..Gov)
-    * [new Gov(bncClient)](#new_module_gov..Gov_new)
-    * [.submitListProposal(listParams)](#module_gov..Gov+submitListProposal)
-    * [.submitProposal(address, title, description, proposalType, initialDeposit, votingPeriod)](#module_gov..Gov+submitProposal) ⇒ <code>Promise</code>
-    * [.deposit(proposalId, address, coins)](#module_gov..Gov+deposit)
-    * [.vote(proposalId, voter, option)](#module_gov..Gov+vote)
-
-<a name="new_module_gov..Gov_new"></a>
-
-#### new Gov(bncClient)
-
-| Param | Type |
-| --- | --- |
-| bncClient | <code>Object</code> | 
-
-<a name="module_gov..Gov+submitListProposal"></a>
-
-#### gov.submitListProposal(listParams)
-Submit a list proposal along with an initial deposit
-
-**Kind**: instance method of [<code>Gov</code>](#module_gov..Gov)  
-
-| Param | Type |
-| --- | --- |
-| listParams | <code>Object</code> | 
-
-**Example**  
-```js
-var listParams = {
- title: 'New trading pair',
- description: '',
- baseAsset: 'BTC',
- quoteAsset: 'BNB',
- initPrice: 1,
- address: '',
- initialDeposit: 2000,
- expireTime: 1570665600,
- votingPeriod: 604800
-}
-```
-<a name="module_gov..Gov+submitProposal"></a>
-
-#### gov.submitProposal(address, title, description, proposalType, initialDeposit, votingPeriod) ⇒ <code>Promise</code>
-Submit a proposal along with an initial deposit.
-Proposal title, description, type and deposit can
-be given directly or through a proposal JSON file.
-
-**Kind**: instance method of [<code>Gov</code>](#module_gov..Gov)  
-**Returns**: <code>Promise</code> - resolves with response (success or fail)  
-
-| Param | Type |
-| --- | --- |
-| address | <code>String</code> | 
-| title | <code>String</code> | 
-| description | <code>String</code> | 
-| proposalType | <code>Number</code> | 
-| initialDeposit | <code>Number</code> | 
-| votingPeriod | <code>String</code> | 
-
-<a name="module_gov..Gov+deposit"></a>
-
-#### gov.deposit(proposalId, address, coins)
-Deposit tokens for activing proposal
-
-**Kind**: instance method of [<code>Gov</code>](#module_gov..Gov)  
-
-| Param | Type |
-| --- | --- |
-| proposalId | <code>Number</code> | 
-| address | <code>String</code> | 
-| coins | <code>Array</code> | 
-
-**Example**  
-```js
-var coins = [{
-  "denom": "BNB",
-  "amount": 10
-}]
-```
-<a name="module_gov..Gov+vote"></a>
-
-#### gov.vote(proposalId, voter, option)
-**Kind**: instance method of [<code>Gov</code>](#module_gov..Gov)  
-
-| Param | Type |
-| --- | --- |
-| proposalId | <code>Number</code> | 
-| voter | <code>String</code> | 
-| option | <code>VoteOption</code> | 
-
-<a name="module_ledger"></a>
-
-## ledger
-
-* [ledger](#module_ledger)
-    * [~LedgerApp](#module_ledger.LedgerApp)
-        * [new LedgerApp(transport, interactiveTimeout, nonInteractiveTimeout)](#new_module_ledger.LedgerApp_new)
-        * [.getVersion()](#module_ledger.LedgerApp+getVersion)
-        * [.publicKeySecp256k1(hdPath)](#module_ledger.LedgerApp+publicKeySecp256k1)
-        * [.signSecp256k1(signBytes, hdPath)](#module_ledger.LedgerApp+signSecp256k1)
-        * [.showAddress(hrp, hdPath)](#module_ledger.LedgerApp+showAddress)
-        * [.getPublicKey(hdPath)](#module_ledger.LedgerApp+getPublicKey)
-        * [.sign(signBytes, hdPath)](#module_ledger.LedgerApp+sign)
-
-<a name="module_ledger.LedgerApp"></a>
-
-### ledger~LedgerApp
-Ledger app interface.
-
-**Kind**: inner class of [<code>ledger</code>](#module_ledger)  
-
-* [~LedgerApp](#module_ledger.LedgerApp)
-    * [new LedgerApp(transport, interactiveTimeout, nonInteractiveTimeout)](#new_module_ledger.LedgerApp_new)
-    * [.getVersion()](#module_ledger.LedgerApp+getVersion)
-    * [.publicKeySecp256k1(hdPath)](#module_ledger.LedgerApp+publicKeySecp256k1)
-    * [.signSecp256k1(signBytes, hdPath)](#module_ledger.LedgerApp+signSecp256k1)
-    * [.showAddress(hrp, hdPath)](#module_ledger.LedgerApp+showAddress)
-    * [.getPublicKey(hdPath)](#module_ledger.LedgerApp+getPublicKey)
-    * [.sign(signBytes, hdPath)](#module_ledger.LedgerApp+sign)
-
-<a name="new_module_ledger.LedgerApp_new"></a>
-
-#### new LedgerApp(transport, interactiveTimeout, nonInteractiveTimeout)
-Constructs a new LedgerApp.
-
-
-| Param | Type | Description |
-| --- | --- | --- |
-| transport | <code>Transport</code> | Ledger Transport, a subclass of ledgerjs Transport. |
-| interactiveTimeout | <code>Number</code> | The interactive (user input) timeout in ms. Default 45s. |
-| nonInteractiveTimeout | <code>Number</code> | The non-interactive timeout in ms. Default 3s. |
-
-<a name="module_ledger.LedgerApp+getVersion"></a>
-
-#### ledgerApp.getVersion()
-Gets the version of the Ledger app that is currently open on the device.
-
-**Kind**: instance method of [<code>LedgerApp</code>](#module_ledger.LedgerApp)  
-**Throws**:
-
-- Will throw Error if a transport error occurs, or if the firmware app is not open.
-
-<a name="module_ledger.LedgerApp+publicKeySecp256k1"></a>
-
-#### ledgerApp.publicKeySecp256k1(hdPath)
-Gets the public key from the Ledger app that is currently open on the device.
-
-**Kind**: instance method of [<code>LedgerApp</code>](#module_ledger.LedgerApp)  
-**Throws**:
-
-- Will throw Error if a transport error occurs, or if the firmware app is not open.
-
-
-| Param | Type | Description |
-| --- | --- | --- |
-| hdPath | <code>array</code> | The HD path to use to get the public key. Default is [44, 714, 0, 0, 0] |
-
-<a name="module_ledger.LedgerApp+signSecp256k1"></a>
-
-#### ledgerApp.signSecp256k1(signBytes, hdPath)
-Sends a transaction sign doc to the Ledger app to be signed.
-
-**Kind**: instance method of [<code>LedgerApp</code>](#module_ledger.LedgerApp)  
-**Throws**:
-
-- Will throw Error if a transport error occurs, or if the firmware app is not open.
-
-
-| Param | Type | Description |
-| --- | --- | --- |
-| signBytes | <code>Buffer</code> | The TX sign doc bytes to sign |
-| hdPath | <code>array</code> | The HD path to use to get the public key. Default is [44, 714, 0, 0, 0] |
-
-<a name="module_ledger.LedgerApp+showAddress"></a>
-
-#### ledgerApp.showAddress(hrp, hdPath)
-Shows the user's address for the given HD path on the device display.
-
-**Kind**: instance method of [<code>LedgerApp</code>](#module_ledger.LedgerApp)  
-**Throws**:
-
-- Will throw Error if a transport error occurs, or if the firmware app is not open.
-
-
-| Param | Type | Default | Description |
-| --- | --- | --- | --- |
-| hrp | <code>string</code> | <code>&quot;bnb&quot;</code> | The bech32 human-readable prefix |
-| hdPath | <code>array</code> |  | The HD path to use to get the public key. Default is [44, 714, 0, 0, 0] |
-
-<a name="module_ledger.LedgerApp+getPublicKey"></a>
-
-#### ledgerApp.getPublicKey(hdPath)
-Gets the public key from the Ledger app that is currently open on the device.
-
-**Kind**: instance method of [<code>LedgerApp</code>](#module_ledger.LedgerApp)  
-**Throws**:
-
-- Will throw Error if a transport error occurs, or if the firmware app is not open.
-
-
-| Param | Type | Description |
-| --- | --- | --- |
-| hdPath | <code>array</code> | The HD path to use to get the public key. Default is [44, 714, 0, 0, 0] |
-
-<a name="module_ledger.LedgerApp+sign"></a>
-
-#### ledgerApp.sign(signBytes, hdPath)
-Sends a transaction sign doc to the Ledger app to be signed.
-
-**Kind**: instance method of [<code>LedgerApp</code>](#module_ledger.LedgerApp)  
-**Throws**:
-
-- Will throw Error if a transport error occurs, or if the firmware app is not open.
-
-
-| Param | Type | Description |
-| --- | --- | --- |
-| signBytes | <code>Buffer</code> | The TX sign doc bytes to sign |
-| hdPath | <code>array</code> | The HD path to use to get the public key. Default is [44, 714, 0, 0, 0] |
-
-<a name="module_rpc"></a>
-
-## rpc
-
-* [rpc](#module_rpc)
-    * [~Client](#module_rpc..Client)
-        * [new Client(uriString, netWork)](#new_module_rpc..Client_new)
-        * [.broadcastDelegate(signedTx)](#module_rpc..Client+broadcastDelegate) ⇒ <code>Promise</code>
-        * [.getTokenInfo(symbol)](#module_rpc..Client+getTokenInfo) ⇒ <code>Object</code>
-        * [.listAllTokens(offset, limit)](#module_rpc..Client+listAllTokens) ⇒ <code>Array</code>
-        * [.getAccount(address)](#module_rpc..Client+getAccount) ⇒ <code>Object</code>
-        * [.getBalances(balances)](#module_rpc..Client+getBalances)
-        * [.getBalance(address, symbol)](#module_rpc..Client+getBalance) ⇒ <code>Object</code>
-        * [.getOpenOrders(address, symbol)](#module_rpc..Client+getOpenOrders) ⇒ <code>Object</code>
-        * [.getTradingPairs(offset, limit)](#module_rpc..Client+getTradingPairs) ⇒ <code>Array</code>
-        * [.getDepth(tradePair)](#module_rpc..Client+getDepth) ⇒ <code>Array</code>
-
-<a name="module_rpc..Client"></a>
-
-### rpc~Client
-The Binance Chain Node rpc client
-
-**Kind**: inner class of [<code>rpc</code>](#module_rpc)  
-
-* [~Client](#module_rpc..Client)
-    * [new Client(uriString, netWork)](#new_module_rpc..Client_new)
-    * [.broadcastDelegate(signedTx)](#module_rpc..Client+broadcastDelegate) ⇒ <code>Promise</code>
-    * [.getTokenInfo(symbol)](#module_rpc..Client+getTokenInfo) ⇒ <code>Object</code>
-    * [.listAllTokens(offset, limit)](#module_rpc..Client+listAllTokens) ⇒ <code>Array</code>
-    * [.getAccount(address)](#module_rpc..Client+getAccount) ⇒ <code>Object</code>
-    * [.getBalances(balances)](#module_rpc..Client+getBalances)
-    * [.getBalance(address, symbol)](#module_rpc..Client+getBalance) ⇒ <code>Object</code>
-    * [.getOpenOrders(address, symbol)](#module_rpc..Client+getOpenOrders) ⇒ <code>Object</code>
-    * [.getTradingPairs(offset, limit)](#module_rpc..Client+getTradingPairs) ⇒ <code>Array</code>
-    * [.getDepth(tradePair)](#module_rpc..Client+getDepth) ⇒ <code>Array</code>
-
-<a name="new_module_rpc..Client_new"></a>
-
-#### new Client(uriString, netWork)
-
-| Param | Type | Default | Description |
-| --- | --- | --- | --- |
-| uriString | <code>String</code> | <code>localhost:27146</code> | dataseed address |
-| netWork | <code>String</code> |  | Binance Chain network |
-
-<a name="module_rpc..Client+broadcastDelegate"></a>
-
-#### client.broadcastDelegate(signedTx) ⇒ <code>Promise</code>
-The RPC broadcast delegate broadcasts a transaction via RPC. This is intended for optional use as BncClient's broadcast delegate.
-
-**Kind**: instance method of [<code>Client</code>](#module_rpc..Client)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| signedTx | [<code>Transaction</code>](#Transaction) | the signed transaction |
-
-<a name="module_rpc..Client+getTokenInfo"></a>
-
-#### client.getTokenInfo(symbol) ⇒ <code>Object</code>
-**Kind**: instance method of [<code>Client</code>](#module_rpc..Client)  
-**Returns**: <code>Object</code> - token detail info  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| symbol | <code>String</code> | required |
-
-<a name="module_rpc..Client+listAllTokens"></a>
-
-#### client.listAllTokens(offset, limit) ⇒ <code>Array</code>
-get tokens by offset and limit
-
-**Kind**: instance method of [<code>Client</code>](#module_rpc..Client)  
-**Returns**: <code>Array</code> - token list  
-
-| Param | Type |
-| --- | --- |
-| offset | <code>Number</code> | 
-| limit | <code>Number</code> | 
-
-<a name="module_rpc..Client+getAccount"></a>
-
-#### client.getAccount(address) ⇒ <code>Object</code>
-**Kind**: instance method of [<code>Client</code>](#module_rpc..Client)  
-**Returns**: <code>Object</code> - Account info  
-
-| Param | Type |
-| --- | --- |
-| address | <code>String</code> | 
-
-<a name="module_rpc..Client+getBalances"></a>
-
-#### client.getBalances(balances)
-**Kind**: instance method of [<code>Client</code>](#module_rpc..Client)  
-
-| Param | Type |
-| --- | --- |
-| balances | <code>Array</code> | 
-
-<a name="module_rpc..Client+getBalance"></a>
-
-#### client.getBalance(address, symbol) ⇒ <code>Object</code>
-get balance by symbol and address
-
-**Kind**: instance method of [<code>Client</code>](#module_rpc..Client)  
-
-| Param | Type |
-| --- | --- |
-| address | <code>String</code> | 
-| symbol | <code>String</code> | 
-
-<a name="module_rpc..Client+getOpenOrders"></a>
-
-#### client.getOpenOrders(address, symbol) ⇒ <code>Object</code>
-**Kind**: instance method of [<code>Client</code>](#module_rpc..Client)  
-
-| Param | Type |
-| --- | --- |
-| address | <code>String</code> | 
-| symbol | <code>String</code> | 
-
-<a name="module_rpc..Client+getTradingPairs"></a>
-
-#### client.getTradingPairs(offset, limit) ⇒ <code>Array</code>
-**Kind**: instance method of [<code>Client</code>](#module_rpc..Client)  
-
-| Param | Type |
-| --- | --- |
-| offset | <code>Number</code> | 
-| limit | <code>Number</code> | 
-
-<a name="module_rpc..Client+getDepth"></a>
-
-#### client.getDepth(tradePair) ⇒ <code>Array</code>
-**Kind**: instance method of [<code>Client</code>](#module_rpc..Client)  
-
-| Param | Type |
-| --- | --- |
-| tradePair | <code>String</code> | 
-
-<a name="module_Swap"></a>
-
-## Swap
-
-* [Swap](#module_Swap)
-    * [~Swap](#module_Swap..Swap)
-        * [new Swap(bncClient)](#new_module_Swap..Swap_new)
-        * [.HTLT(from, recipient, recipientOtherChain, senderOtherChain, randomNumberHash, timestamp, amount, expectedIncome, heightSpan, crossChain)](#module_Swap..Swap+HTLT) ⇒ <code>Promise</code>
-        * [.depositHTLT(from, swapID, amount)](#module_Swap..Swap+depositHTLT) ⇒ <code>Promise</code>
-        * [.claimHTLT(from, swapID, randomNumber)](#module_Swap..Swap+claimHTLT) ⇒ <code>Promise</code>
-        * [.refundHTLT(from, swapID)](#module_Swap..Swap+refundHTLT) ⇒ <code>Promise</code>
-
-<a name="module_Swap..Swap"></a>
-
-### Swap~Swap
-**Kind**: inner class of [<code>Swap</code>](#module_Swap)  
-
-* [~Swap](#module_Swap..Swap)
-    * [new Swap(bncClient)](#new_module_Swap..Swap_new)
-    * [.HTLT(from, recipient, recipientOtherChain, senderOtherChain, randomNumberHash, timestamp, amount, expectedIncome, heightSpan, crossChain)](#module_Swap..Swap+HTLT) ⇒ <code>Promise</code>
-    * [.depositHTLT(from, swapID, amount)](#module_Swap..Swap+depositHTLT) ⇒ <code>Promise</code>
-    * [.claimHTLT(from, swapID, randomNumber)](#module_Swap..Swap+claimHTLT) ⇒ <code>Promise</code>
-    * [.refundHTLT(from, swapID)](#module_Swap..Swap+refundHTLT) ⇒ <code>Promise</code>
-
-<a name="new_module_Swap..Swap_new"></a>
-
-#### new Swap(bncClient)
-
-| Param | Type |
-| --- | --- |
-| bncClient | <code>Object</code> | 
-
-<a name="module_Swap..Swap+HTLT"></a>
-
-#### swap.HTLT(from, recipient, recipientOtherChain, senderOtherChain, randomNumberHash, timestamp, amount, expectedIncome, heightSpan, crossChain) ⇒ <code>Promise</code>
-HTLT(Hash timer locked transfer, create an atomic swap)
-
-**Kind**: instance method of [<code>Swap</code>](#module_Swap..Swap)  
-**Returns**: <code>Promise</code> - resolves with response (success or fail)  
-
-| Param | Type |
-| --- | --- |
-| from | <code>String</code> | 
-| recipient | <code>String</code> | 
-| recipientOtherChain | <code>String</code> | 
-| senderOtherChain | <code>String</code> | 
-| randomNumberHash | <code>String</code> | 
-| timestamp | <code>Number</code> | 
-| amount | <code>Array</code> | 
-| expectedIncome | <code>String</code> | 
-| heightSpan | <code>Number</code> | 
-| crossChain | <code>boolean</code> | 
-
-<a name="module_Swap..Swap+depositHTLT"></a>
-
-#### swap.depositHTLT(from, swapID, amount) ⇒ <code>Promise</code>
-depositHTLT(deposit assets to an existing swap)
-
-**Kind**: instance method of [<code>Swap</code>](#module_Swap..Swap)  
-**Returns**: <code>Promise</code> - resolves with response (success or fail)  
-
-| Param | Type |
-| --- | --- |
-| from | <code>String</code> | 
-| swapID | <code>String</code> | 
-| amount | <code>Array</code> | 
-
-<a name="module_Swap..Swap+claimHTLT"></a>
-
-#### swap.claimHTLT(from, swapID, randomNumber) ⇒ <code>Promise</code>
-claimHTLT(claim assets from an swap)
-
-**Kind**: instance method of [<code>Swap</code>](#module_Swap..Swap)  
-**Returns**: <code>Promise</code> - resolves with response (success or fail)  
-
-| Param | Type |
-| --- | --- |
-| from | <code>String</code> | 
-| swapID | <code>String</code> | 
-| randomNumber | <code>String</code> | 
-
-<a name="module_Swap..Swap+refundHTLT"></a>
-
-#### swap.refundHTLT(from, swapID) ⇒ <code>Promise</code>
-refundHTLT(refund assets from an swap)
-
-**Kind**: instance method of [<code>Swap</code>](#module_Swap..Swap)  
-**Returns**: <code>Promise</code> - resolves with response (success or fail)  
-
-| Param | Type |
-| --- | --- |
-| from | <code>String</code> | 
-| swapID | <code>String</code> | 
-
-<a name="module_Token"></a>
-
-## Token
-
-* [Token](#module_Token)
-    * [~TokenManagement](#module_Token..TokenManagement)
-        * [new TokenManagement(bncClient)](#new_module_Token..TokenManagement_new)
-        * [.issue(senderAddress, tokenName, symbol, totalSupply, mintable)](#module_Token..TokenManagement+issue) ⇒ <code>Promise</code>
-        * [.freeze(fromAddress, symbol, amount)](#module_Token..TokenManagement+freeze) ⇒ <code>Promise</code>
-        * [.unfreeze(fromAddress, symbol, amount)](#module_Token..TokenManagement+unfreeze) ⇒ <code>Promise</code>
-        * [.burn(fromAddress, symbol, amount)](#module_Token..TokenManagement+burn) ⇒ <code>Promise</code>
-        * [.mint(fromAddress, symbol, amount)](#module_Token..TokenManagement+mint) ⇒ <code>Promise</code>
-        * [.timeLock(fromAddress, description, amount, lockTime)](#module_Token..TokenManagement+timeLock) ⇒ <code>Promise</code>
-        * [.timeRelock(fromAddress, id, description, amount, lockTime)](#module_Token..TokenManagement+timeRelock) ⇒ <code>Promise</code>
-        * [.timeUnlock(fromAddress, id)](#module_Token..TokenManagement+timeUnlock) ⇒ <code>Promise</code>
-
-<a name="module_Token..TokenManagement"></a>
-
-### Token~TokenManagement
-**Kind**: inner class of [<code>Token</code>](#module_Token)  
-
-* [~TokenManagement](#module_Token..TokenManagement)
-    * [new TokenManagement(bncClient)](#new_module_Token..TokenManagement_new)
-    * [.issue(senderAddress, tokenName, symbol, totalSupply, mintable)](#module_Token..TokenManagement+issue) ⇒ <code>Promise</code>
-    * [.freeze(fromAddress, symbol, amount)](#module_Token..TokenManagement+freeze) ⇒ <code>Promise</code>
-    * [.unfreeze(fromAddress, symbol, amount)](#module_Token..TokenManagement+unfreeze) ⇒ <code>Promise</code>
-    * [.burn(fromAddress, symbol, amount)](#module_Token..TokenManagement+burn) ⇒ <code>Promise</code>
-    * [.mint(fromAddress, symbol, amount)](#module_Token..TokenManagement+mint) ⇒ <code>Promise</code>
-    * [.timeLock(fromAddress, description, amount, lockTime)](#module_Token..TokenManagement+timeLock) ⇒ <code>Promise</code>
-    * [.timeRelock(fromAddress, id, description, amount, lockTime)](#module_Token..TokenManagement+timeRelock) ⇒ <code>Promise</code>
-    * [.timeUnlock(fromAddress, id)](#module_Token..TokenManagement+timeUnlock) ⇒ <code>Promise</code>
-
-<a name="new_module_Token..TokenManagement_new"></a>
-
-#### new TokenManagement(bncClient)
-
-| Param | Type |
-| --- | --- |
-| bncClient | <code>Object</code> | 
-
-<a name="module_Token..TokenManagement+issue"></a>
-
-#### tokenManagement.issue(senderAddress, tokenName, symbol, totalSupply, mintable) ⇒ <code>Promise</code>
-create a new asset on Binance Chain
-
-**Kind**: instance method of [<code>TokenManagement</code>](#module_Token..TokenManagement)  
-**Returns**: <code>Promise</code> - resolves with response (success or fail)  
-
-| Param | Type | Default | Description |
-| --- | --- | --- | --- |
-| senderAddress | <code>String</code> |  | senderAddress |
-| tokenName | <code>String</code> |  | tokenName |
-| symbol | <code>String</code> |  | symbol |
-| totalSupply | <code>Number</code> | <code>0</code> | totalSupply |
-| mintable | <code>Boolean</code> | <code>false</code> | mintable |
-
-<a name="module_Token..TokenManagement+freeze"></a>
-
-#### tokenManagement.freeze(fromAddress, symbol, amount) ⇒ <code>Promise</code>
-freeze some amount of token
-
-**Kind**: instance method of [<code>TokenManagement</code>](#module_Token..TokenManagement)  
-**Returns**: <code>Promise</code> - resolves with response (success or fail)  
-
-| Param | Type |
-| --- | --- |
-| fromAddress | <code>String</code> | 
-| symbol | <code>String</code> | 
-| amount | <code>String</code> | 
-
-<a name="module_Token..TokenManagement+unfreeze"></a>
-
-#### tokenManagement.unfreeze(fromAddress, symbol, amount) ⇒ <code>Promise</code>
-unfreeze some amount of token
-
-**Kind**: instance method of [<code>TokenManagement</code>](#module_Token..TokenManagement)  
-**Returns**: <code>Promise</code> - resolves with response (success or fail)  
-
-| Param | Type |
-| --- | --- |
-| fromAddress | <code>String</code> | 
-| symbol | <code>String</code> | 
-| amount | <code>String</code> | 
-
-<a name="module_Token..TokenManagement+burn"></a>
-
-#### tokenManagement.burn(fromAddress, symbol, amount) ⇒ <code>Promise</code>
-burn some amount of token
-
-**Kind**: instance method of [<code>TokenManagement</code>](#module_Token..TokenManagement)  
-**Returns**: <code>Promise</code> - resolves with response (success or fail)  
-
-| Param | Type |
-| --- | --- |
-| fromAddress | <code>String</code> | 
-| symbol | <code>String</code> | 
-| amount | <code>Number</code> | 
-
-<a name="module_Token..TokenManagement+mint"></a>
-
-#### tokenManagement.mint(fromAddress, symbol, amount) ⇒ <code>Promise</code>
-mint tokens for an existing token
-
-**Kind**: instance method of [<code>TokenManagement</code>](#module_Token..TokenManagement)  
-**Returns**: <code>Promise</code> - resolves with response (success or fail)  
-
-| Param | Type |
-| --- | --- |
-| fromAddress | <code>String</code> | 
-| symbol | <code>String</code> | 
-| amount | <code>Number</code> | 
-
-<a name="module_Token..TokenManagement+timeLock"></a>
-
-#### tokenManagement.timeLock(fromAddress, description, amount, lockTime) ⇒ <code>Promise</code>
-lock token for a while
-
-**Kind**: instance method of [<code>TokenManagement</code>](#module_Token..TokenManagement)  
-**Returns**: <code>Promise</code> - resolves with response (success or fail)  
-
-| Param | Type |
-| --- | --- |
-| fromAddress | <code>String</code> | 
-| description | <code>String</code> | 
-| amount | <code>Array</code> | 
-| lockTime | <code>Number</code> | 
-
-<a name="module_Token..TokenManagement+timeRelock"></a>
-
-#### tokenManagement.timeRelock(fromAddress, id, description, amount, lockTime) ⇒ <code>Promise</code>
-lock more token or increase locked period
-
-**Kind**: instance method of [<code>TokenManagement</code>](#module_Token..TokenManagement)  
-**Returns**: <code>Promise</code> - resolves with response (success or fail)  
-
-| Param | Type |
-| --- | --- |
-| fromAddress | <code>String</code> | 
-| id | <code>Number</code> | 
-| description | <code>String</code> | 
-| amount | <code>Array</code> | 
-| lockTime | <code>Number</code> | 
-
-<a name="module_Token..TokenManagement+timeUnlock"></a>
-
-#### tokenManagement.timeUnlock(fromAddress, id) ⇒ <code>Promise</code>
-unlock locked tokens
-
-**Kind**: instance method of [<code>TokenManagement</code>](#module_Token..TokenManagement)  
-**Returns**: <code>Promise</code> - resolves with response (success or fail)  
-
-| Param | Type |
-| --- | --- |
-| fromAddress | <code>String</code> | 
-| id | <code>Number</code> | 
-
 <a name="module_utils"></a>
 
 ## utils
@@ -1755,7 +802,6 @@ unlock locked tokens
     * [.sha256](#module_utils.sha256) ⇒ <code>string</code>
     * [.sha3](#module_utils.sha3) ⇒ <code>string</code>
     * [.calculateRandomNumberHash](#module_utils.calculateRandomNumberHash) ⇒ <code>string</code>
-    * [.calculateSwapID](#module_utils.calculateSwapID) ⇒ <code>string</code>
 
 <a name="module_utils.ab2str"></a>
 
@@ -1967,125 +1013,6 @@ Computes sha256 of random number and timestamp
 | --- | --- |
 | randomNumber | <code>String</code> | 
 | timestamp | <code>Number</code> | 
-
-<a name="module_utils.calculateSwapID"></a>
-
-### utils.calculateSwapID ⇒ <code>string</code>
-Computes swapID
-
-**Kind**: static constant of [<code>utils</code>](#module_utils)  
-**Returns**: <code>string</code> - sha256 result  
-
-| Param | Type |
-| --- | --- |
-| randomNumberHash | <code>String</code> | 
-| sender | <code>String</code> | 
-| senderOtherChain | <code>String</code> | 
-
-<a name="Transaction"></a>
-
-## Transaction
-Creates a new transaction object.
-
-**Kind**: global class  
-**Properties**
-
-| Name | Type | Description |
-| --- | --- | --- |
-| raw | <code>Buffer</code> | The raw vstruct encoded transaction |
-
-
-* [Transaction](#Transaction)
-    * [new Transaction(type)](#new_Transaction_new)
-    * [.getSignBytes(concrete)](#Transaction+getSignBytes) ⇒ <code>Buffer</code>
-    * [.addSignature(pubKey, signature)](#Transaction+addSignature) ⇒ [<code>Transaction</code>](#Transaction)
-    * [.sign(privateKey, concrete)](#Transaction+sign) ⇒ [<code>Transaction</code>](#Transaction)
-    * [.serialize(opts)](#Transaction+serialize)
-    * [._serializePubKey(unencodedPubKey)](#Transaction+_serializePubKey) ⇒ <code>Buffer</code>
-
-<a name="new_Transaction_new"></a>
-
-### new Transaction(type)
-
-| Param | Type | Description |
-| --- | --- | --- |
-| data.account_number | <code>Number</code> | account number |
-| data.chain_id | <code>String</code> | bnbChain Id |
-| data.memo | <code>String</code> | transaction memo |
-| type | <code>String</code> | transaction type |
-| data.msg | <code>Object</code> | object data of tx type |
-| data.sequence | <code>Number</code> | transaction counts |
-| data.source | <code>Number</code> | where does this transaction come from |
-
-**Example**  
-```js
-var rawTx = {
-  account_number: 1,
-  chain_id: 'bnbchain-1000',
-  memo: '',
-  msg: {},
-  type: 'NewOrderMsg',
-  sequence: 29,
-  source: 0
-};
-var tx = new Transaction(rawTx);
-```
-<a name="Transaction+getSignBytes"></a>
-
-### transaction.getSignBytes(concrete) ⇒ <code>Buffer</code>
-generate the sign bytes for a transaction, given a msg
-
-**Kind**: instance method of [<code>Transaction</code>](#Transaction)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| concrete | <code>Object</code> | msg object |
-
-<a name="Transaction+addSignature"></a>
-
-### transaction.addSignature(pubKey, signature) ⇒ [<code>Transaction</code>](#Transaction)
-attaches a signature to the transaction
-
-**Kind**: instance method of [<code>Transaction</code>](#Transaction)  
-
-| Param | Type |
-| --- | --- |
-| pubKey | <code>Elliptic.PublicKey</code> | 
-| signature | <code>Buffer</code> | 
-
-<a name="Transaction+sign"></a>
-
-### transaction.sign(privateKey, concrete) ⇒ [<code>Transaction</code>](#Transaction)
-sign transaction with a given private key and msg
-
-**Kind**: instance method of [<code>Transaction</code>](#Transaction)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| privateKey | <code>string</code> | private key hex string |
-| concrete | <code>Object</code> | msg object |
-
-<a name="Transaction+serialize"></a>
-
-### transaction.serialize(opts)
-encode signed transaction to hex which is compatible with amino
-
-**Kind**: instance method of [<code>Transaction</code>](#Transaction)  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| opts | <code>object</code> | msg field |
-
-<a name="Transaction+_serializePubKey"></a>
-
-### transaction.\_serializePubKey(unencodedPubKey) ⇒ <code>Buffer</code>
-serializes a public key in a 33-byte compressed format.
-
-**Kind**: instance method of [<code>Transaction</code>](#Transaction)  
-
-| Param | Type |
-| --- | --- |
-| unencodedPubKey | <code>Elliptic.PublicKey</code> | 
 
 <a name="checkNumber"></a>
 

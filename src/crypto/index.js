@@ -26,7 +26,7 @@ const DECODED_ADDRESS_LEN = 20
 const CURVE = "secp256k1"
 
 //hdpath
-const HDPATH = "44'/714'/0'/0/"
+const HDPATH = "44'/5555'/0'/0/"
 
 const ec = new EC(CURVE)
 
@@ -42,7 +42,7 @@ export const decodeAddress = (value) => {
 /**
  * Checks whether an address is valid.
  * @param {string} address the bech32 address to decode
- * @param {string} hrp the prefix to check for the bech32 address 
+ * @param {string} hrp the prefix to check for the bech32 address
  * @return {boolean}
  */
 export const checkAddress = (address, hrp) => {
@@ -70,7 +70,7 @@ export const checkAddress = (address, hrp) => {
  * @param {*} prefix the address prefix
  * @param {*} type the output type (default: hex)
  */
-export const encodeAddress = (value, prefix = "tbnb", type = "hex") => {
+export const encodeAddress = (value, prefix = "und", type = "hex") => {
   const words = bech32.toWords(Buffer.from(value, type))
   return bech32.encode(prefix, words)
 }
@@ -123,6 +123,18 @@ export const generatePubKey = privateKey => {
   const curve = new EC(CURVE)
   const keypair = curve.keyFromPrivate(privateKey)
   return keypair.getPublic()
+}
+
+/**
+ * generatePubKeyCompressed performs the point-scalar multiplication from the
+ * privKey on the generator point to get the pubkey.
+ * @param privateKey
+ * @returns {*}
+ */
+export const generatePubKeyCompressed = privateKey => {
+  const curve = new EC(CURVE)
+  const keypair = curve.keyFromPrivate(privateKey)
+  return keypair.getPublic().encodeCompressed()
 }
 
 /**
@@ -282,7 +294,7 @@ export const validateMnemonic = bip39.validateMnemonic
  * @param {string} password according to bip39
  * @return {string} hexstring
  */
-export const getPrivateKeyFromMnemonic = (mnemonic, derive = true, index = 0, password = '') => {
+export const getPrivateKeyFromMnemonic = (mnemonic, derive = true, index = 0, password = "") => {
 
   if (!bip39.validateMnemonic(mnemonic)) {
     throw new Error("wrong mnemonic format")
