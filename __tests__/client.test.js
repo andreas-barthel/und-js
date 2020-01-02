@@ -45,6 +45,8 @@ const keystores = {
 }
 
 const targetAddress = "und150xrwj6ca9kyzz20e4x0qj6zm0206jhe4tk7nf"
+const delAddress = "und1x8pl6wzqf9atkm77ymc5vn5dnpl5xytmn200xy"
+const valAddress = "undvaloper1eq239sgefyzm4crl85nfyvt7kw83vrna6lrjet"
 
 const wait = ms => {
   return new Promise(function(resolve) {
@@ -239,7 +241,6 @@ it("transfer und with presicion", async () => {
   expect(parseInt(sendAmount)).toBe(2001770112)
 })
 
-
 it("raise nund enterprise purchase order", async () => {
   jest.setTimeout(30000)
 
@@ -271,6 +272,92 @@ it("raise nund enterprise purchase order", async () => {
     "po evidence",
     sequence
   )
+  expect(res.status).toBe(200)
+
+  await wait(6000)
+  const hash = res.result.txhash
+  const res2 = await client.getTx(hash)
+  const sendAmount =
+    res2.result.tx.value.msg[0].value.amount.amount
+  expect(parseInt(sendAmount)).toBe(2001770112)
+})
+
+it("delegate und", async () => {
+  jest.setTimeout(30000)
+
+  const coin = "nund"
+  let amount = 2001770112
+  const client = await getClient(false)
+  const addr = crypto.getAddressFromPrivateKey(client.privateKey)
+  const account = await client._httpClient.request(
+    "get",
+    `/auth/accounts/${addr}`
+  )
+
+  let fee = {
+    "amount": [
+      {
+        "denom": "nund",
+        "amount": "30000"
+      }
+    ],
+    "gas": "110000"
+  }
+
+  const sequence = account.result && account.result.result.account.value.sequence
+  const res = await client.delegate(
+    valAddress,
+    amount,
+    fee,
+    coin,
+    addr,
+    "delegate",
+    sequence
+  )
+
+  expect(res.status).toBe(200)
+
+  await wait(6000)
+  const hash = res.result.txhash
+  const res2 = await client.getTx(hash)
+  const sendAmount =
+    res2.result.tx.value.msg[0].value.amount.amount
+  expect(parseInt(sendAmount)).toBe(2001770112)
+})
+
+it("undelegate und", async () => {
+  jest.setTimeout(30000)
+
+  const coin = "nund"
+  let amount = 2001770112
+  const client = await getClient(false)
+  const addr = crypto.getAddressFromPrivateKey(client.privateKey)
+  const account = await client._httpClient.request(
+    "get",
+    `/auth/accounts/${addr}`
+  )
+
+  let fee = {
+    "amount": [
+      {
+        "denom": "nund",
+        "amount": "30000"
+      }
+    ],
+    "gas": "110000"
+  }
+
+  const sequence = account.result && account.result.result.account.value.sequence
+  const res = await client.undelegate(
+    valAddress,
+    amount,
+    fee,
+    coin,
+    addr,
+    "undelegate",
+    sequence
+  )
+
   expect(res.status).toBe(200)
 
   await wait(6000)

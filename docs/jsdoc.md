@@ -37,7 +37,9 @@
         * [.useDefaultSigningDelegate()](#module_client.UndClient+useDefaultSigningDelegate) ⇒ <code>UndClient</code>
         * [.useDefaultBroadcastDelegate()](#module_client.UndClient+useDefaultBroadcastDelegate) ⇒ <code>UndClient</code>
         * [.transferUnd(toAddress, amount, fee, denom, fromAddress, memo, sequence)](#module_client.UndClient+transferUnd) ⇒ <code>Promise.&lt;\*&gt;</code>
-        * [.enterpriseRaisePO(amount, fee, denom, fromAddress, memo, sequence)](#module_client.UndClient+enterpriseRaisePO) ⇒ <code>Promise.&lt;\*&gt;</code>
+        * [.raiseEnterprisePO(amount, fee, denom, fromAddress, memo, sequence)](#module_client.UndClient+raiseEnterprisePO) ⇒ <code>Promise.&lt;\*&gt;</code>
+        * [.delegate(validator, amount, fee, denom, delegator, memo, sequence)](#module_client.UndClient+delegate) ⇒ <code>Promise.&lt;\*&gt;</code>
+        * [.undelegate(validator, amount, fee, denom, delegator, memo, sequence)](#module_client.UndClient+undelegate) ⇒ <code>Promise.&lt;\*&gt;</code>
         * [.sendTransaction(tx, sync)](#module_client.UndClient+sendTransaction) ⇒ <code>Promise</code>
         * [.sendRawTransaction(signedBz, sync)](#module_client.UndClient+sendRawTransaction) ⇒ <code>Promise</code>
         * [._sendTransaction(msg, stdSignMsg, address, sequence, memo, sync)](#module_client.UndClient+_sendTransaction) ⇒ <code>Promise</code>
@@ -73,7 +75,9 @@ The UND Mainchain client.
     * [.useDefaultSigningDelegate()](#module_client.UndClient+useDefaultSigningDelegate) ⇒ <code>UndClient</code>
     * [.useDefaultBroadcastDelegate()](#module_client.UndClient+useDefaultBroadcastDelegate) ⇒ <code>UndClient</code>
     * [.transferUnd(toAddress, amount, fee, denom, fromAddress, memo, sequence)](#module_client.UndClient+transferUnd) ⇒ <code>Promise.&lt;\*&gt;</code>
-    * [.enterpriseRaisePO(amount, fee, denom, fromAddress, memo, sequence)](#module_client.UndClient+enterpriseRaisePO) ⇒ <code>Promise.&lt;\*&gt;</code>
+    * [.raiseEnterprisePO(amount, fee, denom, fromAddress, memo, sequence)](#module_client.UndClient+raiseEnterprisePO) ⇒ <code>Promise.&lt;\*&gt;</code>
+    * [.delegate(validator, amount, fee, denom, delegator, memo, sequence)](#module_client.UndClient+delegate) ⇒ <code>Promise.&lt;\*&gt;</code>
+    * [.undelegate(validator, amount, fee, denom, delegator, memo, sequence)](#module_client.UndClient+undelegate) ⇒ <code>Promise.&lt;\*&gt;</code>
     * [.sendTransaction(tx, sync)](#module_client.UndClient+sendTransaction) ⇒ <code>Promise</code>
     * [.sendRawTransaction(signedBz, sync)](#module_client.UndClient+sendRawTransaction) ⇒ <code>Promise</code>
     * [._sendTransaction(msg, stdSignMsg, address, sequence, memo, sync)](#module_client.UndClient+_sendTransaction) ⇒ <code>Promise</code>
@@ -174,31 +178,65 @@ Transfer UND to an address
 
 **Kind**: instance method of [<code>UndClient</code>](#module_client.UndClient)  
 
-| Param | Default |
-| --- | --- |
-| toAddress |  | 
-| amount |  | 
-| fee |  | 
-| denom | <code>nund</code> | 
-| fromAddress |  | 
-| memo |  | 
-| sequence | <code></code> | 
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| toAddress | <code>String</code> |  |  |
+| amount | <code>Number</code> |  |  |
+| fee | <code>Object</code> |  |  |
+| denom | <code>String</code> | <code>nund</code> | optional denom |
+| fromAddress | <code>String</code> |  | optional fromAddress |
+| memo | <code>String</code> |  | optional memo |
+| sequence | <code>Number</code> | <code></code> | optional sequence |
 
-<a name="module_client.UndClient+enterpriseRaisePO"></a>
+<a name="module_client.UndClient+raiseEnterprisePO"></a>
 
-#### undClient.enterpriseRaisePO(amount, fee, denom, fromAddress, memo, sequence) ⇒ <code>Promise.&lt;\*&gt;</code>
+#### undClient.raiseEnterprisePO(amount, fee, denom, fromAddress, memo, sequence) ⇒ <code>Promise.&lt;\*&gt;</code>
 Raise an Enterprise UND Purchase Order
 
 **Kind**: instance method of [<code>UndClient</code>](#module_client.UndClient)  
 
-| Param | Default |
-| --- | --- |
-| amount |  | 
-| fee |  | 
-| denom | <code>nund</code> | 
-| fromAddress |  | 
-| memo |  | 
-| sequence | <code></code> | 
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| amount | <code>Number</code> |  |  |
+| fee | <code>Object</code> |  |  |
+| denom | <code>String</code> | <code>nund</code> | optional denom |
+| fromAddress | <code>String</code> |  | optional fromAddress |
+| memo | <code>String</code> |  | optional memo |
+| sequence | <code>Number</code> | <code></code> | optional sequence |
+
+<a name="module_client.UndClient+delegate"></a>
+
+#### undClient.delegate(validator, amount, fee, denom, delegator, memo, sequence) ⇒ <code>Promise.&lt;\*&gt;</code>
+Delegate UND to a validator
+
+**Kind**: instance method of [<code>UndClient</code>](#module_client.UndClient)  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| validator | <code>String</code> |  |  |
+| amount | <code>Number</code> |  |  |
+| fee | <code>Object</code> |  |  |
+| denom | <code>String</code> | <code>nund</code> | optional denom |
+| delegator | <code>String</code> |  | optional delegator |
+| memo | <code>String</code> |  | optional memo |
+| sequence | <code>Number</code> | <code></code> | optional sequence |
+
+<a name="module_client.UndClient+undelegate"></a>
+
+#### undClient.undelegate(validator, amount, fee, denom, delegator, memo, sequence) ⇒ <code>Promise.&lt;\*&gt;</code>
+Undelegate UND from a validator
+
+**Kind**: instance method of [<code>UndClient</code>](#module_client.UndClient)  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| validator | <code>String</code> |  |  |
+| amount | <code>Number</code> |  |  |
+| fee | <code>Object</code> |  |  |
+| denom | <code>String</code> | <code>nund</code> | optional denom |
+| delegator | <code>String</code> |  | optional delegator |
+| memo | <code>String</code> |  | optional memo |
+| sequence | <code>Number</code> | <code></code> | optional sequence |
 
 <a name="module_client.UndClient+sendTransaction"></a>
 

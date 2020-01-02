@@ -53,6 +53,9 @@ For up-to-date API documentation, please check the
 
 # Testing
 
+Tests are currently run against the
+[UND Mainchain DevNet](https://github.com/unification-com/mainchain/blob/master/docs/local-devnet.md)
+
 All new code changes should be covered with unit tests. 
 You can run the tests with the following command:
 
