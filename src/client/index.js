@@ -130,13 +130,13 @@ export class UndClient {
 
   /**
    * Transfer UND to an address
-   * @param toAddress
-   * @param amount
-   * @param fee
-   * @param denom
-   * @param fromAddress
-   * @param memo
-   * @param sequence
+   * @param {String} toAddress
+   * @param {Number} amount
+   * @param {Object} fee
+   * @param {String} denom optional denom
+   * @param {String} fromAddress optional fromAddress
+   * @param {String} memo optional memo
+   * @param {Number} sequence optional sequence
    * @returns {Promise<*>}
    */
   async transferUnd(toAddress, amount, fee, denom = "nund", fromAddress = this.address, memo = "", sequence = null) {
@@ -176,12 +176,12 @@ export class UndClient {
 
   /**
    * Raise an Enterprise UND Purchase Order
-   * @param amount
-   * @param fee
-   * @param denom
-   * @param fromAddress
-   * @param memo
-   * @param sequence
+   * @param {Number} amount
+   * @param {Object} fee
+   * @param {String} denom optional denom
+   * @param {String} fromAddress optional fromAddress
+   * @param {String} memo optional memo
+   * @param {Number} sequence optional sequence
    * @returns {Promise<*>}
    */
   async raiseEnterprisePO(amount, fee, denom = "nund", fromAddress = this.address, memo = "", sequence = null) {
@@ -197,7 +197,7 @@ export class UndClient {
 
     checkNumber(amount, "amount")
 
-    // generate MsgSend
+    // generate PurchaseUnd
     let msgData = {
       type: "PurchaseUnd",
       from: fromAddress,
@@ -208,6 +208,223 @@ export class UndClient {
     const sendMsg = new GenMsg(msgData)
 
     const signedTx = await this._prepareTx(sendMsg, fromAddress, fee, sequence, memo)
+
+    return this._broadcastDelegate(signedTx)
+  }
+
+  /**
+   * Delegate UND to a validator
+   * @param {String} validator
+   * @param {Number} amount
+   * @param {Object} fee
+   * @param {String} denom optional denom
+   * @param {String} delegator optional delegator
+   * @param {String} memo optional memo
+   * @param {Number} sequence optional sequence
+   * @returns {Promise<*>}
+   */
+  async delegate(validator, amount, fee, denom = "nund", delegator = this.address, memo = "", sequence = null) {
+    if (!delegator) {
+      throw new Error("delegator should not be empty")
+    }
+    if(!crypto.checkAddress(delegator, CONFIG.BECH32_PREFIX)) {
+      throw new Error("invalid delegator")
+    }
+    if (!validator) {
+      throw new Error("validator should not be empty")
+    }
+    if(!crypto.checkAddress(validator, CONFIG.BECH32_VAL_PREFIX)) {
+      throw new Error("invalid validator")
+    }
+    if(amount === 0) {
+      throw new Error("amount should not be zero")
+    }
+
+    checkNumber(amount, "amount")
+
+    // generate MsgDelegate
+    let msgData = {
+      type: "MsgDelegate",
+      delegator_address: delegator,
+      validator_address: validator,
+      amount: amount,
+      denom: denom
+    }
+
+    const sendMsg = new GenMsg(msgData)
+
+    const signedTx = await this._prepareTx(sendMsg, delegator, fee, sequence, memo)
+
+    return this._broadcastDelegate(signedTx)
+  }
+
+  /**
+   * Undelegate UND from a validator
+   * @param {String} validator
+   * @param {Number} amount
+   * @param {Object} fee
+   * @param {String} denom optional denom
+   * @param {String} delegator optional delegator
+   * @param {String} memo optional memo
+   * @param {Number} sequence optional sequence
+   * @returns {Promise<*>}
+   */
+  async undelegate(validator, amount, fee, denom = "nund", delegator = this.address, memo = "", sequence = null) {
+    if (!delegator) {
+      throw new Error("delegator should not be empty")
+    }
+    if(!crypto.checkAddress(delegator, CONFIG.BECH32_PREFIX)) {
+      throw new Error("invalid delegator")
+    }
+    if (!validator) {
+      throw new Error("validator should not be empty")
+    }
+    if(!crypto.checkAddress(validator, CONFIG.BECH32_VAL_PREFIX)) {
+      throw new Error("invalid validator")
+    }
+    if(amount === 0) {
+      throw new Error("amount should not be zero")
+    }
+
+    checkNumber(amount, "amount")
+
+    // generate MsgUndelegate
+    let msgData = {
+      type: "MsgUndelegate",
+      delegator_address: delegator,
+      validator_address: validator,
+      amount: amount,
+      denom: denom
+    }
+
+    const sendMsg = new GenMsg(msgData)
+
+    const signedTx = await this._prepareTx(sendMsg, delegator, fee, sequence, memo)
+
+    return this._broadcastDelegate(signedTx)
+  }
+
+  /**
+   * Redelegate UND from one validator to another
+   * @param {String} validatorFrom
+   * @param {String} validatorTo
+   * @param {Number} amount
+   * @param {Object} fee
+   * @param {String} denom optional denom
+   * @param {String} delegator optional delegator
+   * @param {String} memo optional memo
+   * @param {Number} sequence optional sequence
+   * @returns {Promise<*>}
+   */
+  async redelegate(validatorFrom, validatorTo, amount, fee, denom = "nund", delegator = this.address, memo = "", sequence = null) {
+    if (!delegator) {
+      throw new Error("delegator should not be empty")
+    }
+    if(!crypto.checkAddress(delegator, CONFIG.BECH32_PREFIX)) {
+      throw new Error("invalid delegator")
+    }
+    if (!validatorFrom) {
+      throw new Error("validator should not be empty")
+    }
+    if(!crypto.checkAddress(validatorFrom, CONFIG.BECH32_VAL_PREFIX)) {
+      throw new Error("invalid validatorFrom")
+    }
+    if (!validatorTo) {
+      throw new Error("validator should not be empty")
+    }
+    if(!crypto.checkAddress(validatorTo, CONFIG.BECH32_VAL_PREFIX)) {
+      throw new Error("invalid validatorTo")
+    }
+    if(amount === 0) {
+      throw new Error("amount should not be zero")
+    }
+
+    checkNumber(amount, "amount")
+
+    // generate MsgBeginRedelegate
+    let msgData = {
+      type: "MsgBeginRedelegate",
+      delegator_address: delegator,
+      validator_dst_address: validatorTo,
+      validator_src_address: validatorFrom,
+      amount: amount,
+      denom: denom
+    }
+
+    const sendMsg = new GenMsg(msgData)
+
+    const signedTx = await this._prepareTx(sendMsg, delegator, fee, sequence, memo)
+
+    return this._broadcastDelegate(signedTx)
+  }
+
+  /**
+   *
+   * @param {String} withdrawAddress
+   * @param {Object} fee
+   * @param {String} delegator optional delegator
+   * @param {String} memo optional memo
+   * @param {Number} sequence optional sequence
+   * @returns {Promise<*>}
+   */
+  async modifyWithdrawAddress(withdrawAddress, fee, delegator = this.address, memo = "", sequence = null) {
+    if (!delegator) {
+      throw new Error("delegator should not be empty")
+    }
+    if(!crypto.checkAddress(delegator, CONFIG.BECH32_PREFIX)) {
+      throw new Error("invalid delegator")
+    }
+    if (!withdrawAddress) {
+      throw new Error("withdrawAddress should not be empty")
+    }
+    if(!crypto.checkAddress(withdrawAddress, CONFIG.BECH32_PREFIX)) {
+      throw new Error("invalid withdrawAddress")
+    }
+
+    // generate MsgModifyWithdrawAddress
+    let msgData = {
+      type: "MsgModifyWithdrawAddress",
+      delegator_address: delegator,
+      withdraw_address: withdrawAddress
+    }
+
+    const sendMsg = new GenMsg(msgData)
+
+    const signedTx = await this._prepareTx(sendMsg, delegator, fee, sequence, memo)
+
+    return this._broadcastDelegate(signedTx)
+  }
+
+  /**
+   * Withdraw Delegator rewards
+   * @param {String} validator
+   * @param {Object} fee
+   * @param {String} delegator optional delegator
+   * @param {String} memo optional memo
+   * @param {Number} sequence optional sequence
+   * @returns {Promise<*>}
+   */
+  async withdrawDelegarionReward(validator, fee, delegator = this.address, memo = "", sequence = null) {
+    if (!delegator) {
+      throw new Error("delegator should not be empty")
+    }
+    if(!crypto.checkAddress(delegator, CONFIG.BECH32_PREFIX)) {
+      throw new Error("invalid delegator")
+    }
+    if (!validator) {
+      throw new Error("validator should not be empty")
+    }
+
+    // generate MsgWithdrawDelegationReward
+    let msgData = {
+      type: "MsgWithdrawDelegationReward",
+      delegator_address: delegator,
+      validator_address: validator
+    }
+
+    const sendMsg = new GenMsg(msgData)
+
+    const signedTx = await this._prepareTx(sendMsg, delegator, fee, sequence, memo)
 
     return this._broadcastDelegate(signedTx)
   }
@@ -326,9 +543,9 @@ export class UndClient {
    * @param {Number} offset from beggining, default 0
    * @return {Promise} resolves with http response
    */
-  async getTransactions(address = this.address, offset = 0) {
+  async getTransactions(address = this.address, page = 1, limit = 100) {
     try {
-      const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_TXS}?address=${address}&offset=${offset}`)
+      const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_TXS}?message.sender=${address}&page=${page}&limit=${limit}`)
       return data
     } catch (err) {
       console.warn("getTransactions error", err)
