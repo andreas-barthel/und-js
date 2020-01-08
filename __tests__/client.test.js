@@ -430,7 +430,7 @@ it("withdraw delegation rewards", async () => {
   }
 
   const sequence = account.result && account.result.result.account.value.sequence
-  const res = await client.withdrawDelegarionReward(
+  const res = await client.withdrawDelegationReward(
     valAddress,
     fee,
     addr,

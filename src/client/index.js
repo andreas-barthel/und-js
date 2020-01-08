@@ -404,7 +404,7 @@ export class UndClient {
    * @param {Number} sequence optional sequence
    * @returns {Promise<*>}
    */
-  async withdrawDelegarionReward(validator, fee, delegator = this.address, memo = "", sequence = null) {
+  async withdrawDelegationReward(validator, fee, delegator = this.address, memo = "", sequence = null) {
     if (!delegator) {
       throw new Error("delegator should not be empty")
     }
