@@ -524,6 +524,94 @@ it("get tx works", async () => {
   expect(tx).toHaveProperty("txhash")
 })
 
+it("test get enterprise purchase orders works", async () => {
+  const client = await getClient(false)
+  const addr = crypto.getAddressFromPrivateKey(client.privateKey) // must be same as addr used in raise PO test
+  const { result: pos, status } = await client.getEnteprisePos(
+    addr
+  )
+  expect(status).toBe(200)
+  expect(pos.result[0]).toHaveProperty("id")
+  expect(pos.result[0]).toHaveProperty("purchaser")
+  expect(pos.result[0]).toHaveProperty("amount")
+  expect(pos.result[0]).toHaveProperty("status")
+  expect(pos.result[0]).toHaveProperty("raise_time")
+  expect(pos.result[0]).toHaveProperty("decisions")
+  expect(pos.result[0]).toHaveProperty("completion_time")
+})
+
+it("test get delegations works", async () => {
+  const client = await getClient(false)
+  const addr = crypto.getAddressFromPrivateKey(client.privateKey) // must be same as addr used in delegation test
+  const { result: pos, status } = await client.getDelegations(
+    addr
+  )
+  expect(status).toBe(200)
+  expect(pos.result[0]).toHaveProperty("delegator_address")
+  expect(pos.result[0]).toHaveProperty("validator_address")
+  expect(pos.result[0]).toHaveProperty("shares")
+  expect(pos.result[0]).toHaveProperty("balance")
+})
+
+it("test get unbonding delegations works", async () => {
+  const client = await getClient(false)
+  const addr = crypto.getAddressFromPrivateKey(client.privateKey) // must be same as addr used in unbonding test
+  const { result: pos, status } = await client.getUnbondingDelegations(
+    addr
+  )
+  expect(status).toBe(200)
+  expect(pos.result[0]).toHaveProperty("delegator_address")
+  expect(pos.result[0]).toHaveProperty("validator_address")
+  expect(pos.result[0]).toHaveProperty("entries")
+})
+
+it("test get bonded validators works", async () => {
+  const client = await getClient(false)
+  const addr = crypto.getAddressFromPrivateKey(client.privateKey) // must be same as addr used in delegation test
+  const { result: pos, status } = await client.getBondedValidators(
+    addr
+  )
+  expect(status).toBe(200)
+  expect(pos.result[0]).toHaveProperty("operator_address")
+  expect(pos.result[0]).toHaveProperty("consensus_pubkey")
+})
+
+it("test get delegations for val address works", async () => {
+  const client = await getClient(false)
+  const addr = crypto.getAddressFromPrivateKey(client.privateKey) // must be same as addr used in delegation test
+  const { result: pos, status } = await client.getDelegations(
+    addr, valAddress
+  )
+  expect(status).toBe(200)
+  expect(pos.result).toHaveProperty("delegator_address")
+  expect(pos.result).toHaveProperty("validator_address")
+  expect(pos.result).toHaveProperty("shares")
+  expect(pos.result).toHaveProperty("balance")
+})
+
+it("test get unbonding delegations with val address works", async () => {
+  const client = await getClient(false)
+  const addr = crypto.getAddressFromPrivateKey(client.privateKey) // must be same as addr used in unbonding test
+  const { result: pos, status } = await client.getUnbondingDelegations(
+    addr, valAddress
+  )
+  expect(status).toBe(200)
+  expect(pos.result).toHaveProperty("delegator_address")
+  expect(pos.result).toHaveProperty("validator_address")
+  expect(pos.result).toHaveProperty("entries")
+})
+
+it("test get bonded validators with val address works", async () => {
+  const client = await getClient(false)
+  const addr = crypto.getAddressFromPrivateKey(client.privateKey) // must be same as addr used in delegation test
+  const { result: pos, status } = await client.getBondedValidators(
+    addr, valAddress
+  )
+  expect(status).toBe(200)
+  expect(pos.result).toHaveProperty("operator_address")
+  expect(pos.result).toHaveProperty("consensus_pubkey")
+})
+
 it("check number when transfer", async () => {
   const client = await getClient(true)
   const addr = crypto.getAddressFromPrivateKey(client.privateKey)

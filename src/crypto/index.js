@@ -19,14 +19,13 @@ import {
   sha256ripemd160,
 } from "../utils"
 
+const CONFIG = require("../config")
+
 // secp256k1 privkey is 32 bytes
 const PRIVKEY_LEN = 32
 const MNEMONIC_LEN = 256
 const DECODED_ADDRESS_LEN = 20
 const CURVE = "secp256k1"
-
-//hdpath
-const HDPATH = "44'/5555'/0'/0/"
 
 const ec = new EC(CURVE)
 
@@ -302,7 +301,7 @@ export const getPrivateKeyFromMnemonic = (mnemonic, derive = true, index = 0, pa
   const seed = bip39.mnemonicToSeedSync(mnemonic, password)
   if (derive) {
     const master = bip32.fromSeed(seed)
-    const child = master.derivePath(HDPATH + index)
+    const child = master.derivePath(CONFIG.HD_PATH + index)
     return child.privateKey.toString("hex")
   }
   return seed.toString("hex")
