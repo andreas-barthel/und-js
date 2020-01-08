@@ -569,6 +569,83 @@ export class UndClient {
   }
 
   /**
+   * get enterprise purchase orders for account
+   * @param {String} address optional address
+   * @param {Number} page optional page
+   * @param {Number} limit optional limit
+   * @returns {Promise} resolves with http response
+   */
+  async getEnteprisePos(address = this.address, page = 1, limit = 100) {
+    try {
+      const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_ENT_POS}?purchaser=${address}&page=${page}&limit=${limit}`)
+      return data
+    } catch (err) {
+      console.warn("getEnteprisePos error", err)
+      return []
+    }
+  }
+
+  /**
+   * get delegations for address
+   * @param {String} address optional address
+   * @param {String} valAddress optional Bech32 operator address
+   * @returns {Promise} resolves with http response
+   */
+  async getDelegations(address = this.address, valAddress = '') {
+    try {
+      let suffix = ''
+      if(valAddress.length > 0) {
+        suffix = `/${valAddress}`
+      }
+      const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_STAKING_DELEGATORS_PREFIX}/${address}/${CONFIG.API_QUERY_STAKING_DELEGATIONS}${suffix}`)
+      return data
+    } catch (err) {
+      console.warn("getDelegations error", err)
+      return []
+    }
+  }
+
+  /**
+   * get unbonding delegations for address
+   * @param {String} address optional Bech32 address
+   * @param {String} valAddress optional Bech32 operator address
+   * @returns {Promise} resolves with http response
+   */
+  async getUnbondingDelegations(address = this.address, valAddress = '') {
+    try {
+      let suffix = ''
+      if(valAddress.length > 0) {
+        suffix = `/${valAddress}`
+      }
+      const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_STAKING_DELEGATORS_PREFIX}/${address}/${CONFIG.API_QUERY_STAKING_UNBONDING_DELEGATIONS}${suffix}`)
+      return data
+    } catch (err) {
+      console.warn("getUnbondingDelegations error", err)
+      return []
+    }
+  }
+
+  /**
+   * get bonded validators for delegator address
+   * @param {String} address optional address
+   * @param {String} valAddress optional Bech32 operator address
+   * @returns {Promise} resolves with http response
+   */
+  async getBondedValidators(address = this.address, valAddress = '') {
+    try {
+      let suffix = ''
+      if(valAddress.length > 0) {
+        suffix = `/${valAddress}`
+      }
+      const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_STAKING_DELEGATORS_PREFIX}/${address}/${CONFIG.API_QUERY_STAKING_VALIDATORS}${suffix}`)
+      return data
+    } catch (err) {
+      console.warn("getBondedValidators error", err)
+      return []
+    }
+  }
+
+  /**
    * Creates a private key and returns it and its address.
    * @return {object} the private key and address in an object.
    * {
