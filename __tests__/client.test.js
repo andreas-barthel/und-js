@@ -48,6 +48,7 @@ const targetAddress = "und150xrwj6ca9kyzz20e4x0qj6zm0206jhe4tk7nf"
 const delAddress = "und1x8pl6wzqf9atkm77ymc5vn5dnpl5xytmn200xy"
 const valAddress = "undvaloper1eq239sgefyzm4crl85nfyvt7kw83vrna6lrjet"
 const redelValAddress = "undvaloper13lyhcfekkdczaugqaexya60ckn23l5wazf07px"
+let testTxHash = ''
 
 const wait = ms => {
   return new Promise(function(resolve) {
@@ -158,6 +159,13 @@ it("get balance", async () => {
   expect(res.length).toBeGreaterThanOrEqual(0)
 })
 
+it("get enteprise locked und", async () => {
+  const client = await getClient(false)
+  const res = await client.getEnterpriseLocked(targetAddress)
+  expect(res).toHaveProperty("amount")
+  expect(res).toHaveProperty("denom")
+})
+
 it("transfer nund", async () => {
   jest.setTimeout(30000)
 
@@ -194,6 +202,7 @@ it("transfer nund", async () => {
 
   await wait(6000)
   const hash = res.result.txhash
+  testTxHash = hash
   const res2 = await client.getTx(hash)
   const sendAmount =
     res2.result.tx.value.msg[0].value.amount[0].amount
@@ -373,7 +382,7 @@ it("redelegate und", async () => {
   jest.setTimeout(30000)
 
   const coin = "nund"
-  let amount = 10000
+  let amount = 1000
   const client = await getClient(false)
   const addr = crypto.getAddressFromPrivateKey(client.privateKey)
   const account = await client._httpClient.request(
@@ -508,10 +517,9 @@ it("get transactions works", async () => {
 })
 
 it("get tx works", async () => {
-  const testHash =
-    "86F5970BD5484C1C37FB56E231AF21B5E31D62BB8739F7CF73D90F58F004A008"
+
   const client = await getClient(false)
-  const { result: tx, status } = await client.getTx(testHash)
+  const { result: tx, status } = await client.getTx(testTxHash)
   expect(status).toBe(200)
   expect(tx).toHaveProperty("events")
   expect(tx).toHaveProperty("gas_used")
@@ -610,6 +618,38 @@ it("test get bonded validators with val address works", async () => {
   expect(status).toBe(200)
   expect(pos.result).toHaveProperty("operator_address")
   expect(pos.result).toHaveProperty("consensus_pubkey")
+})
+
+it("test get delegator rewards", async () => {
+  const client = await getClient(false)
+  const addr = crypto.getAddressFromPrivateKey(client.privateKey) // must be same as addr used in delegation test
+  const { result: pos, status } = await client.getDelegatorRewards(
+    addr
+  )
+  expect(status).toBe(200)
+  expect(pos.result.rewards[0]).toHaveProperty("validator_address")
+  expect(pos.result.rewards[0]).toHaveProperty("reward")
+})
+
+it("test get delegator rewards with val address", async () => {
+  const client = await getClient(false)
+  const addr = crypto.getAddressFromPrivateKey(client.privateKey) // must be same as addr used in delegation test
+  const { result: pos, status } = await client.getDelegatorRewards(
+    addr, valAddress
+  )
+  expect(status).toBe(200)
+  expect(pos.result[0]).toHaveProperty("amount")
+  expect(pos.result[0]).toHaveProperty("denom")
+})
+
+it("test get delegator withdraw address", async () => {
+  const client = await getClient(false)
+  const addr = crypto.getAddressFromPrivateKey(client.privateKey) // must be same as addr used in delegation test
+  const { result: pos, status } = await client.getDelegatorWithdrawAddress(
+    addr
+  )
+  expect(status).toBe(200)
+  expect(pos.result).toBe(targetAddress)
 })
 
 it("check number when transfer", async () => {
