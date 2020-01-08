@@ -48,12 +48,15 @@
         * [._sendTransaction(msg, stdSignMsg, address, sequence, memo, sync)](#module_client.UndClient+_sendTransaction) ⇒ <code>Promise</code>
         * [.getAccount(address)](#module_client.UndClient+getAccount) ⇒ <code>Promise</code>
         * [.getBalance(address)](#module_client.UndClient+getBalance) ⇒ <code>Promise</code>
+        * [.getEnterpriseLocked(address)](#module_client.UndClient+getEnterpriseLocked) ⇒ <code>Promise</code>
         * [.getTransactions(address, offset)](#module_client.UndClient+getTransactions) ⇒ <code>Promise</code>
         * [.getTx(hash)](#module_client.UndClient+getTx) ⇒ <code>Promise</code>
         * [.getEnteprisePos(address, page, limit)](#module_client.UndClient+getEnteprisePos) ⇒ <code>Promise</code>
         * [.getDelegations(address, valAddress)](#module_client.UndClient+getDelegations) ⇒ <code>Promise</code>
         * [.getUnbondingDelegations(address, valAddress)](#module_client.UndClient+getUnbondingDelegations) ⇒ <code>Promise</code>
         * [.getBondedValidators(address, valAddress)](#module_client.UndClient+getBondedValidators) ⇒ <code>Promise</code>
+        * [.getDelegatorRewards(address, valAddress)](#module_client.UndClient+getDelegatorRewards) ⇒ <code>Promise</code>
+        * [.getDelegatorWithdrawAddress(address)](#module_client.UndClient+getDelegatorWithdrawAddress) ⇒ <code>Promise</code>
         * [.createAccount()](#module_client.UndClient+createAccount) ⇒ <code>object</code>
         * [.createAccountWithKeystore(password)](#module_client.UndClient+createAccountWithKeystore)
         * [.createAccountWithMneomnic()](#module_client.UndClient+createAccountWithMneomnic) ⇒ <code>object</code>
@@ -93,12 +96,15 @@ The UND Mainchain client.
     * [._sendTransaction(msg, stdSignMsg, address, sequence, memo, sync)](#module_client.UndClient+_sendTransaction) ⇒ <code>Promise</code>
     * [.getAccount(address)](#module_client.UndClient+getAccount) ⇒ <code>Promise</code>
     * [.getBalance(address)](#module_client.UndClient+getBalance) ⇒ <code>Promise</code>
+    * [.getEnterpriseLocked(address)](#module_client.UndClient+getEnterpriseLocked) ⇒ <code>Promise</code>
     * [.getTransactions(address, offset)](#module_client.UndClient+getTransactions) ⇒ <code>Promise</code>
     * [.getTx(hash)](#module_client.UndClient+getTx) ⇒ <code>Promise</code>
     * [.getEnteprisePos(address, page, limit)](#module_client.UndClient+getEnteprisePos) ⇒ <code>Promise</code>
     * [.getDelegations(address, valAddress)](#module_client.UndClient+getDelegations) ⇒ <code>Promise</code>
     * [.getUnbondingDelegations(address, valAddress)](#module_client.UndClient+getUnbondingDelegations) ⇒ <code>Promise</code>
     * [.getBondedValidators(address, valAddress)](#module_client.UndClient+getBondedValidators) ⇒ <code>Promise</code>
+    * [.getDelegatorRewards(address, valAddress)](#module_client.UndClient+getDelegatorRewards) ⇒ <code>Promise</code>
+    * [.getDelegatorWithdrawAddress(address)](#module_client.UndClient+getDelegatorWithdrawAddress) ⇒ <code>Promise</code>
     * [.createAccount()](#module_client.UndClient+createAccount) ⇒ <code>object</code>
     * [.createAccountWithKeystore(password)](#module_client.UndClient+createAccountWithKeystore)
     * [.createAccountWithMneomnic()](#module_client.UndClient+createAccountWithMneomnic) ⇒ <code>object</code>
@@ -365,6 +371,18 @@ get balances
 | --- | --- | --- |
 | address | <code>String</code> | optional address |
 
+<a name="module_client.UndClient+getEnterpriseLocked"></a>
+
+#### undClient.getEnterpriseLocked(address) ⇒ <code>Promise</code>
+get enteprise locked UND
+
+**Kind**: instance method of [<code>UndClient</code>](#module_client.UndClient)  
+**Returns**: <code>Promise</code> - resolves with http response  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| address | <code>String</code> | optional address |
+
 <a name="module_client.UndClient+getTransactions"></a>
 
 #### undClient.getTransactions(address, offset) ⇒ <code>Promise</code>
@@ -442,6 +460,31 @@ get bonded validators for delegator address
 | --- | --- | --- |
 | address | <code>String</code> | optional address |
 | valAddress | <code>String</code> | optional Bech32 operator address |
+
+<a name="module_client.UndClient+getDelegatorRewards"></a>
+
+#### undClient.getDelegatorRewards(address, valAddress) ⇒ <code>Promise</code>
+get delegator address's rewards
+
+**Kind**: instance method of [<code>UndClient</code>](#module_client.UndClient)  
+**Returns**: <code>Promise</code> - resolves with http response  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| address | <code>String</code> | optional address |
+| valAddress | <code>String</code> | optional Bech32 operator address |
+
+<a name="module_client.UndClient+getDelegatorWithdrawAddress"></a>
+
+#### undClient.getDelegatorWithdrawAddress(address) ⇒ <code>Promise</code>
+get delegator's current withdraw address
+
+**Kind**: instance method of [<code>UndClient</code>](#module_client.UndClient)  
+**Returns**: <code>Promise</code> - resolves with http response  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| address | <code>String</code> | optional address |
 
 <a name="module_client.UndClient+createAccount"></a>
 
