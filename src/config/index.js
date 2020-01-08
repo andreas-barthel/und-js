@@ -18,5 +18,8 @@ module.exports = Object.freeze({
   API_QUERY_STAKING_DELEGATIONS: "delegations",
   API_QUERY_STAKING_UNBONDING_DELEGATIONS: "unbonding_delegations",
   API_QUERY_STAKING_VALIDATORS: "validators",
+  API_QUERY_DISTRIBUTION_DELEGATORS_PREFIX: "/distribution/delegators",
+  API_QUERY_DISTRIBUTION_REWARDS: "rewards",
+  API_QUERY_DISTRIBUTION_WITHDRAW_ADDRESS: "withdraw_address",
 
 })
