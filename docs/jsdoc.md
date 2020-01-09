@@ -57,6 +57,14 @@
         * [.getBondedValidators(address, valAddress)](#module_client.UndClient+getBondedValidators) ⇒ <code>Promise</code>
         * [.getDelegatorRewards(address, valAddress)](#module_client.UndClient+getDelegatorRewards) ⇒ <code>Promise</code>
         * [.getDelegatorWithdrawAddress(address)](#module_client.UndClient+getDelegatorWithdrawAddress) ⇒ <code>Promise</code>
+        * [.getValidators(status, page, limit, valAddress)](#module_client.UndClient+getValidators) ⇒ <code>Promise</code>
+        * [.getValidatorDelegations(valAddress)](#module_client.UndClient+getValidatorDelegations) ⇒ <code>Promise</code>
+        * [.getValidatorUnbondingDelegations(valAddress)](#module_client.UndClient+getValidatorUnbondingDelegations) ⇒ <code>Promise</code>
+        * [.getRedelegations(delAddress, valSrcAddress, valDestAddress)](#module_client.UndClient+getRedelegations) ⇒ <code>Promise</code>
+        * [.getValidatorDistributionInfo(valAddress)](#module_client.UndClient+getValidatorDistributionInfo) ⇒ <code>Promise</code>
+        * [.getValidatorDistributionOutstandingRewards(valAddress)](#module_client.UndClient+getValidatorDistributionOutstandingRewards) ⇒ <code>Promise</code>
+        * [.getValidatorDistributionRewards(valAddress)](#module_client.UndClient+getValidatorDistributionRewards) ⇒ <code>Promise</code>
+        * [.getTotalSupply()](#module_client.UndClient+getTotalSupply) ⇒ <code>Promise</code>
         * [.createAccount()](#module_client.UndClient+createAccount) ⇒ <code>object</code>
         * [.createAccountWithKeystore(password)](#module_client.UndClient+createAccountWithKeystore)
         * [.createAccountWithMneomnic()](#module_client.UndClient+createAccountWithMneomnic) ⇒ <code>object</code>
@@ -105,6 +113,14 @@ The UND Mainchain client.
     * [.getBondedValidators(address, valAddress)](#module_client.UndClient+getBondedValidators) ⇒ <code>Promise</code>
     * [.getDelegatorRewards(address, valAddress)](#module_client.UndClient+getDelegatorRewards) ⇒ <code>Promise</code>
     * [.getDelegatorWithdrawAddress(address)](#module_client.UndClient+getDelegatorWithdrawAddress) ⇒ <code>Promise</code>
+    * [.getValidators(status, page, limit, valAddress)](#module_client.UndClient+getValidators) ⇒ <code>Promise</code>
+    * [.getValidatorDelegations(valAddress)](#module_client.UndClient+getValidatorDelegations) ⇒ <code>Promise</code>
+    * [.getValidatorUnbondingDelegations(valAddress)](#module_client.UndClient+getValidatorUnbondingDelegations) ⇒ <code>Promise</code>
+    * [.getRedelegations(delAddress, valSrcAddress, valDestAddress)](#module_client.UndClient+getRedelegations) ⇒ <code>Promise</code>
+    * [.getValidatorDistributionInfo(valAddress)](#module_client.UndClient+getValidatorDistributionInfo) ⇒ <code>Promise</code>
+    * [.getValidatorDistributionOutstandingRewards(valAddress)](#module_client.UndClient+getValidatorDistributionOutstandingRewards) ⇒ <code>Promise</code>
+    * [.getValidatorDistributionRewards(valAddress)](#module_client.UndClient+getValidatorDistributionRewards) ⇒ <code>Promise</code>
+    * [.getTotalSupply()](#module_client.UndClient+getTotalSupply) ⇒ <code>Promise</code>
     * [.createAccount()](#module_client.UndClient+createAccount) ⇒ <code>object</code>
     * [.createAccountWithKeystore(password)](#module_client.UndClient+createAccountWithKeystore)
     * [.createAccountWithMneomnic()](#module_client.UndClient+createAccountWithMneomnic) ⇒ <code>object</code>
@@ -486,6 +502,102 @@ get delegator's current withdraw address
 | --- | --- | --- |
 | address | <code>String</code> | optional address |
 
+<a name="module_client.UndClient+getValidators"></a>
+
+#### undClient.getValidators(status, page, limit, valAddress) ⇒ <code>Promise</code>
+get a list of current validators based on filters
+
+**Kind**: instance method of [<code>UndClient</code>](#module_client.UndClient)  
+**Returns**: <code>Promise</code> - resolves with http response  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| status | <code>String</code> | <code>bonded</code> | optional status. one of bonded, unbonded, unbonding. Default bonded |
+| page | <code>Number</code> | <code>1</code> | optional page |
+| limit | <code>Number</code> | <code>100</code> | optional limit |
+| valAddress | <code>String</code> |  | optional Bech32 operator address |
+
+<a name="module_client.UndClient+getValidatorDelegations"></a>
+
+#### undClient.getValidatorDelegations(valAddress) ⇒ <code>Promise</code>
+get a validator's bonded delegations
+
+**Kind**: instance method of [<code>UndClient</code>](#module_client.UndClient)  
+**Returns**: <code>Promise</code> - resolves with http response  
+
+| Param | Type |
+| --- | --- |
+| valAddress | <code>String</code> | 
+
+<a name="module_client.UndClient+getValidatorUnbondingDelegations"></a>
+
+#### undClient.getValidatorUnbondingDelegations(valAddress) ⇒ <code>Promise</code>
+get a validator's unbonding delegations
+
+**Kind**: instance method of [<code>UndClient</code>](#module_client.UndClient)  
+**Returns**: <code>Promise</code> - resolves with http response  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| valAddress | <code>String</code> | bech32 operator address |
+
+<a name="module_client.UndClient+getRedelegations"></a>
+
+#### undClient.getRedelegations(delAddress, valSrcAddress, valDestAddress) ⇒ <code>Promise</code>
+get redelegations, with optional filters
+
+**Kind**: instance method of [<code>UndClient</code>](#module_client.UndClient)  
+**Returns**: <code>Promise</code> - resolves with http response  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| delAddress | <code>String</code> | optional delAddress Bech32 address |
+| valSrcAddress | <code>String</code> | optional valSrcAddress Bech32 operator address |
+| valDestAddress | <code>String</code> | optional valDestAddress Bech32 operator address |
+
+<a name="module_client.UndClient+getValidatorDistributionInfo"></a>
+
+#### undClient.getValidatorDistributionInfo(valAddress) ⇒ <code>Promise</code>
+get distribution information for a given validator's operator address
+
+**Kind**: instance method of [<code>UndClient</code>](#module_client.UndClient)  
+**Returns**: <code>Promise</code> - resolves with http response  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| valAddress | <code>String</code> | bech32 operator address |
+
+<a name="module_client.UndClient+getValidatorDistributionOutstandingRewards"></a>
+
+#### undClient.getValidatorDistributionOutstandingRewards(valAddress) ⇒ <code>Promise</code>
+get Fee distribution outstanding rewards of a single validator
+
+**Kind**: instance method of [<code>UndClient</code>](#module_client.UndClient)  
+**Returns**: <code>Promise</code> - resolves with http response  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| valAddress | <code>String</code> | bech32 operator address |
+
+<a name="module_client.UndClient+getValidatorDistributionRewards"></a>
+
+#### undClient.getValidatorDistributionRewards(valAddress) ⇒ <code>Promise</code>
+get Commission and self-delegation rewards of a single validator
+
+**Kind**: instance method of [<code>UndClient</code>](#module_client.UndClient)  
+**Returns**: <code>Promise</code> - resolves with http response  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| valAddress | <code>String</code> | bech32 operator address |
+
+<a name="module_client.UndClient+getTotalSupply"></a>
+
+#### undClient.getTotalSupply() ⇒ <code>Promise</code>
+get total supply of UND
+
+**Kind**: instance method of [<code>UndClient</code>](#module_client.UndClient)  
+**Returns**: <code>Promise</code> - resolves with http response  
 <a name="module_client.UndClient+createAccount"></a>
 
 #### undClient.createAccount() ⇒ <code>object</code>

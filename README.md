@@ -4,7 +4,8 @@ The UND Mainchain JavaScript SDK allows browsers and node.js clients to
 interact with UND Mainchain. It includes the following core components:
 
 * **crypto** - core cryptographic functions.
-* **client** - implementations of UND Mainchain transaction types, such as for transfers and enterprise.
+* **client** - implementations of UND Mainchain transaction types, 
+such as for transfers and enterprise and REST queries.
 * **accounts** - management of "accounts" and wallets, including seed and encrypted mnemonic generation.
 
 # Installation
@@ -49,7 +50,7 @@ config.plugins.push(new webpack.IgnorePlugin(/^usb$/))
 # API
 
 For up-to-date API documentation, please check the 
-[wiki](https://github.com/unification-com/und-js/wiki).
+[API Docs](https://github.com/unification-com/und-js/blob/master/docs/jsdoc.md).
 
 # Testing
 

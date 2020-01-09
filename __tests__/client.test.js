@@ -652,6 +652,78 @@ it("test get delegator withdraw address", async () => {
   expect(pos.result).toBe(targetAddress)
 })
 
+it("test get validators works", async () => {
+  const client = await getClient(false)
+  const { result: pos, status } = await client.getValidators()
+  expect(status).toBe(200)
+  expect(pos.result[0]).toHaveProperty("operator_address")
+  expect(pos.result[0]).toHaveProperty("consensus_pubkey")
+})
+
+it("test get validator's bonded delegations works", async () => {
+  const client = await getClient(false)
+  const { result: pos, status } = await client.getValidatorDelegations(valAddress)
+  expect(status).toBe(200)
+  expect(pos.result[0]).toHaveProperty("delegator_address")
+  expect(pos.result[0]).toHaveProperty("validator_address")
+  expect(pos.result[0]).toHaveProperty("shares")
+  expect(pos.result[0]).toHaveProperty("balance")
+})
+
+it("test get validator's unbonding delegations works", async () => {
+  const client = await getClient(false)
+  const { result: pos, status } = await client.getValidatorUnbondingDelegations(valAddress)
+  expect(status).toBe(200)
+  expect(pos.result[0]).toHaveProperty("delegator_address")
+  expect(pos.result[0]).toHaveProperty("validator_address")
+  expect(pos.result[0]).toHaveProperty("entries")
+})
+
+it("test get validator's redelegations works", async () => {
+  const client = await getClient(false)
+  const addr = crypto.getAddressFromPrivateKey(client.privateKey)
+  const { result: pos, status } = await client.getRedelegations(addr, valAddress, redelValAddress)
+  expect(status).toBe(200)
+  expect(pos.result[0]).toHaveProperty("delegator_address")
+  expect(pos.result[0]).toHaveProperty("validator_src_address")
+  expect(pos.result[0]).toHaveProperty("validator_dst_address")
+  expect(pos.result[0]).toHaveProperty("entries")
+})
+
+it("test get validator's distribution info", async () => {
+  const client = await getClient(false)
+  const { result: pos, status } = await client.getValidatorDistributionInfo(valAddress)
+  expect(status).toBe(200)
+  expect(pos.result).toHaveProperty("operator_address")
+  expect(pos.result).toHaveProperty("self_bond_rewards")
+})
+
+it("test get validator's distribution outstanding rewards", async () => {
+  const client = await getClient(false)
+  const { result: pos, status } = await client.getValidatorDistributionOutstandingRewards(valAddress)
+  expect(status).toBe(200)
+  expect(pos.result[0]).toHaveProperty("amount")
+  expect(pos.result[0]).toHaveProperty("denom")
+})
+
+it("test get validator's distribution rewards", async () => {
+  const client = await getClient(false)
+  const { result: pos, status } = await client.getValidatorDistributionRewards(valAddress)
+  expect(status).toBe(200)
+  expect(pos.result[0]).toHaveProperty("amount")
+  expect(pos.result[0]).toHaveProperty("denom")
+})
+
+it("test get total supply", async () => {
+  const client = await getClient(false)
+  const { result: pos, status } = await client.getTotalSupply()
+  expect(status).toBe(200)
+  expect(pos.result).toHaveProperty("amount")
+  expect(pos.result).toHaveProperty("denom")
+  expect(pos.result).toHaveProperty("locked")
+  expect(pos.result).toHaveProperty("total")
+})
+
 it("check number when transfer", async () => {
   const client = await getClient(true)
   const addr = crypto.getAddressFromPrivateKey(client.privateKey)

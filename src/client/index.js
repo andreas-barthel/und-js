@@ -548,7 +548,7 @@ export class UndClient {
       return data.result.result.enterprise.locked
     } catch (err) {
       console.warn("getEnterpriseLocked error", err)
-      return '0'
+      return []
     }
   }
 
@@ -612,7 +612,7 @@ export class UndClient {
       if(valAddress.length > 0) {
         suffix = `/${valAddress}`
       }
-      const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_STAKING_DELEGATORS_PREFIX}/${address}/${CONFIG.API_QUERY_STAKING_DELEGATIONS}${suffix}`)
+      const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_STAKING_DELEGATORS_PREFIX}/${address}/${CONFIG.API_QUERY_STAKING_DELEGATIONS_SUFFIX}${suffix}`)
       return data
     } catch (err) {
       console.warn("getDelegations error", err)
@@ -632,7 +632,7 @@ export class UndClient {
       if(valAddress.length > 0) {
         suffix = `/${valAddress}`
       }
-      const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_STAKING_DELEGATORS_PREFIX}/${address}/${CONFIG.API_QUERY_STAKING_UNBONDING_DELEGATIONS}${suffix}`)
+      const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_STAKING_DELEGATORS_PREFIX}/${address}/${CONFIG.API_QUERY_STAKING_UNBONDING_DELEGATIONS_SUFFIX}${suffix}`)
       return data
     } catch (err) {
       console.warn("getUnbondingDelegations error", err)
@@ -652,7 +652,7 @@ export class UndClient {
       if(valAddress.length > 0) {
         suffix = `/${valAddress}`
       }
-      const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_STAKING_DELEGATORS_PREFIX}/${address}/${CONFIG.API_QUERY_STAKING_VALIDATORS}${suffix}`)
+      const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_STAKING_DELEGATORS_PREFIX}/${address}/${CONFIG.API_QUERY_STAKING_VALIDATORS_SUFFIX}${suffix}`)
       return data
     } catch (err) {
       console.warn("getBondedValidators error", err)
@@ -672,7 +672,7 @@ export class UndClient {
       if(valAddress.length > 0) {
         suffix = `/${valAddress}`
       }
-      const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_DISTRIBUTION_DELEGATORS_PREFIX}/${address}/${CONFIG.API_QUERY_DISTRIBUTION_REWARDS}${suffix}`)
+      const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_DISTRIBUTION_DELEGATORS_PREFIX}/${address}/${CONFIG.API_QUERY_DISTRIBUTION_REWARDS_SUFFIX}${suffix}`)
       return data
     } catch (err) {
       console.warn("getDelegatorRewards error", err)
@@ -687,10 +687,148 @@ export class UndClient {
    */
   async getDelegatorWithdrawAddress(address = this.address) {
     try {
-      const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_DISTRIBUTION_DELEGATORS_PREFIX}/${address}/${CONFIG.API_QUERY_DISTRIBUTION_WITHDRAW_ADDRESS}`)
+      const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_DISTRIBUTION_DELEGATORS_PREFIX}/${address}/${CONFIG.API_QUERY_DISTRIBUTION_WITHDRAW_ADDRESS_SUFFIX}`)
       return data
     } catch (err) {
       console.warn("getDelegatorRewards error", err)
+      return []
+    }
+  }
+
+  /**
+   * get a list of current validators based on filters
+   * @param {String} status optional status. one of bonded, unbonded, unbonding. Default bonded
+   * @param {Number} page optional page
+   * @param {Number} limit optional limit
+   * @param {String} valAddress optional Bech32 operator address
+   * @returns {Promise} resolves with http response
+   */
+  async getValidators(status = 'bonded', page = 1, limit = 100, valAddress = '') {
+    switch(status) {
+      case "bonded":
+      case "unbonded":
+      case "unbonding":
+        break
+      default:
+        status = "bonded"
+        break
+    }
+
+    let suffix = `?status=${status}&page=${page}&limit=${limit}`
+    if(valAddress.length > 0) {
+      suffix = `/${valAddress}`
+    }
+    try {
+      const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_STAKING_VALIDATORS_PREFIX}${suffix}`)
+      return data
+    } catch (err) {
+      console.warn("getValidators error", err)
+      return []
+    }
+  }
+
+  /**
+   * get a validator's bonded delegations
+   * @param {String} valAddress
+   * @returns {Promise} resolves with http response
+   */
+  async getValidatorDelegations(valAddress) {
+    try {
+      const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_STAKING_VALIDATORS_PREFIX}/${valAddress}/${CONFIG.API_QUERY_STAKING_DELEGATIONS_SUFFIX}`)
+      return data
+    } catch (err) {
+      console.warn("getValidatorDelegations error", err)
+      return []
+    }
+  }
+
+  /**
+   * get a validator's unbonding delegations
+   * @param {String} valAddress bech32 operator address
+   * @returns {Promise} resolves with http response
+   */
+  async getValidatorUnbondingDelegations(valAddress) {
+    try {
+      const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_STAKING_VALIDATORS_PREFIX}/${valAddress}/${CONFIG.API_QUERY_STAKING_UNBONDING_DELEGATIONS_SUFFIX}`)
+      return data
+    } catch (err) {
+      console.warn("getValidatorUnbondingDelegations error", err)
+      return []
+    }
+  }
+
+  /**
+   * get redelegations, with optional filters
+   * @param {String} delAddress optional delAddress Bech32 address
+   * @param {String} valSrcAddress optional valSrcAddress Bech32 operator address
+   * @param {String} valDestAddress optional valDestAddress Bech32 operator address
+   * @returns {Promise} resolves with http response
+   */
+  async getRedelegations(delAddress = '', valSrcAddress = '', valDestAddress = '') {
+    try {
+      const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_STAKING_REDELEGATIONS}?delegator=${delAddress}&validator_from=${valSrcAddress}&validator_to=${valDestAddress}`)
+      return data
+    } catch (err) {
+      console.warn("getRedelegations error", err)
+      return []
+    }
+  }
+
+  /**
+   * get distribution information for a given validator's operator address
+   * @param {String} valAddress bech32 operator address
+   * @returns {Promise} resolves with http response
+   */
+  async getValidatorDistributionInfo(valAddress) {
+    try {
+      const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_DISTRIBUTION_VALIDATORS_PREFIX}/${valAddress}`)
+      return data
+    } catch (err) {
+      console.warn("getValidatorDistributionInfo error", err)
+      return []
+    }
+  }
+
+  /**
+   * get Fee distribution outstanding rewards of a single validator
+   * @param {String} valAddress bech32 operator address
+   * @returns {Promise} resolves with http response
+   */
+  async getValidatorDistributionOutstandingRewards(valAddress) {
+    try {
+      const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_DISTRIBUTION_VALIDATORS_PREFIX}/${valAddress}/${CONFIG.API_QUERY_DISTRIBUTION_OUTSTANDING_REWARDS_SUFFIX}`)
+      return data
+    } catch (err) {
+      console.warn("getValidatorDistributionOutstandingRewards error", err)
+      return []
+    }
+  }
+
+  /**
+   * get Commission and self-delegation rewards of a single validator
+   * @param {String} valAddress bech32 operator address
+   * @returns {Promise} resolves with http response
+   */
+  async getValidatorDistributionRewards(valAddress) {
+    try {
+      const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_DISTRIBUTION_VALIDATORS_PREFIX}/${valAddress}/${CONFIG.API_QUERY_DISTRIBUTION_REWARDS_SUFFIX}`)
+      return data
+    } catch (err) {
+      console.warn("getValidatorDistributionRewards error", err)
+      return []
+    }
+  }
+
+  /**
+   * get total supply of UND
+   * @returns {Promise} resolves with http response
+   */
+  async getTotalSupply() {
+    try {
+      const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_SUPPLY}`)
+      return data
+    } catch (err) {
+      console.warn("getTotalSupply error", err)
       return []
     }
   }
