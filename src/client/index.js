@@ -538,6 +538,21 @@ export class UndClient {
   }
 
   /**
+   * get enteprise locked UND
+   * @param {String} address optional address
+   * @return {Promise} resolves with http response
+   */
+  async getEnterpriseLocked(address = this.address) {
+    try {
+      const data = await this.getAccount(address)
+      return data.result.result.enterprise.locked
+    } catch (err) {
+      console.warn("getEnterpriseLocked error", err)
+      return '0'
+    }
+  }
+
+  /**
    * get transactions for an account
    * @param {String} address optional address
    * @param {Number} offset from beggining, default 0
@@ -641,6 +656,41 @@ export class UndClient {
       return data
     } catch (err) {
       console.warn("getBondedValidators error", err)
+      return []
+    }
+  }
+
+  /**
+   * get delegator address's rewards
+   * @param {String} address optional address
+   * @param {String} valAddress optional Bech32 operator address
+   * @returns {Promise} resolves with http response
+   */
+  async getDelegatorRewards(address = this.address, valAddress = '') {
+    try {
+      let suffix = ''
+      if(valAddress.length > 0) {
+        suffix = `/${valAddress}`
+      }
+      const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_DISTRIBUTION_DELEGATORS_PREFIX}/${address}/${CONFIG.API_QUERY_DISTRIBUTION_REWARDS}${suffix}`)
+      return data
+    } catch (err) {
+      console.warn("getDelegatorRewards error", err)
+      return []
+    }
+  }
+
+  /**
+   * get delegator's current withdraw address
+   * @param {String} address optional address
+   * @returns {Promise} resolves with http response
+   */
+  async getDelegatorWithdrawAddress(address = this.address) {
+    try {
+      const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_DISTRIBUTION_DELEGATORS_PREFIX}/${address}/${CONFIG.API_QUERY_DISTRIBUTION_WITHDRAW_ADDRESS}`)
+      return data
+    } catch (err) {
+      console.warn("getDelegatorRewards error", err)
       return []
     }
   }
