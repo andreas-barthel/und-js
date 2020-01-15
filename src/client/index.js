@@ -545,7 +545,11 @@ export class UndClient {
   async getEnterpriseLocked(address = this.address) {
     try {
       const data = await this.getAccount(address)
-      return data.result.result.enterprise.locked
+      if ("enterprise" in data.result.result) {
+        return data.result.result.enterprise.locked
+      } else {
+        return []
+      }
     } catch (err) {
       console.warn("getEnterpriseLocked error", err)
       return []
