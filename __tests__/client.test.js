@@ -159,13 +159,6 @@ it("get balance", async () => {
   expect(res.length).toBeGreaterThanOrEqual(0)
 })
 
-it("get enteprise locked und", async () => {
-  const client = await getClient(false)
-  const res = await client.getEnterpriseLocked(targetAddress)
-  expect(res).toHaveProperty("amount")
-  expect(res).toHaveProperty("denom")
-})
-
 it("transfer nund", async () => {
   jest.setTimeout(30000)
 
@@ -290,6 +283,13 @@ it("raise nund enterprise purchase order", async () => {
   const sendAmount =
     res2.result.tx.value.msg[0].value.amount.amount
   expect(parseInt(sendAmount)).toBe(2001770112)
+})
+
+it("get enteprise locked und", async () => {
+  const client = await getClient(false)
+  const res = await client.getEnterpriseLocked(targetAddress)
+  expect(res).toHaveProperty("amount")
+  expect(res).toHaveProperty("denom")
 })
 
 it("delegate und", async () => {
@@ -509,6 +509,16 @@ it("get balance no arg", async () => {
 it("get transactions works", async () => {
   const client = await getClient(false)
   const { result: transactions, status } = await client.getTransactions(
+    targetAddress
+  )
+  expect(status).toBe(200)
+  expect(transactions).toHaveProperty("txs")
+  expect(transactions).toHaveProperty("total_count")
+})
+
+it("get transactions received works", async () => {
+  const client = await getClient(false)
+  const { result: transactions, status } = await client.getTransactionsReceived(
     targetAddress
   )
   expect(status).toBe(200)
