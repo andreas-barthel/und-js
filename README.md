@@ -1,3 +1,6 @@
+[![npm version](http://img.shields.io/npm/v/@unification-com/und-js.svg?style=flat)](https://npmjs.org/package/@unification-com/und-js "View this project on npm")
+
+
 # UND Mainchain JavaScript SDK
 
 The UND Mainchain JavaScript SDK allows browsers and node.js clients to 
