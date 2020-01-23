@@ -559,12 +559,30 @@ export class UndClient {
   /**
    * get transactions for an account
    * @param {String} address optional address
-   * @param {Number} offset from beggining, default 0
+   * @param {Number} page page number, default 1
+   * @param {Number} limit number of results per page, default 100
    * @return {Promise} resolves with http response
    */
   async getTransactions(address = this.address, page = 1, limit = 100) {
     try {
       const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_TXS}?message.sender=${address}&page=${page}&limit=${limit}`)
+      return data
+    } catch (err) {
+      console.warn("getTransactions error", err)
+      return []
+    }
+  }
+
+  /**
+   * Get transactions received by an account - specifically, UND transfers sent to the address
+   * @param {String} address optional address
+   * @param {Number} page page number, default 1
+   * @param {Number} limit number of results per page, default 100
+   * @return {Promise} resolves with http response
+   */
+  async getTransactionsReceived(address = this.address, page = 1, limit = 100) {
+    try {
+      const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_TXS}?transfer.recipient=${address}&page=${page}&limit=${limit}`)
       return data
     } catch (err) {
       console.warn("getTransactions error", err)
