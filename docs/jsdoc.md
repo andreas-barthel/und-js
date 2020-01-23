@@ -49,7 +49,8 @@
         * [.getAccount(address)](#module_client.UndClient+getAccount) ⇒ <code>Promise</code>
         * [.getBalance(address)](#module_client.UndClient+getBalance) ⇒ <code>Promise</code>
         * [.getEnterpriseLocked(address)](#module_client.UndClient+getEnterpriseLocked) ⇒ <code>Promise</code>
-        * [.getTransactions(address, offset)](#module_client.UndClient+getTransactions) ⇒ <code>Promise</code>
+        * [.getTransactions(address, page, limit)](#module_client.UndClient+getTransactions) ⇒ <code>Promise</code>
+        * [.getTransactionsReceived(address, page, limit)](#module_client.UndClient+getTransactionsReceived) ⇒ <code>Promise</code>
         * [.getTx(hash)](#module_client.UndClient+getTx) ⇒ <code>Promise</code>
         * [.getEnteprisePos(address, page, limit)](#module_client.UndClient+getEnteprisePos) ⇒ <code>Promise</code>
         * [.getDelegations(address, valAddress)](#module_client.UndClient+getDelegations) ⇒ <code>Promise</code>
@@ -105,7 +106,8 @@ The UND Mainchain client.
     * [.getAccount(address)](#module_client.UndClient+getAccount) ⇒ <code>Promise</code>
     * [.getBalance(address)](#module_client.UndClient+getBalance) ⇒ <code>Promise</code>
     * [.getEnterpriseLocked(address)](#module_client.UndClient+getEnterpriseLocked) ⇒ <code>Promise</code>
-    * [.getTransactions(address, offset)](#module_client.UndClient+getTransactions) ⇒ <code>Promise</code>
+    * [.getTransactions(address, page, limit)](#module_client.UndClient+getTransactions) ⇒ <code>Promise</code>
+    * [.getTransactionsReceived(address, page, limit)](#module_client.UndClient+getTransactionsReceived) ⇒ <code>Promise</code>
     * [.getTx(hash)](#module_client.UndClient+getTx) ⇒ <code>Promise</code>
     * [.getEnteprisePos(address, page, limit)](#module_client.UndClient+getEnteprisePos) ⇒ <code>Promise</code>
     * [.getDelegations(address, valAddress)](#module_client.UndClient+getDelegations) ⇒ <code>Promise</code>
@@ -401,16 +403,31 @@ get enteprise locked UND
 
 <a name="module_client.UndClient+getTransactions"></a>
 
-#### undClient.getTransactions(address, offset) ⇒ <code>Promise</code>
+#### undClient.getTransactions(address, page, limit) ⇒ <code>Promise</code>
 get transactions for an account
 
 **Kind**: instance method of [<code>UndClient</code>](#module_client.UndClient)  
 **Returns**: <code>Promise</code> - resolves with http response  
 
-| Param | Type | Description |
-| --- | --- | --- |
-| address | <code>String</code> | optional address |
-| offset | <code>Number</code> | from beggining, default 0 |
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| address | <code>String</code> |  | optional address |
+| page | <code>Number</code> | <code>1</code> | page number, default 1 |
+| limit | <code>Number</code> | <code>100</code> | number of results per page, default 100 |
+
+<a name="module_client.UndClient+getTransactionsReceived"></a>
+
+#### undClient.getTransactionsReceived(address, page, limit) ⇒ <code>Promise</code>
+Get transactions received by an account - specifically, UND transfers sent to the address
+
+**Kind**: instance method of [<code>UndClient</code>](#module_client.UndClient)  
+**Returns**: <code>Promise</code> - resolves with http response  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| address | <code>String</code> |  | optional address |
+| page | <code>Number</code> | <code>1</code> | page number, default 1 |
+| limit | <code>Number</code> | <code>100</code> | number of results per page, default 100 |
 
 <a name="module_client.UndClient+getTx"></a>
 
