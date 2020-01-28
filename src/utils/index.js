@@ -254,3 +254,22 @@ export const calculateRandomNumberHash = (randomNumber, timestamp) => {
   const newBuffer = Buffer.concat([Buffer.from(randomNumber, "hex"), timestampBytes])
   return sha256(newBuffer.toString("hex"))
 }
+
+/**
+ * Ensure Broadcast Mode is only one of sync, async or block
+ * @param {string} broadcastMode
+ * @returns {string}
+ */
+export const checkBroadcastMode = (broadcastMode) => {
+  let bm = broadcastMode
+  switch(bm) {
+    case "sync":
+    case "async":
+    case "block":
+      break
+    default:
+      bm = "sync"
+      break
+  }
+  return bm
+}
