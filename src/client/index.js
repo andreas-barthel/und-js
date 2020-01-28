@@ -491,22 +491,6 @@ export class UndClient {
   }
 
   /**
-   * Broadcast a raw transaction to the blockchain.
-   * @param {Object} msg the msg object
-   * @param {Object} stdSignMsg the sign doc object used to generate a signature
-   * @param {String} address
-   * @param {Number} sequence optional sequence
-   * @param {String} memo optional memo
-   * @param {Boolean} sync use synchronous mode, optional
-   * @return {Promise} resolves with response (success or fail)
-   */
-  async _sendTransaction(msg, stdSignMsg, address, sequence = null, memo = "", sync = !this._useAsyncBroadcast) {
-    const signedTx = await this._prepareTransaction(msg, stdSignMsg, address, sequence, memo)
-    return this.sendTransaction(signedTx, sync)
-  }
-
-
-  /**
    * get account
    * @param {String} address
    * @return {Promise} resolves with http response
