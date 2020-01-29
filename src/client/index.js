@@ -6,6 +6,7 @@ import HttpRequest from "../utils/request"
 import GenMsg from "../msg"
 import Transaction from "../tx"
 import { checkNumber } from "../utils/validateHelper"
+import { checkBroadcastMode } from "../utils"
 
 const CONFIG = require("../config")
 
@@ -33,16 +34,16 @@ export const DefaultBroadcastDelegate = async function (signedTx) {
 export class UndClient {
   /**
    * @param {String} server UND Mainchain public url
-   * @param {Boolean} useAsyncBroadcast use async broadcast mode, faster but less guarantees (default off)
-   * @param {Number} source where does this transaction come from (default 0)
+   * @param {String} broadcastMode sync = wait for checkTx, async = send and forget (faster but less guarantees), block = wait for block to process (default sync)
    */
-  constructor(server) {
+  constructor(server, broadcastMode = "sync") {
     if (!server) {
       throw new Error("UND Mainchain server should not be null")
     }
     this._httpClient = new HttpRequest(server)
     this._signingDelegate = DefaultSigningDelegate
     this._broadcastDelegate = DefaultBroadcastDelegate
+    this._broadcastMode = checkBroadcastMode(broadcastMode)
   }
 
   /**
@@ -78,6 +79,14 @@ export class UndClient {
       }
     }
     return this
+  }
+
+  /**
+   * Set the mode for broadcasting a Tx
+   * @param {String} broadcastMode sync = wait for checkTx, async = send and forget (faster but less guarantees), block = wait for block to process (default sync)
+   */
+  setBroadcastMode(broadcastMode) {
+    this._broadcastMode = checkBroadcastMode(broadcastMode)
   }
 
   /**
@@ -461,7 +470,7 @@ export class UndClient {
 
     const tx = new Transaction(options)
     this._signingDelegate.call(this, tx)
-    return tx.genSignedTx()
+    return tx.genSignedTx(this._broadcastMode)
   }
 
   /**
@@ -489,22 +498,6 @@ export class UndClient {
     }
     return this._httpClient.request("post", `${CONFIG.API_BROADCAST_TX}`, null, opts)
   }
-
-  /**
-   * Broadcast a raw transaction to the blockchain.
-   * @param {Object} msg the msg object
-   * @param {Object} stdSignMsg the sign doc object used to generate a signature
-   * @param {String} address
-   * @param {Number} sequence optional sequence
-   * @param {String} memo optional memo
-   * @param {Boolean} sync use synchronous mode, optional
-   * @return {Promise} resolves with response (success or fail)
-   */
-  async _sendTransaction(msg, stdSignMsg, address, sequence = null, memo = "", sync = !this._useAsyncBroadcast) {
-    const signedTx = await this._prepareTransaction(msg, stdSignMsg, address, sequence, memo)
-    return this.sendTransaction(signedTx, sync)
-  }
-
 
   /**
    * get account

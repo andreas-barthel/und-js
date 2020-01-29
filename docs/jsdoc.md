@@ -28,9 +28,10 @@
 
 * [client](#module_client)
     * [.UndClient](#module_client.UndClient)
-        * [new exports.UndClient(server, useAsyncBroadcast, source)](#new_module_client.UndClient_new)
+        * [new exports.UndClient(server, broadcastMode)](#new_module_client.UndClient_new)
         * [.initChain()](#module_client.UndClient+initChain) ⇒ <code>Promise</code>
         * [.setPrivateKey(privateKey, localOnly)](#module_client.UndClient+setPrivateKey) ⇒ <code>Promise</code>
+        * [.setBroadcastMode(broadcastMode)](#module_client.UndClient+setBroadcastMode)
         * [.setAccountNumber(accountNumber)](#module_client.UndClient+setAccountNumber)
         * [.setSigningDelegate(delegate)](#module_client.UndClient+setSigningDelegate) ⇒ <code>UndClient</code>
         * [.setBroadcastDelegate(delegate)](#module_client.UndClient+setBroadcastDelegate) ⇒ <code>UndClient</code>
@@ -45,7 +46,6 @@
         * [.withdrawDelegationReward(validator, fee, delegator, memo, sequence)](#module_client.UndClient+withdrawDelegationReward) ⇒ <code>Promise.&lt;\*&gt;</code>
         * [.sendTransaction(tx, sync)](#module_client.UndClient+sendTransaction) ⇒ <code>Promise</code>
         * [.sendRawTransaction(signedBz, sync)](#module_client.UndClient+sendRawTransaction) ⇒ <code>Promise</code>
-        * [._sendTransaction(msg, stdSignMsg, address, sequence, memo, sync)](#module_client.UndClient+_sendTransaction) ⇒ <code>Promise</code>
         * [.getAccount(address)](#module_client.UndClient+getAccount) ⇒ <code>Promise</code>
         * [.getBalance(address)](#module_client.UndClient+getBalance) ⇒ <code>Promise</code>
         * [.getEnterpriseLocked(address)](#module_client.UndClient+getEnterpriseLocked) ⇒ <code>Promise</code>
@@ -85,9 +85,10 @@ The UND Mainchain client.
 **Kind**: static class of [<code>client</code>](#module_client)  
 
 * [.UndClient](#module_client.UndClient)
-    * [new exports.UndClient(server, useAsyncBroadcast, source)](#new_module_client.UndClient_new)
+    * [new exports.UndClient(server, broadcastMode)](#new_module_client.UndClient_new)
     * [.initChain()](#module_client.UndClient+initChain) ⇒ <code>Promise</code>
     * [.setPrivateKey(privateKey, localOnly)](#module_client.UndClient+setPrivateKey) ⇒ <code>Promise</code>
+    * [.setBroadcastMode(broadcastMode)](#module_client.UndClient+setBroadcastMode)
     * [.setAccountNumber(accountNumber)](#module_client.UndClient+setAccountNumber)
     * [.setSigningDelegate(delegate)](#module_client.UndClient+setSigningDelegate) ⇒ <code>UndClient</code>
     * [.setBroadcastDelegate(delegate)](#module_client.UndClient+setBroadcastDelegate) ⇒ <code>UndClient</code>
@@ -102,7 +103,6 @@ The UND Mainchain client.
     * [.withdrawDelegationReward(validator, fee, delegator, memo, sequence)](#module_client.UndClient+withdrawDelegationReward) ⇒ <code>Promise.&lt;\*&gt;</code>
     * [.sendTransaction(tx, sync)](#module_client.UndClient+sendTransaction) ⇒ <code>Promise</code>
     * [.sendRawTransaction(signedBz, sync)](#module_client.UndClient+sendRawTransaction) ⇒ <code>Promise</code>
-    * [._sendTransaction(msg, stdSignMsg, address, sequence, memo, sync)](#module_client.UndClient+_sendTransaction) ⇒ <code>Promise</code>
     * [.getAccount(address)](#module_client.UndClient+getAccount) ⇒ <code>Promise</code>
     * [.getBalance(address)](#module_client.UndClient+getBalance) ⇒ <code>Promise</code>
     * [.getEnterpriseLocked(address)](#module_client.UndClient+getEnterpriseLocked) ⇒ <code>Promise</code>
@@ -134,13 +134,12 @@ The UND Mainchain client.
 
 <a name="new_module_client.UndClient_new"></a>
 
-#### new exports.UndClient(server, useAsyncBroadcast, source)
+#### new exports.UndClient(server, broadcastMode)
 
-| Param | Type | Description |
-| --- | --- | --- |
-| server | <code>String</code> | UND Mainchain public url |
-| useAsyncBroadcast | <code>Boolean</code> | use async broadcast mode, faster but less guarantees (default off) |
-| source | <code>Number</code> | where does this transaction come from (default 0) |
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| server | <code>String</code> |  | UND Mainchain public url |
+| broadcastMode | <code>String</code> | <code>sync</code> | sync = wait for checkTx, async = send and forget (faster but less guarantees), block = wait for block to process (default sync) |
 
 <a name="module_client.UndClient+initChain"></a>
 
@@ -159,6 +158,17 @@ Sets the client's private key for calls made by this client. Asynchronous.
 | --- | --- | --- | --- |
 | privateKey | <code>string</code> |  | the private key hexstring |
 | localOnly | <code>boolean</code> | <code>false</code> | set this to true if you will supply an account_number yourself via `setAccountNumber`. Warning: You must do that if you set this to true! |
+
+<a name="module_client.UndClient+setBroadcastMode"></a>
+
+#### undClient.setBroadcastMode(broadcastMode)
+Set the mode for broadcasting a Tx
+
+**Kind**: instance method of [<code>UndClient</code>](#module_client.UndClient)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| broadcastMode | <code>String</code> | sync = wait for checkTx, async = send and forget (faster but less guarantees), block = wait for block to process (default sync) |
 
 <a name="module_client.UndClient+setAccountNumber"></a>
 
@@ -347,23 +357,6 @@ Broadcast a raw transaction to the blockchain.
 | --- | --- | --- |
 | signedBz | <code>String</code> | signed and serialized raw transaction |
 | sync | <code>Boolean</code> | use synchronous mode, optional |
-
-<a name="module_client.UndClient+_sendTransaction"></a>
-
-#### undClient.\_sendTransaction(msg, stdSignMsg, address, sequence, memo, sync) ⇒ <code>Promise</code>
-Broadcast a raw transaction to the blockchain.
-
-**Kind**: instance method of [<code>UndClient</code>](#module_client.UndClient)  
-**Returns**: <code>Promise</code> - resolves with response (success or fail)  
-
-| Param | Type | Default | Description |
-| --- | --- | --- | --- |
-| msg | <code>Object</code> |  | the msg object |
-| stdSignMsg | <code>Object</code> |  | the sign doc object used to generate a signature |
-| address | <code>String</code> |  |  |
-| sequence | <code>Number</code> | <code></code> | optional sequence |
-| memo | <code>String</code> |  | optional memo |
-| sync | <code>Boolean</code> |  | use synchronous mode, optional |
 
 <a name="module_client.UndClient+getAccount"></a>
 
@@ -1125,6 +1118,7 @@ prefixed with bytes length
     * [.sha256](#module_utils.sha256) ⇒ <code>string</code>
     * [.sha3](#module_utils.sha3) ⇒ <code>string</code>
     * [.calculateRandomNumberHash](#module_utils.calculateRandomNumberHash) ⇒ <code>string</code>
+    * [.checkBroadcastMode](#module_utils.checkBroadcastMode) ⇒ <code>string</code>
 
 <a name="module_utils.ab2str"></a>
 
@@ -1336,6 +1330,17 @@ Computes sha256 of random number and timestamp
 | --- | --- |
 | randomNumber | <code>String</code> | 
 | timestamp | <code>Number</code> | 
+
+<a name="module_utils.checkBroadcastMode"></a>
+
+### utils.checkBroadcastMode ⇒ <code>string</code>
+Ensure Broadcast Mode is only one of sync, async or block
+
+**Kind**: static constant of [<code>utils</code>](#module_utils)  
+
+| Param | Type |
+| --- | --- |
+| broadcastMode | <code>string</code> | 
 
 <a name="checkNumber"></a>
 

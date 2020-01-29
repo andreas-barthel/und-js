@@ -64,6 +64,7 @@ const getClient = async (
 ) => {
   const client = new UndClient("http://localhost:1317")
   await client.initChain()
+  client.setBroadcastMode("block")
   const privateKey = crypto.getPrivateKeyFromMnemonic(mnemonic)
   if (!doNotSetPrivateKey) {
     if (useAwaitSetPrivateKey) {
@@ -165,6 +166,7 @@ it("transfer nund", async () => {
   const coin = "nund"
   let amount = 2001770112
   const client = await getClient(false)
+  
   const addr = crypto.getAddressFromPrivateKey(client.privateKey)
   const account = await client._httpClient.request(
     "get",
@@ -193,7 +195,6 @@ it("transfer nund", async () => {
   )
   expect(res.status).toBe(200)
 
-  await wait(6000)
   const hash = res.result.txhash
   testTxHash = hash
   const res2 = await client.getTx(hash)
@@ -208,6 +209,7 @@ it("transfer und with presicion", async () => {
   const coin = "und"
   let amount = 2.001770112
   const client = await getClient(false)
+  
   const addr = crypto.getAddressFromPrivateKey(client.privateKey)
   const account = await client._httpClient.request(
     "get",
@@ -236,7 +238,6 @@ it("transfer und with presicion", async () => {
   )
   expect(res.status).toBe(200)
 
-  await wait(6000)
   const hash = res.result.txhash
   const res2 = await client.getTx(hash)
   const sendAmount =
@@ -250,6 +251,7 @@ it("raise nund enterprise purchase order", async () => {
   const coin = "nund"
   let amount = 2001770112
   const client = await getClient(false)
+  
   const addr = crypto.getAddressFromPrivateKey(client.privateKey)
   const account = await client._httpClient.request(
     "get",
@@ -277,7 +279,6 @@ it("raise nund enterprise purchase order", async () => {
   )
   expect(res.status).toBe(200)
 
-  await wait(6000)
   const hash = res.result.txhash
   const res2 = await client.getTx(hash)
   const sendAmount =
@@ -298,6 +299,7 @@ it("delegate und", async () => {
   const coin = "nund"
   let amount = 2001770112
   const client = await getClient(false)
+  
   const addr = crypto.getAddressFromPrivateKey(client.privateKey)
   const account = await client._httpClient.request(
     "get",
@@ -327,7 +329,6 @@ it("delegate und", async () => {
 
   expect(res.status).toBe(200)
 
-  await wait(6000)
   const hash = res.result.txhash
   const res2 = await client.getTx(hash)
   const sendAmount =
@@ -341,6 +342,7 @@ it("undelegate und", async () => {
   const coin = "nund"
   let amount = 10000
   const client = await getClient(false)
+  
   const addr = crypto.getAddressFromPrivateKey(client.privateKey)
   const account = await client._httpClient.request(
     "get",
@@ -370,7 +372,6 @@ it("undelegate und", async () => {
 
   expect(res.status).toBe(200)
 
-  await wait(6000)
   const hash = res.result.txhash
   const res2 = await client.getTx(hash)
   const sendAmount =
@@ -384,6 +385,7 @@ it("redelegate und", async () => {
   const coin = "nund"
   let amount = 1000
   const client = await getClient(false)
+  
   const addr = crypto.getAddressFromPrivateKey(client.privateKey)
   const account = await client._httpClient.request(
     "get",
@@ -414,14 +416,14 @@ it("redelegate und", async () => {
 
   expect(res.status).toBe(200)
 
-  await wait(6000)
   const hash = res.result.txhash
   const res2 = await client.getTx(hash)
-  expect(res2.result.events[1].type).toBe("redelegate")
+  expect(res2.result.logs[0].events[1].type).toBe("redelegate")
 })
 
 it("withdraw delegation rewards", async () => {
   const client = await getClient(false)
+  
   const addr = crypto.getAddressFromPrivateKey(client.privateKey)
   const account = await client._httpClient.request(
     "get",
@@ -449,14 +451,14 @@ it("withdraw delegation rewards", async () => {
 
   expect(res.status).toBe(200)
 
-  await wait(6000)
   const hash = res.result.txhash
   const res2 = await client.getTx(hash)
-  expect(res2.result.events[1].type).toBe("transfer")
+  expect(res2.result.logs[0].events[1].type).toBe("transfer")
 })
 
 it("modify delegation withdraw address", async () => {
   const client = await getClient(false)
+  
   const addr = crypto.getAddressFromPrivateKey(client.privateKey)
   const account = await client._httpClient.request(
     "get",
@@ -484,14 +486,14 @@ it("modify delegation withdraw address", async () => {
 
   expect(res.status).toBe(200)
 
-  await wait(6000)
   const hash = res.result.txhash
   const res2 = await client.getTx(hash)
-  expect(res2.result.events[1].type).toBe("set_withdraw_address")
+  expect(res2.result.logs[0].events[1].type).toBe("set_withdraw_address")
 })
 
 it("get account", async () => {
   const client = await getClient(false)
+
   const res = await client.getAccount(targetAddress)
   if (res.status === 200) {
     expect(res.status).toBe(200)
@@ -531,7 +533,6 @@ it("get tx works", async () => {
   const client = await getClient(false)
   const { result: tx, status } = await client.getTx(testTxHash)
   expect(status).toBe(200)
-  expect(tx).toHaveProperty("events")
   expect(tx).toHaveProperty("gas_used")
   expect(tx).toHaveProperty("gas_wanted")
   expect(tx).toHaveProperty("height")
