@@ -51,6 +51,7 @@
         * [.getEnterpriseLocked(address)](#module_client.UndClient+getEnterpriseLocked) ⇒ <code>Promise</code>
         * [.getTransactions(address, page, limit)](#module_client.UndClient+getTransactions) ⇒ <code>Promise</code>
         * [.getTransactionsReceived(address, page, limit)](#module_client.UndClient+getTransactionsReceived) ⇒ <code>Promise</code>
+        * [.getFilteredTransactions(filters, page, limit)](#module_client.UndClient+getFilteredTransactions) ⇒ <code>Promise</code>
         * [.getTx(hash)](#module_client.UndClient+getTx) ⇒ <code>Promise</code>
         * [.getEnteprisePos(address, page, limit)](#module_client.UndClient+getEnteprisePos) ⇒ <code>Promise</code>
         * [.getDelegations(address, valAddress)](#module_client.UndClient+getDelegations) ⇒ <code>Promise</code>
@@ -108,6 +109,7 @@ The UND Mainchain client.
     * [.getEnterpriseLocked(address)](#module_client.UndClient+getEnterpriseLocked) ⇒ <code>Promise</code>
     * [.getTransactions(address, page, limit)](#module_client.UndClient+getTransactions) ⇒ <code>Promise</code>
     * [.getTransactionsReceived(address, page, limit)](#module_client.UndClient+getTransactionsReceived) ⇒ <code>Promise</code>
+    * [.getFilteredTransactions(filters, page, limit)](#module_client.UndClient+getFilteredTransactions) ⇒ <code>Promise</code>
     * [.getTx(hash)](#module_client.UndClient+getTx) ⇒ <code>Promise</code>
     * [.getEnteprisePos(address, page, limit)](#module_client.UndClient+getEnteprisePos) ⇒ <code>Promise</code>
     * [.getDelegations(address, valAddress)](#module_client.UndClient+getDelegations) ⇒ <code>Promise</code>
@@ -406,7 +408,7 @@ get transactions for an account
 | --- | --- | --- | --- |
 | address | <code>String</code> |  | optional address |
 | page | <code>Number</code> | <code>1</code> | page number, default 1 |
-| limit | <code>Number</code> | <code>100</code> | number of results per page, default 100 |
+| limit | <code>Number</code> | <code>100</code> | number of results per page, default 100, max 100 |
 
 <a name="module_client.UndClient+getTransactionsReceived"></a>
 
@@ -420,7 +422,38 @@ Get transactions received by an account - specifically, UND transfers sent to th
 | --- | --- | --- | --- |
 | address | <code>String</code> |  | optional address |
 | page | <code>Number</code> | <code>1</code> | page number, default 1 |
-| limit | <code>Number</code> | <code>100</code> | number of results per page, default 100 |
+| limit | <code>Number</code> | <code>100</code> | number of results per page, default 100, max 100 |
+
+<a name="module_client.UndClient+getFilteredTransactions"></a>
+
+#### undClient.getFilteredTransactions(filters, page, limit) ⇒ <code>Promise</code>
+Get Transactions based on arbitrary filters. Filters must be passed as an array of objects. Each
+object must be in the format { 'key': 'the_key', 'val': 'the_val' }
+for example:
+
+[
+  {
+    'key': 'message.sender',
+    'val': 'und1x8pl6wzqf9atkm77ymc5vn5dnpl5xytmn200xy'
+  },
+  {
+   'key': 'message.action',
+   'val': 'register_wrkchain'
+  },
+]
+
+will generate the query string:
+
+massage.sender=und1x8pl6wzqf9atkm77ymc5vn5dnpl5xytmn200xy&message.action=register_wrkchain
+
+**Kind**: instance method of [<code>UndClient</code>](#module_client.UndClient)  
+**Returns**: <code>Promise</code> - resolves with http response  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| filters | <code>Array</code> |  | an array of filter objects |
+| page | <code>Number</code> | <code>1</code> | page number, default 1 |
+| limit | <code>Number</code> | <code>100</code> | number of results per page, default 100, max 100 |
 
 <a name="module_client.UndClient+getTx"></a>
 
