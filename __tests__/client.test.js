@@ -786,8 +786,9 @@ it("check number when transfer", async () => {
 
 it("test get filtered txs with no filter should fail", async () => {
   const client = await getClient(false)
-  const res = await client.getFilteredTransactions()
-  expect(res.length).toBe(0)
+  const  { result: res, status } = await client.getFilteredTransactions()
+  expect(status).toBe(400)
+  expect(res.error).toBe("getFilteredTransactions error: must include at least one filter passed as an array")
 })
 
 it("test get filtered txs with filter", async () => {
