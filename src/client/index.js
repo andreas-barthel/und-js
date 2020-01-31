@@ -512,7 +512,7 @@ export class UndClient {
       const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_ACCOUNT}/${address}`)
       return data
     } catch (err) {
-      return null
+      return this._stdError(err.toString())
     }
   }
 
@@ -526,7 +526,7 @@ export class UndClient {
       const data = await this.getAccount(address)
       return data.result.result.account.value.coins
     } catch (err) {
-      return []
+      return this._stdError(err.toString())
     }
   }
 
@@ -541,11 +541,10 @@ export class UndClient {
       if ("enterprise" in data.result.result) {
         return data.result.result.enterprise.locked
       } else {
-        return []
+        return this._stdError("enterprise data not found")
       }
     } catch (err) {
-      console.warn("getEnterpriseLocked error", err)
-      return []
+      return this._stdError(err.toString())
     }
   }
 
@@ -553,16 +552,16 @@ export class UndClient {
    * get transactions for an account
    * @param {String} address optional address
    * @param {Number} page page number, default 1
-   * @param {Number} limit number of results per page, default 100
+   * @param {Number} limit number of results per page, default 100, max 100
    * @return {Promise} resolves with http response
    */
   async getTransactions(address = this.address, page = 1, limit = 100) {
+    if (limit > 100) limit = 100
     try {
       const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_TXS}?message.sender=${address}&page=${page}&limit=${limit}`)
       return data
     } catch (err) {
-      console.warn("getTransactions error", err)
-      return []
+      return this._stdError(err.toString())
     }
   }
 
@@ -570,16 +569,65 @@ export class UndClient {
    * Get transactions received by an account - specifically, UND transfers sent to the address
    * @param {String} address optional address
    * @param {Number} page page number, default 1
-   * @param {Number} limit number of results per page, default 100
+   * @param {Number} limit number of results per page, default 100, max 100
    * @return {Promise} resolves with http response
    */
   async getTransactionsReceived(address = this.address, page = 1, limit = 100) {
+    if (limit > 100) limit = 100
     try {
       const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_TXS}?transfer.recipient=${address}&page=${page}&limit=${limit}`)
       return data
     } catch (err) {
-      console.warn("getTransactions error", err)
-      return []
+      return this._stdError(err.toString())
+    }
+  }
+
+  /**
+   * Get Transactions based on arbitrary filters. Filters must be passed as an array of objects. Each
+   * object must be in the format { 'key': 'the_key', 'val': 'the_val' }
+   * for example:
+   *
+   * [
+   *   {
+   *     'key': 'message.sender',
+   *     'val': 'und1x8pl6wzqf9atkm77ymc5vn5dnpl5xytmn200xy'
+   *   },
+   *   {
+   *    'key': 'message.action',
+   *    'val': 'register_wrkchain'
+   *   },
+   * ]
+   *
+   * will generate the query string:
+   *
+   * massage.sender=und1x8pl6wzqf9atkm77ymc5vn5dnpl5xytmn200xy&message.action=register_wrkchain
+   *
+   * @param {Array} filters - an array of filter objects
+   * @param {Number} page page number, default 1
+   * @param {Number} limit number of results per page, default 100, max 100
+   * @returns {Promise} resolves with http response
+   */
+  async getFilteredTransactions(filters, page = 1, limit = 100) {
+    if (limit > 100) limit = 100
+    try {
+      let filtersString = ''
+
+      if(Array.isArray(filters) && filters.length > 0) {
+        filters.forEach((filter) => {
+          if('key' in filter && 'val' in filter) {
+            filtersString += '&' + filter.key + '=' + filter.val
+          }
+        })
+      }
+
+      if(filtersString.length === 0) {
+        return this._stdError("getFilteredTransactions error: must include at least one filter passed as an array")
+      }
+
+      const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_TXS}?page=${page}&limit=${limit}&${filtersString}`)
+      return data
+    } catch (err) {
+      return this._stdError(err.toString())
     }
   }
 
@@ -593,8 +641,7 @@ export class UndClient {
       const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_TX}/${hash}`)
       return data
     } catch (err) {
-      console.warn("getTx error", err)
-      return []
+      return this._stdError(err.toString())
     }
   }
 
@@ -606,12 +653,12 @@ export class UndClient {
    * @returns {Promise} resolves with http response
    */
   async getEnteprisePos(address = this.address, page = 1, limit = 100) {
+    if (limit > 100) limit = 100
     try {
       const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_ENT_POS}?purchaser=${address}&page=${page}&limit=${limit}`)
       return data
     } catch (err) {
-      console.warn("getEnteprisePos error", err)
-      return []
+      return this._stdError(err.toString())
     }
   }
 
@@ -630,8 +677,7 @@ export class UndClient {
       const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_STAKING_DELEGATORS_PREFIX}/${address}/${CONFIG.API_QUERY_STAKING_DELEGATIONS_SUFFIX}${suffix}`)
       return data
     } catch (err) {
-      console.warn("getDelegations error", err)
-      return []
+      return this._stdError(err.toString())
     }
   }
 
@@ -650,8 +696,7 @@ export class UndClient {
       const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_STAKING_DELEGATORS_PREFIX}/${address}/${CONFIG.API_QUERY_STAKING_UNBONDING_DELEGATIONS_SUFFIX}${suffix}`)
       return data
     } catch (err) {
-      console.warn("getUnbondingDelegations error", err)
-      return []
+      return this._stdError(err.toString())
     }
   }
 
@@ -670,8 +715,7 @@ export class UndClient {
       const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_STAKING_DELEGATORS_PREFIX}/${address}/${CONFIG.API_QUERY_STAKING_VALIDATORS_SUFFIX}${suffix}`)
       return data
     } catch (err) {
-      console.warn("getBondedValidators error", err)
-      return []
+      return this._stdError(err.toString())
     }
   }
 
@@ -690,8 +734,7 @@ export class UndClient {
       const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_DISTRIBUTION_DELEGATORS_PREFIX}/${address}/${CONFIG.API_QUERY_DISTRIBUTION_REWARDS_SUFFIX}${suffix}`)
       return data
     } catch (err) {
-      console.warn("getDelegatorRewards error", err)
-      return []
+      return this._stdError(err.toString())
     }
   }
 
@@ -705,8 +748,7 @@ export class UndClient {
       const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_DISTRIBUTION_DELEGATORS_PREFIX}/${address}/${CONFIG.API_QUERY_DISTRIBUTION_WITHDRAW_ADDRESS_SUFFIX}`)
       return data
     } catch (err) {
-      console.warn("getDelegatorRewards error", err)
-      return []
+      return this._stdError(err.toString())
     }
   }
 
@@ -719,6 +761,7 @@ export class UndClient {
    * @returns {Promise} resolves with http response
    */
   async getValidators(status = 'bonded', page = 1, limit = 100, valAddress = '') {
+    if (limit > 100) limit = 100
     switch(status) {
       case "bonded":
       case "unbonded":
@@ -737,8 +780,7 @@ export class UndClient {
       const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_STAKING_VALIDATORS_PREFIX}${suffix}`)
       return data
     } catch (err) {
-      console.warn("getValidators error", err)
-      return []
+      return this._stdError(err.toString())
     }
   }
 
@@ -752,8 +794,7 @@ export class UndClient {
       const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_STAKING_VALIDATORS_PREFIX}/${valAddress}/${CONFIG.API_QUERY_STAKING_DELEGATIONS_SUFFIX}`)
       return data
     } catch (err) {
-      console.warn("getValidatorDelegations error", err)
-      return []
+      return this._stdError(err.toString())
     }
   }
 
@@ -767,8 +808,7 @@ export class UndClient {
       const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_STAKING_VALIDATORS_PREFIX}/${valAddress}/${CONFIG.API_QUERY_STAKING_UNBONDING_DELEGATIONS_SUFFIX}`)
       return data
     } catch (err) {
-      console.warn("getValidatorUnbondingDelegations error", err)
-      return []
+      return this._stdError(err.toString())
     }
   }
 
@@ -784,8 +824,7 @@ export class UndClient {
       const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_STAKING_REDELEGATIONS}?delegator=${delAddress}&validator_from=${valSrcAddress}&validator_to=${valDestAddress}`)
       return data
     } catch (err) {
-      console.warn("getRedelegations error", err)
-      return []
+      return this._stdError(err.toString())
     }
   }
 
@@ -799,8 +838,7 @@ export class UndClient {
       const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_DISTRIBUTION_VALIDATORS_PREFIX}/${valAddress}`)
       return data
     } catch (err) {
-      console.warn("getValidatorDistributionInfo error", err)
-      return []
+      return this._stdError(err.toString())
     }
   }
 
@@ -814,8 +852,7 @@ export class UndClient {
       const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_DISTRIBUTION_VALIDATORS_PREFIX}/${valAddress}/${CONFIG.API_QUERY_DISTRIBUTION_OUTSTANDING_REWARDS_SUFFIX}`)
       return data
     } catch (err) {
-      console.warn("getValidatorDistributionOutstandingRewards error", err)
-      return []
+      return this._stdError(err.toString())
     }
   }
 
@@ -829,8 +866,7 @@ export class UndClient {
       const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_DISTRIBUTION_VALIDATORS_PREFIX}/${valAddress}/${CONFIG.API_QUERY_DISTRIBUTION_REWARDS_SUFFIX}`)
       return data
     } catch (err) {
-      console.warn("getValidatorDistributionRewards error", err)
-      return []
+      return this._stdError(err.toString())
     }
   }
 
@@ -843,8 +879,7 @@ export class UndClient {
       const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_SUPPLY}`)
       return data
     } catch (err) {
-      console.warn("getTotalSupply error", err)
-      return []
+      return this._stdError(err.toString())
     }
   }
 
@@ -977,5 +1012,23 @@ export class UndClient {
     const address = crypto.getAddressFromPrivateKey(this.privateKey, CONFIG.BECH32_PREFIX)
     this.address = address
     return address
+  }
+
+  /**
+   * Retuns a standard error mimicking the object returned by _httpClient.request
+   * @param {String} errMsg the message to be put in result.error
+   * @param {Number} status - status code, optional. Default 400
+   * @returns {{result: {error: *}, status: number}}
+   * @private
+   */
+  _stdError(errMsg, status = 400) {
+    const stdError = {
+      status: status,
+      result: {
+        error: errMsg
+      }
+    }
+
+    return stdError
   }
 }
