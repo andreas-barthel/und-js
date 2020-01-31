@@ -553,10 +553,11 @@ export class UndClient {
    * get transactions for an account
    * @param {String} address optional address
    * @param {Number} page page number, default 1
-   * @param {Number} limit number of results per page, default 100
+   * @param {Number} limit number of results per page, default 100, max 100
    * @return {Promise} resolves with http response
    */
   async getTransactions(address = this.address, page = 1, limit = 100) {
+    if (limit > 100) limit = 100
     try {
       const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_TXS}?message.sender=${address}&page=${page}&limit=${limit}`)
       return data
@@ -570,15 +571,67 @@ export class UndClient {
    * Get transactions received by an account - specifically, UND transfers sent to the address
    * @param {String} address optional address
    * @param {Number} page page number, default 1
-   * @param {Number} limit number of results per page, default 100
+   * @param {Number} limit number of results per page, default 100, max 100
    * @return {Promise} resolves with http response
    */
   async getTransactionsReceived(address = this.address, page = 1, limit = 100) {
+    if (limit > 100) limit = 100
     try {
       const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_TXS}?transfer.recipient=${address}&page=${page}&limit=${limit}`)
       return data
     } catch (err) {
       console.warn("getTransactions error", err)
+      return []
+    }
+  }
+
+  /**
+   * Get Transactions based on arbitrary filters. Filters must be passed as an array of objects. Each
+   * object must be in the format { 'key': 'the_key', 'val': 'the_val' }
+   * for example:
+   *
+   * [
+   *   {
+   *     'key': 'message.sender',
+   *     'val': 'und1x8pl6wzqf9atkm77ymc5vn5dnpl5xytmn200xy'
+   *   },
+   *   {
+   *    'key': 'message.action',
+   *    'val': 'register_wrkchain'
+   *   },
+   * ]
+   *
+   * will generate the query string:
+   *
+   * massage.sender=und1x8pl6wzqf9atkm77ymc5vn5dnpl5xytmn200xy&message.action=register_wrkchain
+   *
+   * @param {Array} filters - an array of filter objects
+   * @param {Number} page page number, default 1
+   * @param {Number} limit number of results per page, default 100, max 100
+   * @returns {Promise} resolves with http response
+   */
+  async getFilteredTransactions(filters, page = 1, limit = 100) {
+    if (limit > 100) limit = 100
+    try {
+      let filtersString = ''
+
+      if(Array.isArray(filters) && filters.length > 0) {
+        filters.forEach((filter) => {
+          if('key' in filter && 'val' in filter) {
+            filtersString += '&' + filter.key + '=' + filter.val
+          }
+        })
+      }
+
+      if(filtersString.length === 0) {
+        console.warn("getFilteredTransactions error: must include at least one filter passed as an array")
+        return []
+      }
+
+      const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_TXS}?page=${page}&limit=${limit}&${filtersString}`)
+      return data
+    } catch (err) {
+      console.warn("getFilteredTransactions error", err)
       return []
     }
   }
@@ -606,6 +659,7 @@ export class UndClient {
    * @returns {Promise} resolves with http response
    */
   async getEnteprisePos(address = this.address, page = 1, limit = 100) {
+    if (limit > 100) limit = 100
     try {
       const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_ENT_POS}?purchaser=${address}&page=${page}&limit=${limit}`)
       return data
@@ -719,6 +773,7 @@ export class UndClient {
    * @returns {Promise} resolves with http response
    */
   async getValidators(status = 'bonded', page = 1, limit = 100, valAddress = '') {
+    if (limit > 100) limit = 100
     switch(status) {
       case "bonded":
       case "unbonded":
