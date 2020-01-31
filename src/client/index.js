@@ -512,7 +512,7 @@ export class UndClient {
       const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_ACCOUNT}/${address}`)
       return data
     } catch (err) {
-      return null
+      return this._stdError(err.toString())
     }
   }
 
@@ -526,7 +526,7 @@ export class UndClient {
       const data = await this.getAccount(address)
       return data.result.result.account.value.coins
     } catch (err) {
-      return []
+      return this._stdError(err.toString())
     }
   }
 
@@ -541,11 +541,10 @@ export class UndClient {
       if ("enterprise" in data.result.result) {
         return data.result.result.enterprise.locked
       } else {
-        return []
+        return this._stdError("enterprise data not found")
       }
     } catch (err) {
-      console.warn("getEnterpriseLocked error", err)
-      return []
+      return this._stdError(err.toString())
     }
   }
 
@@ -562,8 +561,7 @@ export class UndClient {
       const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_TXS}?message.sender=${address}&page=${page}&limit=${limit}`)
       return data
     } catch (err) {
-      console.warn("getTransactions error", err)
-      return []
+      return this._stdError(err.toString())
     }
   }
 
@@ -580,8 +578,7 @@ export class UndClient {
       const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_TXS}?transfer.recipient=${address}&page=${page}&limit=${limit}`)
       return data
     } catch (err) {
-      console.warn("getTransactions error", err)
-      return []
+      return this._stdError(err.toString())
     }
   }
 
@@ -624,15 +621,13 @@ export class UndClient {
       }
 
       if(filtersString.length === 0) {
-        console.warn("getFilteredTransactions error: must include at least one filter passed as an array")
-        return []
+        return this._stdError("getFilteredTransactions error: must include at least one filter passed as an array")
       }
 
       const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_TXS}?page=${page}&limit=${limit}&${filtersString}`)
       return data
     } catch (err) {
-      console.warn("getFilteredTransactions error", err)
-      return []
+      return this._stdError(err.toString())
     }
   }
 
@@ -646,8 +641,7 @@ export class UndClient {
       const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_TX}/${hash}`)
       return data
     } catch (err) {
-      console.warn("getTx error", err)
-      return []
+      return this._stdError(err.toString())
     }
   }
 
@@ -664,8 +658,7 @@ export class UndClient {
       const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_ENT_POS}?purchaser=${address}&page=${page}&limit=${limit}`)
       return data
     } catch (err) {
-      console.warn("getEnteprisePos error", err)
-      return []
+      return this._stdError(err.toString())
     }
   }
 
@@ -684,8 +677,7 @@ export class UndClient {
       const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_STAKING_DELEGATORS_PREFIX}/${address}/${CONFIG.API_QUERY_STAKING_DELEGATIONS_SUFFIX}${suffix}`)
       return data
     } catch (err) {
-      console.warn("getDelegations error", err)
-      return []
+      return this._stdError(err.toString())
     }
   }
 
@@ -704,8 +696,7 @@ export class UndClient {
       const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_STAKING_DELEGATORS_PREFIX}/${address}/${CONFIG.API_QUERY_STAKING_UNBONDING_DELEGATIONS_SUFFIX}${suffix}`)
       return data
     } catch (err) {
-      console.warn("getUnbondingDelegations error", err)
-      return []
+      return this._stdError(err.toString())
     }
   }
 
@@ -724,8 +715,7 @@ export class UndClient {
       const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_STAKING_DELEGATORS_PREFIX}/${address}/${CONFIG.API_QUERY_STAKING_VALIDATORS_SUFFIX}${suffix}`)
       return data
     } catch (err) {
-      console.warn("getBondedValidators error", err)
-      return []
+      return this._stdError(err.toString())
     }
   }
 
@@ -744,8 +734,7 @@ export class UndClient {
       const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_DISTRIBUTION_DELEGATORS_PREFIX}/${address}/${CONFIG.API_QUERY_DISTRIBUTION_REWARDS_SUFFIX}${suffix}`)
       return data
     } catch (err) {
-      console.warn("getDelegatorRewards error", err)
-      return []
+      return this._stdError(err.toString())
     }
   }
 
@@ -759,8 +748,7 @@ export class UndClient {
       const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_DISTRIBUTION_DELEGATORS_PREFIX}/${address}/${CONFIG.API_QUERY_DISTRIBUTION_WITHDRAW_ADDRESS_SUFFIX}`)
       return data
     } catch (err) {
-      console.warn("getDelegatorRewards error", err)
-      return []
+      return this._stdError(err.toString())
     }
   }
 
@@ -792,8 +780,7 @@ export class UndClient {
       const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_STAKING_VALIDATORS_PREFIX}${suffix}`)
       return data
     } catch (err) {
-      console.warn("getValidators error", err)
-      return []
+      return this._stdError(err.toString())
     }
   }
 
@@ -807,8 +794,7 @@ export class UndClient {
       const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_STAKING_VALIDATORS_PREFIX}/${valAddress}/${CONFIG.API_QUERY_STAKING_DELEGATIONS_SUFFIX}`)
       return data
     } catch (err) {
-      console.warn("getValidatorDelegations error", err)
-      return []
+      return this._stdError(err.toString())
     }
   }
 
@@ -822,8 +808,7 @@ export class UndClient {
       const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_STAKING_VALIDATORS_PREFIX}/${valAddress}/${CONFIG.API_QUERY_STAKING_UNBONDING_DELEGATIONS_SUFFIX}`)
       return data
     } catch (err) {
-      console.warn("getValidatorUnbondingDelegations error", err)
-      return []
+      return this._stdError(err.toString())
     }
   }
 
@@ -839,8 +824,7 @@ export class UndClient {
       const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_STAKING_REDELEGATIONS}?delegator=${delAddress}&validator_from=${valSrcAddress}&validator_to=${valDestAddress}`)
       return data
     } catch (err) {
-      console.warn("getRedelegations error", err)
-      return []
+      return this._stdError(err.toString())
     }
   }
 
@@ -854,8 +838,7 @@ export class UndClient {
       const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_DISTRIBUTION_VALIDATORS_PREFIX}/${valAddress}`)
       return data
     } catch (err) {
-      console.warn("getValidatorDistributionInfo error", err)
-      return []
+      return this._stdError(err.toString())
     }
   }
 
@@ -869,8 +852,7 @@ export class UndClient {
       const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_DISTRIBUTION_VALIDATORS_PREFIX}/${valAddress}/${CONFIG.API_QUERY_DISTRIBUTION_OUTSTANDING_REWARDS_SUFFIX}`)
       return data
     } catch (err) {
-      console.warn("getValidatorDistributionOutstandingRewards error", err)
-      return []
+      return this._stdError(err.toString())
     }
   }
 
@@ -884,8 +866,7 @@ export class UndClient {
       const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_DISTRIBUTION_VALIDATORS_PREFIX}/${valAddress}/${CONFIG.API_QUERY_DISTRIBUTION_REWARDS_SUFFIX}`)
       return data
     } catch (err) {
-      console.warn("getValidatorDistributionRewards error", err)
-      return []
+      return this._stdError(err.toString())
     }
   }
 
@@ -898,8 +879,7 @@ export class UndClient {
       const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_SUPPLY}`)
       return data
     } catch (err) {
-      console.warn("getTotalSupply error", err)
-      return []
+      return this._stdError(err.toString())
     }
   }
 
@@ -1032,5 +1012,23 @@ export class UndClient {
     const address = crypto.getAddressFromPrivateKey(this.privateKey, CONFIG.BECH32_PREFIX)
     this.address = address
     return address
+  }
+
+  /**
+   * Retuns a standard error mimicking the object returned by _httpClient.request
+   * @param {String} errMsg the message to be put in result.error
+   * @param {Number} status - status code, optional. Default 400
+   * @returns {{result: {error: *}, status: number}}
+   * @private
+   */
+  _stdError(errMsg, status = 400) {
+    const stdError = {
+      status: status,
+      result: {
+        error: errMsg
+      }
+    }
+
+    return stdError
   }
 }
