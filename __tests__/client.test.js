@@ -783,3 +783,50 @@ it("check number when transfer", async () => {
     expect(err.message).toBe("amount should be less than 2^63")
   }
 })
+
+it("test get filtered txs with no filter should fail", async () => {
+  const client = await getClient(false)
+  const res = await client.getFilteredTransactions()
+  expect(res.length).toBe(0)
+})
+
+it("test get filtered txs with filter", async () => {
+  const client = await getClient(false)
+
+  let filters = [
+    {
+      'key': 'message.sender',
+      'val': 'und1x8pl6wzqf9atkm77ymc5vn5dnpl5xytmn200xy'
+    },
+    {
+      'key': 'message.action',
+      'val': 'raise_enterprise_purchase_order'
+    },
+  ]
+
+  const { result: transactions, status } = await client.getFilteredTransactions(filters)
+  expect(status).toBe(200)
+  expect(transactions).toHaveProperty("txs")
+  expect(transactions).toHaveProperty("total_count")
+})
+
+it("test get filtered txs with rubbish filter", async () => {
+  const client = await getClient(false)
+
+  let filters = [
+    {
+      'key': 'mesge.sendr',
+      'val': 'und1x8pl6wzqf9atkm77ymc5vn5dnpl5xytmn200xy'
+    },
+    {
+      'key': 'not.valid.filter',
+      'val': 'raise_enterprise_purchase_order'
+    },
+  ]
+
+  const { result: transactions, status } = await client.getFilteredTransactions(filters)
+  expect(status).toBe(200)
+  expect(transactions).toHaveProperty("txs")
+  expect(transactions).toHaveProperty("total_count")
+  expect(transactions.total_count).toBe('0')
+})
