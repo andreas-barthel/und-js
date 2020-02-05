@@ -54,6 +54,8 @@ export class UndClient {
     if (!this.chainId) {
       const data = await this._httpClient.request("get", CONFIG.API_NODE_INFO)
       this.chainId = data.result.node_info && data.result.node_info.network
+      this.node_info = data.result.node_info
+      this.node_app_version = data.result.application_version
     }
     return this
   }

@@ -154,6 +154,27 @@ it("recover account from privatekey", async () => {
   expect(res.privateKey).toBeTruthy()
 })
 
+it("node_info and node_app_version are defined", async () => {
+  const client = await getClient(false)
+  expect(client.node_info).toBeDefined()
+  expect(client.node_info).toHaveProperty("id")
+  expect(client.node_info).toHaveProperty("listen_addr")
+  expect(client.node_info).toHaveProperty("network")
+  expect(client.node_info).toHaveProperty("version")
+  expect(client.node_info).toHaveProperty("channels")
+  expect(client.node_info).toHaveProperty("moniker")
+
+  expect(client.node_app_version).toBeDefined()
+  expect(client.node_app_version).toHaveProperty("name")
+  expect(client.node_app_version).toHaveProperty("server_name")
+  expect(client.node_app_version).toHaveProperty("client_name")
+  expect(client.node_app_version).toHaveProperty("version")
+  expect(client.node_app_version).toHaveProperty("commit")
+  expect(client.node_app_version).toHaveProperty("build_tags")
+  expect(client.node_app_version).toHaveProperty("go")
+
+})
+
 it("get balance", async () => {
   const client = await getClient(false)
   const res = await client.getBalance(targetAddress)
@@ -166,7 +187,7 @@ it("transfer nund", async () => {
   const coin = "nund"
   let amount = 2001770112
   const client = await getClient(false)
-  
+
   const addr = crypto.getAddressFromPrivateKey(client.privateKey)
   const account = await client._httpClient.request(
     "get",
@@ -209,7 +230,7 @@ it("transfer und with presicion", async () => {
   const coin = "und"
   let amount = 2.001770112
   const client = await getClient(false)
-  
+
   const addr = crypto.getAddressFromPrivateKey(client.privateKey)
   const account = await client._httpClient.request(
     "get",
@@ -251,7 +272,7 @@ it("raise nund enterprise purchase order", async () => {
   const coin = "nund"
   let amount = 2001770112
   const client = await getClient(false)
-  
+
   const addr = crypto.getAddressFromPrivateKey(client.privateKey)
   const account = await client._httpClient.request(
     "get",
@@ -299,7 +320,7 @@ it("delegate und", async () => {
   const coin = "nund"
   let amount = 2001770112
   const client = await getClient(false)
-  
+
   const addr = crypto.getAddressFromPrivateKey(client.privateKey)
   const account = await client._httpClient.request(
     "get",
@@ -342,7 +363,7 @@ it("undelegate und", async () => {
   const coin = "nund"
   let amount = 10000
   const client = await getClient(false)
-  
+
   const addr = crypto.getAddressFromPrivateKey(client.privateKey)
   const account = await client._httpClient.request(
     "get",
@@ -385,7 +406,7 @@ it("redelegate und", async () => {
   const coin = "nund"
   let amount = 1000
   const client = await getClient(false)
-  
+
   const addr = crypto.getAddressFromPrivateKey(client.privateKey)
   const account = await client._httpClient.request(
     "get",
@@ -423,7 +444,7 @@ it("redelegate und", async () => {
 
 it("withdraw delegation rewards", async () => {
   const client = await getClient(false)
-  
+
   const addr = crypto.getAddressFromPrivateKey(client.privateKey)
   const account = await client._httpClient.request(
     "get",
@@ -458,7 +479,7 @@ it("withdraw delegation rewards", async () => {
 
 it("modify delegation withdraw address", async () => {
   const client = await getClient(false)
-  
+
   const addr = crypto.getAddressFromPrivateKey(client.privateKey)
   const account = await client._httpClient.request(
     "get",
