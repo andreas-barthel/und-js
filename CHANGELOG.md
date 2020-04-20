@@ -2,6 +2,10 @@
 
 See commits for individual file changes.
 
+## v1.5.2: 20/04/2020 [PR13](https://github.com/unification-com/und-js/pull/13)
+
+* [[`668bd191ac`](https://github.com/unification-com/und-js/commit/668bd191ac)] - npm package dependency updates (Codegnosis)
+
 ## v1.5.1: 05/02/2020 [PR11](https://github.com/unification-com/und-js/pull/11)
 
 * [[`c76915aaf9`](https://github.com/unification-com/und-js/commit/c76915aaf9)] - verbose jest & increment patch number (Codegnosis)
