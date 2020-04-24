@@ -2,6 +2,13 @@
 
 See commits for individual file changes.
 
+## v1.6.0: 24/04/2020 [PR14](https://github.com/unification-com/und-js/pull/14)
+
+* [[`8073c0dbe7`](https://github.com/unification-com/und-js/commit/8073c0dbe7)] - increment minor version number (Codegnosis)
+* [[`9087eaa087`](https://github.com/unification-com/und-js/commit/9087eaa087)] - dos - update jsdoc with getIsAddressEntWhitelisted (Codegnosis)
+* [[`de511808e9`](https://github.com/unification-com/und-js/commit/de511808e9)] - add unit test for whitelist query (Codegnosis)
+* [[`783e6cf981`](https://github.com/unification-com/und-js/commit/783e6cf981)] - add query for checking if given address is enterprise whitelisted (Codegnosis)
+
 ## v1.5.2: 20/04/2020 [PR13](https://github.com/unification-com/und-js/pull/13)
 
 * [[`668bd191ac`](https://github.com/unification-com/und-js/commit/668bd191ac)] - npm package dependency updates (Codegnosis)
