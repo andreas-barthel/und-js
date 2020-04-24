@@ -26,4 +26,5 @@ module.exports = Object.freeze({
   API_QUERY_DISTRIBUTION_WITHDRAW_ADDRESS_SUFFIX: "withdraw_address",
   API_QUERY_DISTRIBUTION_OUTSTANDING_REWARDS_SUFFIX: "outstanding_rewards",
   API_QUERY_SUPPLY: "/supply/total",
+  API_QUERY_ENT_WHITELISTED: "/enterprise/whitelisted"
 })

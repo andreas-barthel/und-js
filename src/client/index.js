@@ -886,6 +886,20 @@ export class UndClient {
   }
 
   /**
+   * check is given address is able to raise Enterprise purchase orders
+   * @param {String} address
+   * @returns {Promise} resolves with http response
+   */
+  async getIsAddressEntWhitelisted(address) {
+    try {
+      const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_ENT_WHITELISTED}/${address}`)
+      return data
+    } catch (err) {
+      return this._stdError(err.toString())
+    }
+  }
+
+  /**
    * Creates a private key and returns it and its address.
    * @return {object} the private key and address in an object.
    * {
