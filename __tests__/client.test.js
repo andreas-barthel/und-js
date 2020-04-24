@@ -853,10 +853,18 @@ it("test get filtered txs with rubbish filter", async () => {
   expect(transactions.total_count).toBe('0')
 })
 
-it("test check address is enterprise whitelisted", async () => {
+it("test check address is enterprise whitelisted given address", async () => {
   const client = await getClient(false)
 
   const { result: res, status } = await client.getIsAddressEntWhitelisted("und1x8pl6wzqf9atkm77ymc5vn5dnpl5xytmn200xy")
+  expect(status).toBe(200)
+  expect(res.result).toBe(true || false)
+})
+
+it("test check address is enterprise whitelisted default address", async () => {
+  const client = await getClient(false)
+
+  const { result: res, status } = await client.getIsAddressEntWhitelisted()
   expect(status).toBe(200)
   expect(res.result).toBe(true || false)
 })

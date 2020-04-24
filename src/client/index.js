@@ -890,7 +890,7 @@ export class UndClient {
    * @param {String} address
    * @returns {Promise} resolves with http response
    */
-  async getIsAddressEntWhitelisted(address) {
+  async getIsAddressEntWhitelisted(address = this.address) {
     try {
       const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_ENT_WHITELISTED}/${address}`)
       return data
