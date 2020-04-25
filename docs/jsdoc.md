@@ -67,6 +67,7 @@
         * [.getValidatorDistributionOutstandingRewards(valAddress)](#module_client.UndClient+getValidatorDistributionOutstandingRewards) ⇒ <code>Promise</code>
         * [.getValidatorDistributionRewards(valAddress)](#module_client.UndClient+getValidatorDistributionRewards) ⇒ <code>Promise</code>
         * [.getTotalSupply()](#module_client.UndClient+getTotalSupply) ⇒ <code>Promise</code>
+        * [.getIsAddressEntWhitelisted(address)](#module_client.UndClient+getIsAddressEntWhitelisted) ⇒ <code>Promise</code>
         * [.createAccount()](#module_client.UndClient+createAccount) ⇒ <code>object</code>
         * [.createAccountWithKeystore(password)](#module_client.UndClient+createAccountWithKeystore)
         * [.createAccountWithMneomnic()](#module_client.UndClient+createAccountWithMneomnic) ⇒ <code>object</code>
@@ -125,6 +126,7 @@ The UND Mainchain client.
     * [.getValidatorDistributionOutstandingRewards(valAddress)](#module_client.UndClient+getValidatorDistributionOutstandingRewards) ⇒ <code>Promise</code>
     * [.getValidatorDistributionRewards(valAddress)](#module_client.UndClient+getValidatorDistributionRewards) ⇒ <code>Promise</code>
     * [.getTotalSupply()](#module_client.UndClient+getTotalSupply) ⇒ <code>Promise</code>
+    * [.getIsAddressEntWhitelisted(address)](#module_client.UndClient+getIsAddressEntWhitelisted) ⇒ <code>Promise</code>
     * [.createAccount()](#module_client.UndClient+createAccount) ⇒ <code>object</code>
     * [.createAccountWithKeystore(password)](#module_client.UndClient+createAccountWithKeystore)
     * [.createAccountWithMneomnic()](#module_client.UndClient+createAccountWithMneomnic) ⇒ <code>object</code>
@@ -641,6 +643,18 @@ get total supply of UND
 
 **Kind**: instance method of [<code>UndClient</code>](#module_client.UndClient)  
 **Returns**: <code>Promise</code> - resolves with http response  
+<a name="module_client.UndClient+getIsAddressEntWhitelisted"></a>
+
+#### undClient.getIsAddressEntWhitelisted(address) ⇒ <code>Promise</code>
+check is given address is able to raise Enterprise purchase orders
+
+**Kind**: instance method of [<code>UndClient</code>](#module_client.UndClient)  
+**Returns**: <code>Promise</code> - resolves with http response  
+
+| Param | Type |
+| --- | --- |
+| address | <code>String</code> | 
+
 <a name="module_client.UndClient+createAccount"></a>
 
 #### undClient.createAccount() ⇒ <code>object</code>
