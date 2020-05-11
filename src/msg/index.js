@@ -49,7 +49,7 @@ class GenMsg {
   _generateCoinobj(amount, denom) {
     amount = new Big(amount)
 
-    if(denom === "und") {
+    if(denom === "und" || denom === "fund") {
       amount = Number(amount.mul(CONFIG.BASENUMBER))
       denom = "nund"
     }
