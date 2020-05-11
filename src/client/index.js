@@ -29,16 +29,16 @@ export const DefaultBroadcastDelegate = async function (signedTx) {
 }
 
 /**
- * The UND Mainchain client.
+ * The und Mainchain client.
  */
 export class UndClient {
   /**
-   * @param {String} server UND Mainchain public url
+   * @param {String} server und Mainchain public url
    * @param {String} broadcastMode sync = wait for checkTx, async = send and forget (faster but less guarantees), block = wait for block to process (default sync)
    */
   constructor(server, broadcastMode = "sync") {
     if (!server) {
-      throw new Error("UND Mainchain server should not be null")
+      throw new Error("und Mainchain server should not be null")
     }
     this._httpClient = new HttpRequest(server)
     this._signingDelegate = DefaultSigningDelegate
@@ -140,7 +140,7 @@ export class UndClient {
   }
 
   /**
-   * Transfer UND to an address
+   * Transfer FUND to an address
    * @param {String} toAddress
    * @param {Number} amount
    * @param {Object} fee
@@ -186,7 +186,7 @@ export class UndClient {
   }
 
   /**
-   * Raise an Enterprise UND Purchase Order
+   * Raise an Enterprise FUND Purchase Order
    * @param {Number} amount
    * @param {Object} fee
    * @param {String} denom optional denom
@@ -224,7 +224,7 @@ export class UndClient {
   }
 
   /**
-   * Delegate UND to a validator
+   * Delegate FUND to a validator
    * @param {String} validator
    * @param {Number} amount
    * @param {Object} fee
@@ -270,7 +270,7 @@ export class UndClient {
   }
 
   /**
-   * Undelegate UND from a validator
+   * Undelegate FUND from a validator
    * @param {String} validator
    * @param {Number} amount
    * @param {Object} fee
@@ -316,7 +316,7 @@ export class UndClient {
   }
 
   /**
-   * Redelegate UND from one validator to another
+   * Redelegate FUND from one validator to another
    * @param {String} validatorFrom
    * @param {String} validatorTo
    * @param {Number} amount
@@ -478,7 +478,6 @@ export class UndClient {
   /**
    * Broadcast a transaction to the blockchain.
    * @param {signedTx} tx signed Transaction object
-   * @param {Boolean} sync use synchronous mode, optional
    * @return {Promise} resolves with response (success or fail)
    */
   async sendTransaction(signedTx) {
@@ -488,7 +487,6 @@ export class UndClient {
   /**
    * Broadcast a raw transaction to the blockchain.
    * @param {String} signedBz signed and serialized raw transaction
-   * @param {Boolean} sync use synchronous mode, optional
    * @return {Promise} resolves with response (success or fail)
    */
   async sendRawTransaction(signedBz) {
@@ -533,7 +531,7 @@ export class UndClient {
   }
 
   /**
-   * get enteprise locked UND
+   * get enteprise locked FUND
    * @param {String} address optional address
    * @return {Promise} resolves with http response
    */
@@ -568,7 +566,7 @@ export class UndClient {
   }
 
   /**
-   * Get transactions received by an account - specifically, UND transfers sent to the address
+   * Get transactions received by an account - specifically, FUND transfers sent to the address
    * @param {String} address optional address
    * @param {Number} page page number, default 1
    * @param {Number} limit number of results per page, default 100, max 100
@@ -873,7 +871,7 @@ export class UndClient {
   }
 
   /**
-   * get total supply of UND
+   * get total supply of FUND
    * @returns {Promise} resolves with http response
    */
   async getTotalSupply() {
@@ -978,7 +976,7 @@ export class UndClient {
 
   /**
    * Recovers an account from a mnemonic seed phrase.
-   * @param {string} mneomnic
+   * @param {String} mneomnic
    * {
    * privateKey,
    * address
