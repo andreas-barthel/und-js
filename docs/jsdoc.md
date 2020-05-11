@@ -44,8 +44,8 @@
         * [.redelegate(validatorFrom, validatorTo, amount, fee, denom, delegator, memo, sequence)](#module_client.UndClient+redelegate) ⇒ <code>Promise.&lt;\*&gt;</code>
         * [.modifyWithdrawAddress(withdrawAddress, fee, delegator, memo, sequence)](#module_client.UndClient+modifyWithdrawAddress) ⇒ <code>Promise.&lt;\*&gt;</code>
         * [.withdrawDelegationReward(validator, fee, delegator, memo, sequence)](#module_client.UndClient+withdrawDelegationReward) ⇒ <code>Promise.&lt;\*&gt;</code>
-        * [.sendTransaction(tx, sync)](#module_client.UndClient+sendTransaction) ⇒ <code>Promise</code>
-        * [.sendRawTransaction(signedBz, sync)](#module_client.UndClient+sendRawTransaction) ⇒ <code>Promise</code>
+        * [.sendTransaction(tx)](#module_client.UndClient+sendTransaction) ⇒ <code>Promise</code>
+        * [.sendRawTransaction(signedBz)](#module_client.UndClient+sendRawTransaction) ⇒ <code>Promise</code>
         * [.getAccount(address)](#module_client.UndClient+getAccount) ⇒ <code>Promise</code>
         * [.getBalance(address)](#module_client.UndClient+getBalance) ⇒ <code>Promise</code>
         * [.getEnterpriseLocked(address)](#module_client.UndClient+getEnterpriseLocked) ⇒ <code>Promise</code>
@@ -82,7 +82,7 @@
 <a name="module_client.UndClient"></a>
 
 ### client.UndClient
-The UND Mainchain client.
+The und Mainchain client.
 
 **Kind**: static class of [<code>client</code>](#module_client)  
 
@@ -103,8 +103,8 @@ The UND Mainchain client.
     * [.redelegate(validatorFrom, validatorTo, amount, fee, denom, delegator, memo, sequence)](#module_client.UndClient+redelegate) ⇒ <code>Promise.&lt;\*&gt;</code>
     * [.modifyWithdrawAddress(withdrawAddress, fee, delegator, memo, sequence)](#module_client.UndClient+modifyWithdrawAddress) ⇒ <code>Promise.&lt;\*&gt;</code>
     * [.withdrawDelegationReward(validator, fee, delegator, memo, sequence)](#module_client.UndClient+withdrawDelegationReward) ⇒ <code>Promise.&lt;\*&gt;</code>
-    * [.sendTransaction(tx, sync)](#module_client.UndClient+sendTransaction) ⇒ <code>Promise</code>
-    * [.sendRawTransaction(signedBz, sync)](#module_client.UndClient+sendRawTransaction) ⇒ <code>Promise</code>
+    * [.sendTransaction(tx)](#module_client.UndClient+sendTransaction) ⇒ <code>Promise</code>
+    * [.sendRawTransaction(signedBz)](#module_client.UndClient+sendRawTransaction) ⇒ <code>Promise</code>
     * [.getAccount(address)](#module_client.UndClient+getAccount) ⇒ <code>Promise</code>
     * [.getBalance(address)](#module_client.UndClient+getBalance) ⇒ <code>Promise</code>
     * [.getEnterpriseLocked(address)](#module_client.UndClient+getEnterpriseLocked) ⇒ <code>Promise</code>
@@ -142,7 +142,7 @@ The UND Mainchain client.
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
-| server | <code>String</code> |  | UND Mainchain public url |
+| server | <code>String</code> |  | und Mainchain public url |
 | broadcastMode | <code>String</code> | <code>sync</code> | sync = wait for checkTx, async = send and forget (faster but less guarantees), block = wait for block to process (default sync) |
 
 <a name="module_client.UndClient+initChain"></a>
@@ -226,7 +226,7 @@ Applies the default broadcast delegate.
 <a name="module_client.UndClient+transferUnd"></a>
 
 #### undClient.transferUnd(toAddress, amount, fee, denom, fromAddress, memo, sequence) ⇒ <code>Promise.&lt;\*&gt;</code>
-Transfer UND to an address
+Transfer FUND to an address
 
 **Kind**: instance method of [<code>UndClient</code>](#module_client.UndClient)  
 
@@ -243,7 +243,7 @@ Transfer UND to an address
 <a name="module_client.UndClient+raiseEnterprisePO"></a>
 
 #### undClient.raiseEnterprisePO(amount, fee, denom, fromAddress, memo, sequence) ⇒ <code>Promise.&lt;\*&gt;</code>
-Raise an Enterprise UND Purchase Order
+Raise an Enterprise FUND Purchase Order
 
 **Kind**: instance method of [<code>UndClient</code>](#module_client.UndClient)  
 
@@ -259,7 +259,7 @@ Raise an Enterprise UND Purchase Order
 <a name="module_client.UndClient+delegate"></a>
 
 #### undClient.delegate(validator, amount, fee, denom, delegator, memo, sequence) ⇒ <code>Promise.&lt;\*&gt;</code>
-Delegate UND to a validator
+Delegate FUND to a validator
 
 **Kind**: instance method of [<code>UndClient</code>](#module_client.UndClient)  
 
@@ -276,7 +276,7 @@ Delegate UND to a validator
 <a name="module_client.UndClient+undelegate"></a>
 
 #### undClient.undelegate(validator, amount, fee, denom, delegator, memo, sequence) ⇒ <code>Promise.&lt;\*&gt;</code>
-Undelegate UND from a validator
+Undelegate FUND from a validator
 
 **Kind**: instance method of [<code>UndClient</code>](#module_client.UndClient)  
 
@@ -293,7 +293,7 @@ Undelegate UND from a validator
 <a name="module_client.UndClient+redelegate"></a>
 
 #### undClient.redelegate(validatorFrom, validatorTo, amount, fee, denom, delegator, memo, sequence) ⇒ <code>Promise.&lt;\*&gt;</code>
-Redelegate UND from one validator to another
+Redelegate FUND from one validator to another
 
 **Kind**: instance method of [<code>UndClient</code>](#module_client.UndClient)  
 
@@ -338,7 +338,7 @@ Withdraw Delegator rewards
 
 <a name="module_client.UndClient+sendTransaction"></a>
 
-#### undClient.sendTransaction(tx, sync) ⇒ <code>Promise</code>
+#### undClient.sendTransaction(tx) ⇒ <code>Promise</code>
 Broadcast a transaction to the blockchain.
 
 **Kind**: instance method of [<code>UndClient</code>](#module_client.UndClient)  
@@ -347,11 +347,10 @@ Broadcast a transaction to the blockchain.
 | Param | Type | Description |
 | --- | --- | --- |
 | tx | <code>signedTx</code> | signed Transaction object |
-| sync | <code>Boolean</code> | use synchronous mode, optional |
 
 <a name="module_client.UndClient+sendRawTransaction"></a>
 
-#### undClient.sendRawTransaction(signedBz, sync) ⇒ <code>Promise</code>
+#### undClient.sendRawTransaction(signedBz) ⇒ <code>Promise</code>
 Broadcast a raw transaction to the blockchain.
 
 **Kind**: instance method of [<code>UndClient</code>](#module_client.UndClient)  
@@ -360,7 +359,6 @@ Broadcast a raw transaction to the blockchain.
 | Param | Type | Description |
 | --- | --- | --- |
 | signedBz | <code>String</code> | signed and serialized raw transaction |
-| sync | <code>Boolean</code> | use synchronous mode, optional |
 
 <a name="module_client.UndClient+getAccount"></a>
 
@@ -389,7 +387,7 @@ get balances
 <a name="module_client.UndClient+getEnterpriseLocked"></a>
 
 #### undClient.getEnterpriseLocked(address) ⇒ <code>Promise</code>
-get enteprise locked UND
+get enteprise locked FUND
 
 **Kind**: instance method of [<code>UndClient</code>](#module_client.UndClient)  
 **Returns**: <code>Promise</code> - resolves with http response  
@@ -415,7 +413,7 @@ get transactions for an account
 <a name="module_client.UndClient+getTransactionsReceived"></a>
 
 #### undClient.getTransactionsReceived(address, page, limit) ⇒ <code>Promise</code>
-Get transactions received by an account - specifically, UND transfers sent to the address
+Get transactions received by an account - specifically, FUND transfers sent to the address
 
 **Kind**: instance method of [<code>UndClient</code>](#module_client.UndClient)  
 **Returns**: <code>Promise</code> - resolves with http response  
@@ -639,7 +637,7 @@ get Commission and self-delegation rewards of a single validator
 <a name="module_client.UndClient+getTotalSupply"></a>
 
 #### undClient.getTotalSupply() ⇒ <code>Promise</code>
-get total supply of UND
+get total supply of FUND
 
 **Kind**: instance method of [<code>UndClient</code>](#module_client.UndClient)  
 **Returns**: <code>Promise</code> - resolves with http response  
@@ -709,7 +707,7 @@ Recovers an account from a mnemonic seed phrase.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| mneomnic | <code>string</code> | { privateKey, address } |
+| mneomnic | <code>String</code> | { privateKey, address } |
 
 <a name="module_client.UndClient+recoverAccountFromPrivateKey"></a>
 
