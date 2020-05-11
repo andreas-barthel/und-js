@@ -198,7 +198,7 @@ it("transfer nund", async () => {
     "amount": [
       {
         "denom": "nund",
-        "amount": "2500"
+        "amount": "25000"
       }
     ],
     "gas": "90000"
@@ -224,10 +224,10 @@ it("transfer nund", async () => {
   expect(parseInt(sendAmount)).toBe(amount)
 })
 
-it("transfer und with presicion", async () => {
+it("transfer fund with presicion", async () => {
   jest.setTimeout(30000)
 
-  const coin = "und"
+  const coin = "fund"
   let amount = 2.001770112
   const client = await getClient(false)
 
@@ -241,7 +241,7 @@ it("transfer und with presicion", async () => {
     "amount": [
       {
         "denom": "nund",
-        "amount": "2500"
+        "amount": "25000"
       }
     ],
     "gas": "90000"
@@ -283,7 +283,7 @@ it("raise nund enterprise purchase order", async () => {
     "amount": [
       {
         "denom": "nund",
-        "amount": "2500"
+        "amount": "25000"
       }
     ],
     "gas": "90000"
@@ -307,14 +307,14 @@ it("raise nund enterprise purchase order", async () => {
   expect(parseInt(sendAmount)).toBe(2001770112)
 })
 
-it("get enteprise locked und", async () => {
+it("get enteprise locked fund", async () => {
   const client = await getClient(false)
   const res = await client.getEnterpriseLocked(targetAddress)
   expect(res).toHaveProperty("amount")
   expect(res).toHaveProperty("denom")
 })
 
-it("delegate und", async () => {
+it("delegate fund", async () => {
   jest.setTimeout(30000)
 
   const coin = "nund"
@@ -331,7 +331,7 @@ it("delegate und", async () => {
     "amount": [
       {
         "denom": "nund",
-        "amount": "4872"
+        "amount": "48720"
       }
     ],
     "gas": "194680"
@@ -357,7 +357,7 @@ it("delegate und", async () => {
   expect(parseInt(sendAmount)).toBe(2001770112)
 })
 
-it("undelegate und", async () => {
+it("undelegate fund", async () => {
   jest.setTimeout(30000)
 
   const coin = "nund"
@@ -374,7 +374,7 @@ it("undelegate und", async () => {
     "amount": [
       {
         "denom": "nund",
-        "amount": "4872"
+        "amount": "48720"
       }
     ],
     "gas": "194680"
@@ -400,7 +400,7 @@ it("undelegate und", async () => {
   expect(parseInt(sendAmount)).toBe(10000)
 })
 
-it("redelegate und", async () => {
+it("redelegate fund", async () => {
   jest.setTimeout(30000)
 
   const coin = "nund"
@@ -417,7 +417,7 @@ it("redelegate und", async () => {
     "amount": [
       {
         "denom": "nund",
-        "amount": "8105"
+        "amount": "81050"
       }
     ],
     "gas": "324177"
@@ -455,7 +455,7 @@ it("withdraw delegation rewards", async () => {
     "amount": [
       {
         "denom": "nund",
-        "amount": "4872"
+        "amount": "48720"
       }
     ],
     "gas": "194680"
@@ -474,7 +474,7 @@ it("withdraw delegation rewards", async () => {
 
   const hash = res.result.txhash
   const res2 = await client.getTx(hash)
-  expect(res2.result.logs[0].events[1].type).toBe("transfer")
+  expect(res2.result.logs[0].events[1].type).toBe("withdraw_rewards")
 })
 
 it("modify delegation withdraw address", async () => {
@@ -490,7 +490,7 @@ it("modify delegation withdraw address", async () => {
     "amount": [
       {
         "denom": "nund",
-        "amount": "8105"
+        "amount": "81050"
       }
     ],
     "gas": "324177"
@@ -770,7 +770,7 @@ it("check number when transfer", async () => {
     "amount": [
       {
         "denom": "nund",
-        "amount": "2500"
+        "amount": "25000"
       }
     ],
     "gas": "90000"
