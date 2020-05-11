@@ -2,6 +2,14 @@
 
 See commits for individual file changes.
 
+## v1.6.2: 11/05/2020 [PR15](https://github.com/unification-com/und-js/pull/15)
+
+* [[`5a6d1d5723`](https://github.com/unification-com/und-js/commit/5a6d1d5723)] - increment patch number (Codegnosis)
+* [[`06ae40f08c`](https://github.com/unification-com/und-js/commit/06ae40f08c)] - jsdocs - und -\> fund (Codegnosis)
+* [[`a9f4f2e217`](https://github.com/unification-com/und-js/commit/a9f4f2e217)] - unit tests - und -\> fund (Codegnosis)
+* [[`cda607c90f`](https://github.com/unification-com/und-js/commit/cda607c90f)] - und -\> fund (Codegnosis)
+* [[`28185b45e5`](https://github.com/unification-com/und-js/commit/28185b45e5)] - Merge pull request #14 from unification-com/ent\_whitelist (Indika)
+
 ## v1.6.1: 24/04/2020 [PR14](https://github.com/unification-com/und-js/pull/14)
 
 * [[`1b88aafc`](https://github.com/unification-com/und-js/commit/1b88aafc)] - should default to own address (Codegnosis)
