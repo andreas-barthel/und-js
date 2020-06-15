@@ -50,6 +50,19 @@ const valAddress = "undvaloper1eq239sgefyzm4crl85nfyvt7kw83vrna6lrjet"
 const redelValAddress = "undvaloper13lyhcfekkdczaugqaexya60ckn23l5wazf07px"
 let testTxHash = ''
 
+let beaconId = 0
+let wrkchainId = 0
+
+const makeHash = (length) => {
+  var result           = '';
+  var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  var charactersLength = characters.length;
+  for ( var i = 0; i < length; i++ ) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+  return result;
+}
+
 const wait = ms => {
   return new Promise(function(resolve) {
     setTimeout(function() {
@@ -867,4 +880,121 @@ it("test check address is enterprise whitelisted default address", async () => {
   const { result: res, status } = await client.getIsAddressEntWhitelisted()
   expect(status).toBe(200)
   expect(res.result).toBe(true || false)
+})
+
+it("register beacon", async () => {
+  const client = await getClient(false)
+
+  const addr = crypto.getAddressFromPrivateKey(client.privateKey)
+  const account = await client._httpClient.request(
+    "get",
+    `/auth/accounts/${addr}`
+  )
+
+  const sequence = account.result && account.result.result.account.value.sequence
+  const res = await client.registerBeacon(
+    makeHash(10),
+    "unittestbeacon",
+    addr,
+    "unittestbeacon register",
+    sequence
+  )
+
+  expect(res.status).toBe(200)
+
+  const hash = res.result.txhash
+  const res2 = await client.getTx(hash)
+  expect(res2.result.logs[0].events[1].type).toBe("register_beacon")
+  beaconId = parseInt(res2.result.logs[0].events[1].attributes[0].value)
+})
+
+it("record beacon timestamp", async () => {
+  const client = await getClient(false)
+
+  const addr = crypto.getAddressFromPrivateKey(client.privateKey)
+  const account = await client._httpClient.request(
+    "get",
+    `/auth/accounts/${addr}`
+  )
+
+  const now = new Date();
+  const timestamp = Math.round(now.getTime() / 1000);
+
+  const sequence = account.result && account.result.result.account.value.sequence
+  const res = await client.recordBeaconTimestamp(
+    beaconId,
+    makeHash(64),
+    timestamp,
+    addr,
+    "unittestbeacon record",
+    sequence
+  )
+
+  expect(res.status).toBe(200)
+
+  const hash = res.result.txhash
+  const res2 = await client.getTx(hash)
+  expect(res2.result.logs[0].events[1].type).toBe("record_beacon_timestamp")
+
+})
+
+it("register wrkchain", async () => {
+  const client = await getClient(false)
+
+  const addr = crypto.getAddressFromPrivateKey(client.privateKey)
+  const account = await client._httpClient.request(
+    "get",
+    `/auth/accounts/${addr}`
+  )
+
+  const sequence = account.result && account.result.result.account.value.sequence
+  const res = await client.registerWRKChain(
+    makeHash(10),
+    "geth",
+    "unittestwrkchain",
+    makeHash(64),
+    addr,
+    "unittestwrkchain register",
+    sequence
+  )
+
+  expect(res.status).toBe(200)
+
+  const hash = res.result.txhash
+  const res2 = await client.getTx(hash)
+  expect(res2.result.logs[0].events[1].type).toBe("register_wrkchain")
+  wrkchainId = parseInt(res2.result.logs[0].events[1].attributes[0].value)
+})
+
+it("record wrkchain hashes", async () => {
+  const client = await getClient(false)
+
+  const addr = crypto.getAddressFromPrivateKey(client.privateKey)
+  const account = await client._httpClient.request(
+    "get",
+    `/auth/accounts/${addr}`
+  )
+
+  const now = new Date();
+  const timestamp = Math.round(now.getTime() / 1000);
+
+  const sequence = account.result && account.result.result.account.value.sequence
+  const res = await client.recordWRKChainBlock(
+    wrkchainId,
+    timestamp,
+    makeHash(64),
+    makeHash(64),
+    makeHash(64),
+    makeHash(64),
+    makeHash(64),
+    addr,
+    "unittestwrkchain record",
+    sequence
+  )
+
+  expect(res.status).toBe(200)
+
+  const hash = res.result.txhash
+  const res2 = await client.getTx(hash)
+  expect(res2.result.logs[0].events[1].type).toBe("record_wrkchain_hash")
 })
