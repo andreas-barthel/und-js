@@ -224,6 +224,235 @@ export class UndClient {
   }
 
   /**
+   * Register a BEACON
+   * @param moniker {String} moniker
+   * @param name {String} name optional name
+   * @param fromAddress {String} fromAddress
+   * @param memo {String} memo optional memo
+   * @param sequence {Number} sequence optional sequence
+   * @returns {Promise<*>}
+   */
+  async registerBeacon(moniker, name= "", fromAddress = this.address, memo = "", sequence = null) {
+    if (!fromAddress) {
+      throw new Error("fromAddress should not be empty")
+    }
+    if(!crypto.checkAddress(fromAddress, CONFIG.BECH32_PREFIX)) {
+      throw new Error("invalid fromAddress")
+    }
+    if(moniker === '' || moniker === null || moniker === undefined) {
+      throw new Error("beacon must have a moniker")
+    }
+    let msgData = {
+      type: "RegisterBeacon",
+      moniker: moniker,
+      name: name,
+      owner: fromAddress
+    }
+
+    let params = await this.getBeaconParams();
+
+    let fee = {
+      amount: [
+        {
+          denom: "nund",
+          amount: "10000000000000"
+        }
+      ],
+      gas: "210000"
+    }
+    if("fee_register" in params.result.result) {
+      fee.amount[0].amount = params.result.result.fee_register
+      fee.amount[0].denom = params.result.result.denom
+    }
+
+    const sendMsg = new GenMsg(msgData)
+
+    const signedTx = await this._prepareTx(sendMsg, fromAddress, fee, sequence, memo)
+
+    return this._broadcastDelegate(signedTx)
+  }
+
+  /**
+   * Submit a BEACON timestamp
+   * @param beacon_id {Number} beacon_id
+   * @param hash {String} hash
+   * @param submit_time {Number} submit_time
+   * @param fromAddress {String} fromAddress
+   * @param memo {String} memo optional memo
+   * @param sequence {Number} sequence optional sequence
+   * @returns {Promise<*>}
+   */
+  async recordBeaconTimestamp(beacon_id, hash, submit_time, fromAddress = this.address, memo = "", sequence = null) {
+    if (!fromAddress) {
+      throw new Error("fromAddress should not be empty")
+    }
+    if(!crypto.checkAddress(fromAddress, CONFIG.BECH32_PREFIX)) {
+      throw new Error("invalid fromAddress")
+    }
+
+    if(parseInt(beacon_id) <= 0) {
+      throw new Error("must have beacon id")
+    }
+    if(hash === '' || hash === null || hash === undefined) {
+      throw new Error("beacon must have hash")
+    }
+    if(parseInt(submit_time) <= 0) {
+      throw new Error("must have submit time")
+    }
+    let msgData = {
+      type: "RecordBeaconTimestamp",
+      beacon_id: beacon_id.toString(),
+      hash: hash,
+      submit_time: submit_time.toString(),
+      owner: fromAddress
+    }
+
+    let params = await this.getBeaconParams();
+
+    let fee = {
+      amount: [
+        {
+          denom: "nund",
+          amount: "1000000000"
+        }
+      ],
+      gas: "210000"
+    }
+    if("fee_record" in params.result.result) {
+      fee.amount[0].amount = params.result.result.fee_record
+      fee.amount[0].denom = params.result.result.denom
+    }
+
+    const sendMsg = new GenMsg(msgData)
+
+    const signedTx = await this._prepareTx(sendMsg, fromAddress, fee, sequence, memo)
+
+    return this._broadcastDelegate(signedTx)
+  }
+
+  /**
+   * Register a WRKChain
+   * @param moniker {String} moniker
+   * @param base_type {String} base_type optional base_type
+   * @param name {String} name optional name
+   * @param genesis {String} genesis optional genesis
+   * @param fromAddress {String} fromAddress
+   * @param memo {String} memo optional memo
+   * @param sequence {Number} sequence optional sequence
+   * @returns {Promise<*>}
+   */
+  async registerWRKChain(moniker, base_type, name= "", genesis= "", fromAddress = this.address, memo = "", sequence = null) {
+    if (!fromAddress) {
+      throw new Error("fromAddress should not be empty")
+    }
+    if(!crypto.checkAddress(fromAddress, CONFIG.BECH32_PREFIX)) {
+      throw new Error("invalid fromAddress")
+    }
+    if(moniker === '' || moniker === null || moniker === undefined) {
+      throw new Error("wrkchain must have a moniker")
+    }
+    if(base_type === '' || base_type === null || base_type === undefined) {
+      throw new Error("wrkchain must have a type")
+    }
+    let msgData = {
+      type: "RegisterWrkChain",
+      moniker: moniker,
+      name: name,
+      genesis: genesis,
+      base_type: base_type,
+      owner: fromAddress
+    }
+
+    let params = await this.getWRKChainParams();
+
+    let fee = {
+      amount: [
+        {
+          denom: "nund",
+          amount: "10000000000000"
+        }
+      ],
+      gas: "210000"
+    }
+    if('fee_register' in params.result.result) {
+      fee.amount[0].amount = params.result.result.fee_register
+      fee.amount[0].denom = params.result.result.denom
+    }
+
+    const sendMsg = new GenMsg(msgData)
+
+    const signedTx = await this._prepareTx(sendMsg, fromAddress, fee, sequence, memo)
+
+    return this._broadcastDelegate(signedTx)
+  }
+
+  /**
+   * Submit WRKChain block header hashes
+   * @param wrkchain_id {Number} wrkchain_id
+   * @param height {String} height
+   * @param blockhash {String} blockhash
+   * @param parenthash {String} parenthash optional parenthash
+   * @param hash1 {String} hash1 optional hash1
+   * @param hash2 {String} hash2 optional hash2
+   * @param hash3 {String} hash3 optional hash3
+   * @param fromAddress {String} fromAddress
+   * @param memo {String} memo optional memo
+   * @param sequence {Number} sequence optional sequence
+   * @returns {Promise<*>}
+   */
+  async recordWRKChainBlock(wrkchain_id, height, blockhash, parenthash, hash1, hash2, hash3, fromAddress = this.address, memo = "", sequence = null) {
+    if (!fromAddress) {
+      throw new Error("fromAddress should not be empty")
+    }
+    if(!crypto.checkAddress(fromAddress, CONFIG.BECH32_PREFIX)) {
+      throw new Error("invalid fromAddress")
+    }
+
+    if(parseInt(wrkchain_id) <= 0) {
+      throw new Error("must have wrkchain id")
+    }
+    if(blockhash === '' || blockhash === null || blockhash === undefined) {
+      throw new Error("wrkchain must have blockhash")
+    }
+    if(parseInt(height) <= 0) {
+      throw new Error("must have height")
+    }
+    let msgData = {
+      type: "RecordWrkChainBlock",
+      wrkchain_id: wrkchain_id.toString(),
+      height: height.toString(),
+      blockhash: blockhash,
+      parenthash: parenthash,
+      hash1: hash1,
+      hash2: hash2,
+      hash3: hash3,
+      owner: fromAddress
+    }
+
+    let params = await this.getWRKChainParams();
+
+    let fee = {
+      amount: [
+        {
+          denom: "nund",
+          amount: "1000000000"
+        }
+      ],
+      gas: "210000"
+    }
+    if("fee_record" in params.result.result) {
+      fee.amount[0].amount = params.result.result.fee_record
+      fee.amount[0].denom = params.result.result.denom
+    }
+
+    const sendMsg = new GenMsg(msgData)
+
+    const signedTx = await this._prepareTx(sendMsg, fromAddress, fee, sequence, memo)
+
+    return this._broadcastDelegate(signedTx)
+  }
+
+  /**
    * Delegate FUND to a validator
    * @param {String} validator
    * @param {Number} amount
@@ -497,6 +726,32 @@ export class UndClient {
       }
     }
     return this._httpClient.request("post", `${CONFIG.API_BROADCAST_TX}`, null, opts)
+  }
+
+  /**
+   * get BEACON params
+   * @returns {Promise<{result: {error: *}, status: number}|{result: *, status: *}|void>}
+   */
+  async getBeaconParams() {
+    try {
+      const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_BEACON_PARAMS}`)
+      return data
+    } catch (err) {
+      return this._stdError(err.toString())
+    }
+  }
+
+  /**
+   * get WRKChain params
+   * @returns {Promise<{result: {error: *}, status: number}|{result: *, status: *}|void>}
+   */
+  async getWRKChainParams() {
+    try {
+      const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_WRKCHAIN_PARAMS}`)
+      return data
+    } catch (err) {
+      return this._stdError(err.toString())
+    }
   }
 
   /**

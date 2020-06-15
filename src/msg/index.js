@@ -9,7 +9,11 @@ const SupportedMsgs = {
   MsgUndelegate: "cosmos-sdk/MsgUndelegate",
   MsgWithdrawDelegationReward: "cosmos-sdk/MsgWithdrawDelegationReward",
   MsgBeginRedelegate: "cosmos-sdk/MsgBeginRedelegate",
-  MsgModifyWithdrawAddress: "cosmos-sdk/MsgModifyWithdrawAddress"
+  MsgModifyWithdrawAddress: "cosmos-sdk/MsgModifyWithdrawAddress",
+  RegisterBeacon: "beacon/RegisterBeacon",
+  RecordBeaconTimestamp: "beacon/RecordBeaconTimestamp",
+  RegisterWrkChain: "wrkchain/RegisterWrkChain",
+  RecordWrkChainBlock: "wrkchain/RecordWrkChainBlock"
 }
 
 class GenMsg {
@@ -42,6 +46,18 @@ class GenMsg {
         return msg
       case "MsgModifyWithdrawAddress":
         msg.value = this._generateMsgModifyWithdrawAddress(data)
+        return msg
+      case "RegisterBeacon":
+        msg.value = this._generateRegisterBeacon(data)
+        return msg
+      case "RecordBeaconTimestamp":
+        msg.value = this._generateRecordBeaconTimestamp(data)
+        return msg
+      case "RegisterWrkChain":
+        msg.value = this._generateRegisterWrkChain(data)
+        return msg
+      case "RecordWrkChainBlock":
+        msg.value = this._generateRecordWrkChainBlock(data)
         return msg
     }
   }
@@ -123,6 +139,50 @@ class GenMsg {
       withdraw_address: data.withdraw_address
     }
 
+    return value
+  }
+
+  _generateRegisterBeacon(data) {
+    const value = {
+      moniker: data.moniker,
+      name: data.name,
+      owner: data.owner
+    }
+    return value
+  }
+
+  _generateRecordBeaconTimestamp(data) {
+    const value = {
+      beacon_id: data.beacon_id,
+      hash: data.hash,
+      submit_time: data.submit_time,
+      owner: data.owner
+    }
+    return value
+  }
+
+  _generateRegisterWrkChain(data) {
+    const value = {
+      moniker: data.moniker,
+      name: data.name,
+      genesis: data.genesis,
+      type: data.base_type,
+      owner: data.owner
+    }
+    return value
+  }
+
+  _generateRecordWrkChainBlock(data) {
+    const value = {
+      wrkchain_id: data.wrkchain_id,
+      height: data.height,
+      blockhash: data.blockhash,
+      parenthash: data.parenthash,
+      hash1: data.hash1,
+      hash2: data.hash2,
+      hash3: data.hash3,
+      owner: data.owner
+    }
     return value
   }
 }

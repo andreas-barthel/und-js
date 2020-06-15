@@ -39,6 +39,10 @@
         * [.useDefaultBroadcastDelegate()](#module_client.UndClient+useDefaultBroadcastDelegate) ⇒ <code>UndClient</code>
         * [.transferUnd(toAddress, amount, fee, denom, fromAddress, memo, sequence)](#module_client.UndClient+transferUnd) ⇒ <code>Promise.&lt;\*&gt;</code>
         * [.raiseEnterprisePO(amount, fee, denom, fromAddress, memo, sequence)](#module_client.UndClient+raiseEnterprisePO) ⇒ <code>Promise.&lt;\*&gt;</code>
+        * [.registerBeacon(moniker, name, fromAddress, memo, sequence)](#module_client.UndClient+registerBeacon) ⇒ <code>Promise.&lt;\*&gt;</code>
+        * [.recordBeaconTimestamp(beacon_id, hash, submit_time, fromAddress, memo, sequence)](#module_client.UndClient+recordBeaconTimestamp) ⇒ <code>Promise.&lt;\*&gt;</code>
+        * [.registerWRKChain(moniker, base_type, name, genesis, fromAddress, memo, sequence)](#module_client.UndClient+registerWRKChain) ⇒ <code>Promise.&lt;\*&gt;</code>
+        * [.recordWRKChainBlock(wrkchain_id, height, blockhash, parenthash, hash1, hash2, hash3, fromAddress, memo, sequence)](#module_client.UndClient+recordWRKChainBlock) ⇒ <code>Promise.&lt;\*&gt;</code>
         * [.delegate(validator, amount, fee, denom, delegator, memo, sequence)](#module_client.UndClient+delegate) ⇒ <code>Promise.&lt;\*&gt;</code>
         * [.undelegate(validator, amount, fee, denom, delegator, memo, sequence)](#module_client.UndClient+undelegate) ⇒ <code>Promise.&lt;\*&gt;</code>
         * [.redelegate(validatorFrom, validatorTo, amount, fee, denom, delegator, memo, sequence)](#module_client.UndClient+redelegate) ⇒ <code>Promise.&lt;\*&gt;</code>
@@ -46,6 +50,8 @@
         * [.withdrawDelegationReward(validator, fee, delegator, memo, sequence)](#module_client.UndClient+withdrawDelegationReward) ⇒ <code>Promise.&lt;\*&gt;</code>
         * [.sendTransaction(tx)](#module_client.UndClient+sendTransaction) ⇒ <code>Promise</code>
         * [.sendRawTransaction(signedBz)](#module_client.UndClient+sendRawTransaction) ⇒ <code>Promise</code>
+        * [.getBeaconParams()](#module_client.UndClient+getBeaconParams) ⇒ <code>Promise.&lt;({result: {error: \*}, status: number}\|{result: \*, status: \*}\|void)&gt;</code>
+        * [.getWRKChainParams()](#module_client.UndClient+getWRKChainParams) ⇒ <code>Promise.&lt;({result: {error: \*}, status: number}\|{result: \*, status: \*}\|void)&gt;</code>
         * [.getAccount(address)](#module_client.UndClient+getAccount) ⇒ <code>Promise</code>
         * [.getBalance(address)](#module_client.UndClient+getBalance) ⇒ <code>Promise</code>
         * [.getEnterpriseLocked(address)](#module_client.UndClient+getEnterpriseLocked) ⇒ <code>Promise</code>
@@ -98,6 +104,10 @@ The und Mainchain client.
     * [.useDefaultBroadcastDelegate()](#module_client.UndClient+useDefaultBroadcastDelegate) ⇒ <code>UndClient</code>
     * [.transferUnd(toAddress, amount, fee, denom, fromAddress, memo, sequence)](#module_client.UndClient+transferUnd) ⇒ <code>Promise.&lt;\*&gt;</code>
     * [.raiseEnterprisePO(amount, fee, denom, fromAddress, memo, sequence)](#module_client.UndClient+raiseEnterprisePO) ⇒ <code>Promise.&lt;\*&gt;</code>
+    * [.registerBeacon(moniker, name, fromAddress, memo, sequence)](#module_client.UndClient+registerBeacon) ⇒ <code>Promise.&lt;\*&gt;</code>
+    * [.recordBeaconTimestamp(beacon_id, hash, submit_time, fromAddress, memo, sequence)](#module_client.UndClient+recordBeaconTimestamp) ⇒ <code>Promise.&lt;\*&gt;</code>
+    * [.registerWRKChain(moniker, base_type, name, genesis, fromAddress, memo, sequence)](#module_client.UndClient+registerWRKChain) ⇒ <code>Promise.&lt;\*&gt;</code>
+    * [.recordWRKChainBlock(wrkchain_id, height, blockhash, parenthash, hash1, hash2, hash3, fromAddress, memo, sequence)](#module_client.UndClient+recordWRKChainBlock) ⇒ <code>Promise.&lt;\*&gt;</code>
     * [.delegate(validator, amount, fee, denom, delegator, memo, sequence)](#module_client.UndClient+delegate) ⇒ <code>Promise.&lt;\*&gt;</code>
     * [.undelegate(validator, amount, fee, denom, delegator, memo, sequence)](#module_client.UndClient+undelegate) ⇒ <code>Promise.&lt;\*&gt;</code>
     * [.redelegate(validatorFrom, validatorTo, amount, fee, denom, delegator, memo, sequence)](#module_client.UndClient+redelegate) ⇒ <code>Promise.&lt;\*&gt;</code>
@@ -105,6 +115,8 @@ The und Mainchain client.
     * [.withdrawDelegationReward(validator, fee, delegator, memo, sequence)](#module_client.UndClient+withdrawDelegationReward) ⇒ <code>Promise.&lt;\*&gt;</code>
     * [.sendTransaction(tx)](#module_client.UndClient+sendTransaction) ⇒ <code>Promise</code>
     * [.sendRawTransaction(signedBz)](#module_client.UndClient+sendRawTransaction) ⇒ <code>Promise</code>
+    * [.getBeaconParams()](#module_client.UndClient+getBeaconParams) ⇒ <code>Promise.&lt;({result: {error: \*}, status: number}\|{result: \*, status: \*}\|void)&gt;</code>
+    * [.getWRKChainParams()](#module_client.UndClient+getWRKChainParams) ⇒ <code>Promise.&lt;({result: {error: \*}, status: number}\|{result: \*, status: \*}\|void)&gt;</code>
     * [.getAccount(address)](#module_client.UndClient+getAccount) ⇒ <code>Promise</code>
     * [.getBalance(address)](#module_client.UndClient+getBalance) ⇒ <code>Promise</code>
     * [.getEnterpriseLocked(address)](#module_client.UndClient+getEnterpriseLocked) ⇒ <code>Promise</code>
@@ -256,6 +268,74 @@ Raise an Enterprise FUND Purchase Order
 | memo | <code>String</code> |  | optional memo |
 | sequence | <code>Number</code> | <code></code> | optional sequence |
 
+<a name="module_client.UndClient+registerBeacon"></a>
+
+#### undClient.registerBeacon(moniker, name, fromAddress, memo, sequence) ⇒ <code>Promise.&lt;\*&gt;</code>
+Register a BEACON
+
+**Kind**: instance method of [<code>UndClient</code>](#module_client.UndClient)  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| moniker | <code>String</code> |  | moniker |
+| name | <code>String</code> |  | name optional name |
+| fromAddress | <code>String</code> |  | fromAddress |
+| memo | <code>String</code> |  | memo optional memo |
+| sequence | <code>Number</code> | <code></code> | sequence optional sequence |
+
+<a name="module_client.UndClient+recordBeaconTimestamp"></a>
+
+#### undClient.recordBeaconTimestamp(beacon_id, hash, submit_time, fromAddress, memo, sequence) ⇒ <code>Promise.&lt;\*&gt;</code>
+Submit a BEACON timestamp
+
+**Kind**: instance method of [<code>UndClient</code>](#module_client.UndClient)  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| beacon_id | <code>Number</code> |  | beacon_id |
+| hash | <code>String</code> |  | hash |
+| submit_time | <code>Number</code> |  | submit_time |
+| fromAddress | <code>String</code> |  | fromAddress |
+| memo | <code>String</code> |  | memo optional memo |
+| sequence | <code>Number</code> | <code></code> | sequence optional sequence |
+
+<a name="module_client.UndClient+registerWRKChain"></a>
+
+#### undClient.registerWRKChain(moniker, base_type, name, genesis, fromAddress, memo, sequence) ⇒ <code>Promise.&lt;\*&gt;</code>
+Register a WRKChain
+
+**Kind**: instance method of [<code>UndClient</code>](#module_client.UndClient)  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| moniker | <code>String</code> |  | moniker |
+| base_type | <code>String</code> |  | base_type optional base_type |
+| name | <code>String</code> |  | name optional name |
+| genesis | <code>String</code> |  | genesis optional genesis |
+| fromAddress | <code>String</code> |  | fromAddress |
+| memo | <code>String</code> |  | memo optional memo |
+| sequence | <code>Number</code> | <code></code> | sequence optional sequence |
+
+<a name="module_client.UndClient+recordWRKChainBlock"></a>
+
+#### undClient.recordWRKChainBlock(wrkchain_id, height, blockhash, parenthash, hash1, hash2, hash3, fromAddress, memo, sequence) ⇒ <code>Promise.&lt;\*&gt;</code>
+Submit WRKChain block header hashes
+
+**Kind**: instance method of [<code>UndClient</code>](#module_client.UndClient)  
+
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| wrkchain_id | <code>Number</code> |  | wrkchain_id |
+| height | <code>String</code> |  | height |
+| blockhash | <code>String</code> |  | blockhash |
+| parenthash | <code>String</code> |  | parenthash optional parenthash |
+| hash1 | <code>String</code> |  | hash1 optional hash1 |
+| hash2 | <code>String</code> |  | hash2 optional hash2 |
+| hash3 | <code>String</code> |  | hash3 optional hash3 |
+| fromAddress | <code>String</code> |  | fromAddress |
+| memo | <code>String</code> |  | memo optional memo |
+| sequence | <code>Number</code> | <code></code> | sequence optional sequence |
+
 <a name="module_client.UndClient+delegate"></a>
 
 #### undClient.delegate(validator, amount, fee, denom, delegator, memo, sequence) ⇒ <code>Promise.&lt;\*&gt;</code>
@@ -360,6 +440,18 @@ Broadcast a raw transaction to the blockchain.
 | --- | --- | --- |
 | signedBz | <code>String</code> | signed and serialized raw transaction |
 
+<a name="module_client.UndClient+getBeaconParams"></a>
+
+#### undClient.getBeaconParams() ⇒ <code>Promise.&lt;({result: {error: \*}, status: number}\|{result: \*, status: \*}\|void)&gt;</code>
+get BEACON params
+
+**Kind**: instance method of [<code>UndClient</code>](#module_client.UndClient)  
+<a name="module_client.UndClient+getWRKChainParams"></a>
+
+#### undClient.getWRKChainParams() ⇒ <code>Promise.&lt;({result: {error: \*}, status: number}\|{result: \*, status: \*}\|void)&gt;</code>
+get WRKChain params
+
+**Kind**: instance method of [<code>UndClient</code>](#module_client.UndClient)  
 <a name="module_client.UndClient+getAccount"></a>
 
 #### undClient.getAccount(address) ⇒ <code>Promise</code>
