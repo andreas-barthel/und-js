@@ -2,6 +2,16 @@
 
 See commits for individual file changes.
 
+## v1.7.0: 15/06/2020 [PR16](https://github.com/unification-com/und-js/pull/16)
+
+* [[`7f540138f4`](https://github.com/unification-com/und-js/commit/7f540138f4)] - increment minor version number, modify keywords, update package dependencies (Codegnosis)
+* [[`ca1d4a462a`](https://github.com/unification-com/und-js/commit/ca1d4a462a)] - docs - regenerate API doc (Codegnosis)
+* [[`7ebb257e42`](https://github.com/unification-com/und-js/commit/7ebb257e42)] - tests - unit tests for WRKChain/BEACON functions (Codegnosis)
+* [[`d0b7446016`](https://github.com/unification-com/und-js/commit/d0b7446016)] - client - add register/record BEACON/WRKChain functions (Codegnosis)
+* [[`6e3ae4265b`](https://github.com/unification-com/und-js/commit/6e3ae4265b)] - config - add endpoints to get BEACON and WRKChain params (Codegnosis)
+* [[`514c71da49`](https://github.com/unification-com/und-js/commit/514c71da49)] - msg - implement WRKChain and BEACON messages (Codegnosis)
+* [[`1fc6bbcf5c`](https://github.com/unification-com/und-js/commit/1fc6bbcf5c)] - Merge pull request #15 from unification-com/und\_to\_fund (Indika)
+
 ## v1.6.2: 11/05/2020 [PR15](https://github.com/unification-com/und-js/pull/15)
 
 * [[`5a6d1d5723`](https://github.com/unification-com/und-js/commit/5a6d1d5723)] - increment patch number (Codegnosis)
