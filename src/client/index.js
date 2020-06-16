@@ -228,11 +228,12 @@ export class UndClient {
    * @param moniker {String} moniker
    * @param name {String} name optional name
    * @param fromAddress {String} fromAddress
+   * @param gas {Number} gas optional gas
    * @param memo {String} memo optional memo
    * @param sequence {Number} sequence optional sequence
    * @returns {Promise<*>}
    */
-  async registerBeacon(moniker, name= "", fromAddress = this.address, memo = "", sequence = null) {
+  async registerBeacon(moniker, name= "", fromAddress = this.address, gas = 100000, memo = "", sequence = null) {
     if (!fromAddress) {
       throw new Error("fromAddress should not be empty")
     }
@@ -258,7 +259,7 @@ export class UndClient {
           amount: "10000000000000"
         }
       ],
-      gas: "210000"
+      gas: gas.toString()
     }
     if("fee_register" in params.result.result) {
       fee.amount[0].amount = params.result.result.fee_register
@@ -278,11 +279,12 @@ export class UndClient {
    * @param hash {String} hash
    * @param submit_time {Number} submit_time
    * @param fromAddress {String} fromAddress
+   * @param gas {Number} gas optional gas
    * @param memo {String} memo optional memo
    * @param sequence {Number} sequence optional sequence
    * @returns {Promise<*>}
    */
-  async recordBeaconTimestamp(beacon_id, hash, submit_time, fromAddress = this.address, memo = "", sequence = null) {
+  async recordBeaconTimestamp(beacon_id, hash, submit_time, fromAddress = this.address, gas = 100000, memo = "", sequence = null) {
     if (!fromAddress) {
       throw new Error("fromAddress should not be empty")
     }
@@ -316,7 +318,7 @@ export class UndClient {
           amount: "1000000000"
         }
       ],
-      gas: "210000"
+      gas: gas.toString()
     }
     if("fee_record" in params.result.result) {
       fee.amount[0].amount = params.result.result.fee_record
@@ -337,11 +339,12 @@ export class UndClient {
    * @param name {String} name optional name
    * @param genesis {String} genesis optional genesis
    * @param fromAddress {String} fromAddress
+   * @param gas {Number} gas optional gas
    * @param memo {String} memo optional memo
    * @param sequence {Number} sequence optional sequence
    * @returns {Promise<*>}
    */
-  async registerWRKChain(moniker, base_type, name= "", genesis= "", fromAddress = this.address, memo = "", sequence = null) {
+  async registerWRKChain(moniker, base_type, name= "", genesis= "", fromAddress = this.address, gas = 100000, memo = "", sequence = null) {
     if (!fromAddress) {
       throw new Error("fromAddress should not be empty")
     }
@@ -372,7 +375,7 @@ export class UndClient {
           amount: "10000000000000"
         }
       ],
-      gas: "210000"
+      gas: gas.toString()
     }
     if('fee_register' in params.result.result) {
       fee.amount[0].amount = params.result.result.fee_register
@@ -396,11 +399,12 @@ export class UndClient {
    * @param hash2 {String} hash2 optional hash2
    * @param hash3 {String} hash3 optional hash3
    * @param fromAddress {String} fromAddress
+   * @param gas {Number} gas optional gas
    * @param memo {String} memo optional memo
    * @param sequence {Number} sequence optional sequence
    * @returns {Promise<*>}
    */
-  async recordWRKChainBlock(wrkchain_id, height, blockhash, parenthash, hash1, hash2, hash3, fromAddress = this.address, memo = "", sequence = null) {
+  async recordWRKChainBlock(wrkchain_id, height, blockhash, parenthash, hash1, hash2, hash3, fromAddress = this.address, gas = 120000, memo = "", sequence = null) {
     if (!fromAddress) {
       throw new Error("fromAddress should not be empty")
     }
@@ -438,7 +442,7 @@ export class UndClient {
           amount: "1000000000"
         }
       ],
-      gas: "210000"
+      gas: gas.toString()
     }
     if("fee_record" in params.result.result) {
       fee.amount[0].amount = params.result.result.fee_record
