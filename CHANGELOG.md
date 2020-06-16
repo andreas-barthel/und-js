@@ -2,6 +2,14 @@
 
 See commits for individual file changes.
 
+## v1.7.1: 16/06/2020 [PR17](https://github.com/unification-com/und-js/pull/17)
+
+* [[`a243af5718`](https://github.com/unification-com/und-js/commit/a243af5718)] - increment patch number (Codegnosis)
+* [[`274814680b`](https://github.com/unification-com/und-js/commit/274814680b)] - docs - regenerate API docs (Codegnosis)
+* [[`5541cd236e`](https://github.com/unification-com/und-js/commit/5541cd236e)] - tests - update unit tests for BEACON/WRKChain Txs to reflect gas being passed as param (Codegnosis)
+* [[`027e03a9d2`](https://github.com/unification-com/und-js/commit/027e03a9d2)] - client - fees are fixed, but allow gas to be passed as a parameter for BEACON/WRKChain transactions (Codegnosis)
+* [[`06d6911173`](https://github.com/unification-com/und-js/commit/06d6911173)] - Merge pull request #16 from unification-com/wrkchain\_beacon\_msgs (Indika)
+
 ## v1.7.0: 15/06/2020 [PR16](https://github.com/unification-com/und-js/pull/16)
 
 * [[`7f540138f4`](https://github.com/unification-com/und-js/commit/7f540138f4)] - increment minor version number, modify keywords, update package dependencies (Codegnosis)

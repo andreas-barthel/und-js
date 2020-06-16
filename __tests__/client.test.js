@@ -108,7 +108,7 @@ it("ensures that the number is less than 2^63", async () => {
 })
 
 beforeEach(() => {
-  jest.setTimeout(50000)
+  jest.setTimeout(100000)
 })
 
 it("create account", async () => {
@@ -235,6 +235,8 @@ it("transfer nund", async () => {
   const sendAmount =
     res2.result.tx.value.msg[0].value.amount[0].amount
   expect(parseInt(sendAmount)).toBe(amount)
+
+  await wait(1000)
 })
 
 it("transfer fund with presicion", async () => {
@@ -277,6 +279,8 @@ it("transfer fund with presicion", async () => {
   const sendAmount =
     res2.result.tx.value.msg[0].value.amount[0].amount
   expect(parseInt(sendAmount)).toBe(2001770112)
+
+  await wait(1000)
 })
 
 it("raise nund enterprise purchase order", async () => {
@@ -318,6 +322,8 @@ it("raise nund enterprise purchase order", async () => {
   const sendAmount =
     res2.result.tx.value.msg[0].value.amount.amount
   expect(parseInt(sendAmount)).toBe(2001770112)
+
+  await wait(1000)
 })
 
 it("get enteprise locked fund", async () => {
@@ -368,6 +374,8 @@ it("delegate fund", async () => {
   const sendAmount =
     res2.result.tx.value.msg[0].value.amount.amount
   expect(parseInt(sendAmount)).toBe(2001770112)
+
+  await wait(1000)
 })
 
 it("undelegate fund", async () => {
@@ -411,6 +419,8 @@ it("undelegate fund", async () => {
   const sendAmount =
     res2.result.tx.value.msg[0].value.amount.amount
   expect(parseInt(sendAmount)).toBe(10000)
+
+  await wait(1000)
 })
 
 it("redelegate fund", async () => {
@@ -453,6 +463,8 @@ it("redelegate fund", async () => {
   const hash = res.result.txhash
   const res2 = await client.getTx(hash)
   expect(res2.result.logs[0].events[1].type).toBe("redelegate")
+
+  await wait(1000)
 })
 
 it("withdraw delegation rewards", async () => {
@@ -488,6 +500,8 @@ it("withdraw delegation rewards", async () => {
   const hash = res.result.txhash
   const res2 = await client.getTx(hash)
   expect(res2.result.logs[0].events[1].type).toBe("withdraw_rewards")
+
+  await wait(1000)
 })
 
 it("modify delegation withdraw address", async () => {
@@ -523,6 +537,8 @@ it("modify delegation withdraw address", async () => {
   const hash = res.result.txhash
   const res2 = await client.getTx(hash)
   expect(res2.result.logs[0].events[1].type).toBe("set_withdraw_address")
+
+  await wait(1000)
 })
 
 it("get account", async () => {
@@ -803,6 +819,8 @@ it("check number when transfer", async () => {
     expect(err.message).toBe("amount should be a positive number")
   }
 
+  await wait(1000)
+
   try {
     await client.transferUnd(
       targetAddress,
@@ -816,6 +834,8 @@ it("check number when transfer", async () => {
   } catch (err) {
     expect(err.message).toBe("amount should be less than 2^63")
   }
+
+  await wait(1000)
 })
 
 it("test get filtered txs with no filter should fail", async () => {
@@ -896,6 +916,7 @@ it("register beacon", async () => {
     makeHash(10),
     "unittestbeacon",
     addr,
+    100000,
     "unittestbeacon register",
     sequence
   )
@@ -906,6 +927,8 @@ it("register beacon", async () => {
   const res2 = await client.getTx(hash)
   expect(res2.result.logs[0].events[1].type).toBe("register_beacon")
   beaconId = parseInt(res2.result.logs[0].events[1].attributes[0].value)
+
+  await wait(1000)
 })
 
 it("record beacon timestamp", async () => {
@@ -926,6 +949,7 @@ it("record beacon timestamp", async () => {
     makeHash(64),
     timestamp,
     addr,
+    100000,
     "unittestbeacon record",
     sequence
   )
@@ -935,6 +959,8 @@ it("record beacon timestamp", async () => {
   const hash = res.result.txhash
   const res2 = await client.getTx(hash)
   expect(res2.result.logs[0].events[1].type).toBe("record_beacon_timestamp")
+
+  await wait(1000)
 
 })
 
@@ -954,6 +980,7 @@ it("register wrkchain", async () => {
     "unittestwrkchain",
     makeHash(64),
     addr,
+    100000,
     "unittestwrkchain register",
     sequence
   )
@@ -964,6 +991,8 @@ it("register wrkchain", async () => {
   const res2 = await client.getTx(hash)
   expect(res2.result.logs[0].events[1].type).toBe("register_wrkchain")
   wrkchainId = parseInt(res2.result.logs[0].events[1].attributes[0].value)
+
+  await wait(1000)
 })
 
 it("record wrkchain hashes", async () => {
@@ -988,6 +1017,7 @@ it("record wrkchain hashes", async () => {
     makeHash(64),
     makeHash(64),
     addr,
+    120000,
     "unittestwrkchain record",
     sequence
   )
@@ -996,5 +1026,7 @@ it("record wrkchain hashes", async () => {
 
   const hash = res.result.txhash
   const res2 = await client.getTx(hash)
-  expect(res2.result.logs[0].events[1].type).toBe("record_wrkchain_hash")
+  expect(res2.result.logs[0].events[1].type.substr(0,16)).toBe("record_wrkchain_")
+
+  await wait(1000)
 })
