@@ -39,10 +39,10 @@
         * [.useDefaultBroadcastDelegate()](#module_client.UndClient+useDefaultBroadcastDelegate) ⇒ <code>UndClient</code>
         * [.transferUnd(toAddress, amount, fee, denom, fromAddress, memo, sequence)](#module_client.UndClient+transferUnd) ⇒ <code>Promise.&lt;\*&gt;</code>
         * [.raiseEnterprisePO(amount, fee, denom, fromAddress, memo, sequence)](#module_client.UndClient+raiseEnterprisePO) ⇒ <code>Promise.&lt;\*&gt;</code>
-        * [.registerBeacon(moniker, name, fromAddress, memo, sequence)](#module_client.UndClient+registerBeacon) ⇒ <code>Promise.&lt;\*&gt;</code>
-        * [.recordBeaconTimestamp(beacon_id, hash, submit_time, fromAddress, memo, sequence)](#module_client.UndClient+recordBeaconTimestamp) ⇒ <code>Promise.&lt;\*&gt;</code>
-        * [.registerWRKChain(moniker, base_type, name, genesis, fromAddress, memo, sequence)](#module_client.UndClient+registerWRKChain) ⇒ <code>Promise.&lt;\*&gt;</code>
-        * [.recordWRKChainBlock(wrkchain_id, height, blockhash, parenthash, hash1, hash2, hash3, fromAddress, memo, sequence)](#module_client.UndClient+recordWRKChainBlock) ⇒ <code>Promise.&lt;\*&gt;</code>
+        * [.registerBeacon(moniker, name, fromAddress, gas, memo, sequence)](#module_client.UndClient+registerBeacon) ⇒ <code>Promise.&lt;\*&gt;</code>
+        * [.recordBeaconTimestamp(beacon_id, hash, submit_time, fromAddress, gas, memo, sequence)](#module_client.UndClient+recordBeaconTimestamp) ⇒ <code>Promise.&lt;\*&gt;</code>
+        * [.registerWRKChain(moniker, base_type, name, genesis, fromAddress, gas, memo, sequence)](#module_client.UndClient+registerWRKChain) ⇒ <code>Promise.&lt;\*&gt;</code>
+        * [.recordWRKChainBlock(wrkchain_id, height, blockhash, parenthash, hash1, hash2, hash3, fromAddress, gas, memo, sequence)](#module_client.UndClient+recordWRKChainBlock) ⇒ <code>Promise.&lt;\*&gt;</code>
         * [.delegate(validator, amount, fee, denom, delegator, memo, sequence)](#module_client.UndClient+delegate) ⇒ <code>Promise.&lt;\*&gt;</code>
         * [.undelegate(validator, amount, fee, denom, delegator, memo, sequence)](#module_client.UndClient+undelegate) ⇒ <code>Promise.&lt;\*&gt;</code>
         * [.redelegate(validatorFrom, validatorTo, amount, fee, denom, delegator, memo, sequence)](#module_client.UndClient+redelegate) ⇒ <code>Promise.&lt;\*&gt;</code>
@@ -104,10 +104,10 @@ The und Mainchain client.
     * [.useDefaultBroadcastDelegate()](#module_client.UndClient+useDefaultBroadcastDelegate) ⇒ <code>UndClient</code>
     * [.transferUnd(toAddress, amount, fee, denom, fromAddress, memo, sequence)](#module_client.UndClient+transferUnd) ⇒ <code>Promise.&lt;\*&gt;</code>
     * [.raiseEnterprisePO(amount, fee, denom, fromAddress, memo, sequence)](#module_client.UndClient+raiseEnterprisePO) ⇒ <code>Promise.&lt;\*&gt;</code>
-    * [.registerBeacon(moniker, name, fromAddress, memo, sequence)](#module_client.UndClient+registerBeacon) ⇒ <code>Promise.&lt;\*&gt;</code>
-    * [.recordBeaconTimestamp(beacon_id, hash, submit_time, fromAddress, memo, sequence)](#module_client.UndClient+recordBeaconTimestamp) ⇒ <code>Promise.&lt;\*&gt;</code>
-    * [.registerWRKChain(moniker, base_type, name, genesis, fromAddress, memo, sequence)](#module_client.UndClient+registerWRKChain) ⇒ <code>Promise.&lt;\*&gt;</code>
-    * [.recordWRKChainBlock(wrkchain_id, height, blockhash, parenthash, hash1, hash2, hash3, fromAddress, memo, sequence)](#module_client.UndClient+recordWRKChainBlock) ⇒ <code>Promise.&lt;\*&gt;</code>
+    * [.registerBeacon(moniker, name, fromAddress, gas, memo, sequence)](#module_client.UndClient+registerBeacon) ⇒ <code>Promise.&lt;\*&gt;</code>
+    * [.recordBeaconTimestamp(beacon_id, hash, submit_time, fromAddress, gas, memo, sequence)](#module_client.UndClient+recordBeaconTimestamp) ⇒ <code>Promise.&lt;\*&gt;</code>
+    * [.registerWRKChain(moniker, base_type, name, genesis, fromAddress, gas, memo, sequence)](#module_client.UndClient+registerWRKChain) ⇒ <code>Promise.&lt;\*&gt;</code>
+    * [.recordWRKChainBlock(wrkchain_id, height, blockhash, parenthash, hash1, hash2, hash3, fromAddress, gas, memo, sequence)](#module_client.UndClient+recordWRKChainBlock) ⇒ <code>Promise.&lt;\*&gt;</code>
     * [.delegate(validator, amount, fee, denom, delegator, memo, sequence)](#module_client.UndClient+delegate) ⇒ <code>Promise.&lt;\*&gt;</code>
     * [.undelegate(validator, amount, fee, denom, delegator, memo, sequence)](#module_client.UndClient+undelegate) ⇒ <code>Promise.&lt;\*&gt;</code>
     * [.redelegate(validatorFrom, validatorTo, amount, fee, denom, delegator, memo, sequence)](#module_client.UndClient+redelegate) ⇒ <code>Promise.&lt;\*&gt;</code>
@@ -270,7 +270,7 @@ Raise an Enterprise FUND Purchase Order
 
 <a name="module_client.UndClient+registerBeacon"></a>
 
-#### undClient.registerBeacon(moniker, name, fromAddress, memo, sequence) ⇒ <code>Promise.&lt;\*&gt;</code>
+#### undClient.registerBeacon(moniker, name, fromAddress, gas, memo, sequence) ⇒ <code>Promise.&lt;\*&gt;</code>
 Register a BEACON
 
 **Kind**: instance method of [<code>UndClient</code>](#module_client.UndClient)  
@@ -280,12 +280,13 @@ Register a BEACON
 | moniker | <code>String</code> |  | moniker |
 | name | <code>String</code> |  | name optional name |
 | fromAddress | <code>String</code> |  | fromAddress |
+| gas | <code>Number</code> | <code>100000</code> | gas optional gas |
 | memo | <code>String</code> |  | memo optional memo |
 | sequence | <code>Number</code> | <code></code> | sequence optional sequence |
 
 <a name="module_client.UndClient+recordBeaconTimestamp"></a>
 
-#### undClient.recordBeaconTimestamp(beacon_id, hash, submit_time, fromAddress, memo, sequence) ⇒ <code>Promise.&lt;\*&gt;</code>
+#### undClient.recordBeaconTimestamp(beacon_id, hash, submit_time, fromAddress, gas, memo, sequence) ⇒ <code>Promise.&lt;\*&gt;</code>
 Submit a BEACON timestamp
 
 **Kind**: instance method of [<code>UndClient</code>](#module_client.UndClient)  
@@ -296,12 +297,13 @@ Submit a BEACON timestamp
 | hash | <code>String</code> |  | hash |
 | submit_time | <code>Number</code> |  | submit_time |
 | fromAddress | <code>String</code> |  | fromAddress |
+| gas | <code>Number</code> | <code>100000</code> | gas optional gas |
 | memo | <code>String</code> |  | memo optional memo |
 | sequence | <code>Number</code> | <code></code> | sequence optional sequence |
 
 <a name="module_client.UndClient+registerWRKChain"></a>
 
-#### undClient.registerWRKChain(moniker, base_type, name, genesis, fromAddress, memo, sequence) ⇒ <code>Promise.&lt;\*&gt;</code>
+#### undClient.registerWRKChain(moniker, base_type, name, genesis, fromAddress, gas, memo, sequence) ⇒ <code>Promise.&lt;\*&gt;</code>
 Register a WRKChain
 
 **Kind**: instance method of [<code>UndClient</code>](#module_client.UndClient)  
@@ -313,12 +315,13 @@ Register a WRKChain
 | name | <code>String</code> |  | name optional name |
 | genesis | <code>String</code> |  | genesis optional genesis |
 | fromAddress | <code>String</code> |  | fromAddress |
+| gas | <code>Number</code> | <code>100000</code> | gas optional gas |
 | memo | <code>String</code> |  | memo optional memo |
 | sequence | <code>Number</code> | <code></code> | sequence optional sequence |
 
 <a name="module_client.UndClient+recordWRKChainBlock"></a>
 
-#### undClient.recordWRKChainBlock(wrkchain_id, height, blockhash, parenthash, hash1, hash2, hash3, fromAddress, memo, sequence) ⇒ <code>Promise.&lt;\*&gt;</code>
+#### undClient.recordWRKChainBlock(wrkchain_id, height, blockhash, parenthash, hash1, hash2, hash3, fromAddress, gas, memo, sequence) ⇒ <code>Promise.&lt;\*&gt;</code>
 Submit WRKChain block header hashes
 
 **Kind**: instance method of [<code>UndClient</code>](#module_client.UndClient)  
@@ -333,6 +336,7 @@ Submit WRKChain block header hashes
 | hash2 | <code>String</code> |  | hash2 optional hash2 |
 | hash3 | <code>String</code> |  | hash3 optional hash3 |
 | fromAddress | <code>String</code> |  | fromAddress |
+| gas | <code>Number</code> | <code>120000</code> | gas optional gas |
 | memo | <code>String</code> |  | memo optional memo |
 | sequence | <code>Number</code> | <code></code> | sequence optional sequence |
 
