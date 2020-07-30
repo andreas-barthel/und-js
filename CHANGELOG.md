@@ -2,6 +2,17 @@
 
 See commits for individual file changes.
 
+## v1.8.0: 30/07/2020 [PR18](https://github.com/unification-com/und-js/pull/18)
+
+* [[`6deeb8a333`](https://github.com/unification-com/und-js/commit/6deeb8a333)] - increment minor version (Codegnosis)
+* [[`5dbeacef24`](https://github.com/unification-com/und-js/commit/5dbeacef24)] - tests - add unit test for ledger implementation (Codegnosis)
+* [[`8815d45170`](https://github.com/unification-com/und-js/commit/8815d45170)] - tests - client.test use DevNet proxy (Codegnosis)
+* [[`8cdd6fa312`](https://github.com/unification-com/und-js/commit/8cdd6fa312)] - tx - initial ledger signing implementation (Codegnosis)
+* [[`5c0cadf7b2`](https://github.com/unification-com/und-js/commit/5c0cadf7b2)] - client - initial ledger implementation (Codegnosis)
+* [[`a81ec3f06f`](https://github.com/unification-com/und-js/commit/a81ec3f06f)] - config - add HD path as array for Ledger (Codegnosis)
+* [[`36609bcf46`](https://github.com/unification-com/und-js/commit/36609bcf46)] - utility functions for ledger (Codegnosis)
+* [[`5c1889324d`](https://github.com/unification-com/und-js/commit/5c1889324d)] - npm update packages; add ledger packages (Codegnosis)
+
 ## v1.7.1: 16/06/2020 [PR17](https://github.com/unification-com/und-js/pull/17)
 
 * [[`a243af5718`](https://github.com/unification-com/und-js/commit/a243af5718)] - increment patch number (Codegnosis)
