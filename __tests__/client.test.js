@@ -75,7 +75,7 @@ const getClient = async (
   useAwaitSetPrivateKey = true,
   doNotSetPrivateKey = false
 ) => {
-  const client = new UndClient("http://localhost:1317")
+  const client = new UndClient("http://localhost:1318")
   await client.initChain()
   client.setBroadcastMode("block")
   const privateKey = crypto.getPrivateKeyFromMnemonic(mnemonic)
