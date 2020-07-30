@@ -6,6 +6,9 @@ import hexEncoding from "crypto-js/enc-hex"
 import SHA3 from "crypto-js/sha3"
 import SHA256 from "crypto-js/sha256"
 import RIPEMD160 from "crypto-js/ripemd160"
+import TransportWebUSB from "@ledgerhq/hw-transport-webusb"
+import TransportU2F from "@ledgerhq/hw-transport-u2f"
+import TransportNodeHid from "@ledgerhq/hw-transport-node-hid"
 
 /**
  * @param {arrayBuffer} buf
@@ -272,4 +275,60 @@ export const checkBroadcastMode = (broadcastMode) => {
       break
   }
   return bm
+}
+
+export const isObject = (v) => {
+  return '[object Object]' === Object.prototype.toString.call(v);
+};
+
+export const JSONsort = (o) => {
+  if (Array.isArray(o)) {
+    return o.sort().map(JSONsort);
+  } else if (isObject(o)) {
+    return Object
+      .keys(o)
+      .sort()
+      .reduce(function(a, k) {
+        a[k] = JSONsort(o[k]);
+
+        return a;
+      }, {});
+  }
+
+  return o;
+}
+
+export const getUsbTransport = async (transportType = "WebUSB") => {
+  let transport = null;
+  try {
+    switch(transportType) {
+      case "WebUSB":
+      default:
+        transport = await TransportWebUSB.create();
+        break;
+      case "U2F":
+        transport = await TransportU2F.create();
+        break;
+      case "NodeHID":
+        transport = await TransportNodeHid.open("");
+        break;
+    }
+  } catch (e) {
+    throw new Error(`error connecting to Ledger Device: ${e.toString()}`)
+  }
+
+  return transport
+}
+
+export const reParseLedgerError = (response) => {
+  let reParsed = response
+  switch(response.return_code) {
+    case 0x6804:
+      reParsed.error_message = "Device locked?"
+      break
+    case 0x6e00:
+      reParsed.error_message = "Unification Ledger app does not seem to be open"
+      break
+  }
+  return reParsed
 }
