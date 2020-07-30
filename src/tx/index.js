@@ -1,5 +1,11 @@
 import * as crypto from "../crypto/"
 import * as encoder from "../encoder/"
+import { getUsbTransport, reParseLedgerError } from "../utils"
+import CosmosApp from "ledger-cosmos-js"
+import Secp256k1 from "secp256k1";
+
+const CONFIG = require("../config")
+const {JSONsort} = require("../utils")
 
 class Transaction {
   constructor(data) {
@@ -31,6 +37,48 @@ class Transaction {
 
     const signatureBase64 = Buffer.from(signature, "binary").toString("base64")
     const pubKeyBase64 =  Buffer.from(crypto.generatePubKeyCompressed(privateKey), "binary").toString("base64")
+
+    this.signature = {
+      "signature": signatureBase64,
+      "pub_key": {
+        "type": "tendermint/PubKeySecp256k1",
+        "value": pubKeyBase64
+      }
+    }
+  }
+
+  async signLedger(path, ts = "WebUSB") {
+    let transport = null;
+    try {
+      transport = await getUsbTransport(ts)
+    } catch (e) {
+      throw(e)
+    }
+
+    if(!transport) {
+      throw new Error("no transport method set")
+    }
+
+    const app = new CosmosApp(transport);
+
+    // Ledger app expects sorted msg data
+    let sorted = JSONsort(this.stdMsg)
+
+    let pubKeyResponse = await app.getAddressAndPubKey(path, CONFIG.BECH32_PREFIX)
+
+    if (pubKeyResponse.return_code !== 0x9000) {
+      pubKeyResponse = reParseLedgerError(pubKeyResponse)
+      throw new Error(`Ledger app Error [${pubKeyResponse.return_code}] ${pubKeyResponse.error_message}`)
+    }
+    const pubKeyBase64 = Buffer.from(pubKeyResponse.compressed_pk).toString("base64")
+
+    let response = await app.sign(path, JSON.stringify(sorted));
+
+    if (response.return_code !== 0x9000) {
+      response = reParseLedgerError(response)
+      throw new Error(`Ledger app Error [${response.return_code}] ${response.error_message}`);
+    }
+    const signatureBase64 = Buffer.from(Secp256k1.signatureImport(response.signature)).toString("base64")
 
     this.signature = {
       "signature": signatureBase64,
