@@ -6,7 +6,8 @@ import HttpRequest from "../utils/request"
 import GenMsg from "../msg"
 import Transaction from "../tx"
 import { checkNumber } from "../utils/validateHelper"
-import { checkBroadcastMode } from "../utils"
+import { checkBroadcastMode, getUsbTransport, reParseLedgerError } from "../utils"
+import CosmosApp from "ledger-cosmos-js"
 
 const CONFIG = require("../config")
 
@@ -18,6 +19,15 @@ const CONFIG = require("../config")
  */
 export const DefaultSigningDelegate = async function (tx) {
   return tx.sign(this.privateKey)
+}
+
+/**
+ * The Ledger signing delegate which uses the Ledger app over USB.
+ * @param  {Transaction} tx      the transaction
+ * @return {Transaction}
+ */
+export const LedgerSigningDelegate = async function (tx) {
+  return tx.signLedger(this._ledgerAccount, this._ledgerTransport)
 }
 
 /**
@@ -44,6 +54,10 @@ export class UndClient {
     this._signingDelegate = DefaultSigningDelegate
     this._broadcastDelegate = DefaultBroadcastDelegate
     this._broadcastMode = checkBroadcastMode(broadcastMode)
+    this._ledgerAccount = CONFIG.HD_PATH + "/0"
+    this._ledgerTransport = "WebUSB"
+
+    this.isLedgerMode = false
   }
 
   /**
@@ -69,7 +83,7 @@ export class UndClient {
   async setPrivateKey(privateKey, localOnly = false) {
     if (privateKey !== this.privateKey) {
       const address = crypto.getAddressFromPrivateKey(privateKey, CONFIG.BECH32_PREFIX)
-      if (!address) throw new Error("address is falsy: ${address}. invalid private key?")
+      if (!address) throw new Error(`address is falsy: ${address}. invalid private key?`)
       if (address === this.address) return this // safety
       this.privateKey = privateKey
       this.address = address
@@ -102,11 +116,13 @@ export class UndClient {
   /**
    * Sets the signing delegate (for wallet integrations).
    * @param {function} delegate
+   * @param {boolean} ledgerMode
    * @return {UndClient} this instance (for chaining)
    */
-  setSigningDelegate(delegate) {
+  setSigningDelegate(delegate, ledgerMode = false) {
     if (typeof delegate !== "function") throw new Error("signing delegate must be a function")
     this._signingDelegate = delegate
+    this.isLedgerMode = ledgerMode
     return this
   }
 
@@ -127,6 +143,57 @@ export class UndClient {
    */
   useDefaultSigningDelegate() {
     this._signingDelegate = DefaultSigningDelegate
+    this.isLedgerMode = false
+    return this
+  }
+
+  /**
+   * Applies the Ledger device signing delegate.
+   * @param {Number} acc
+   * @param {String} ts
+   * @param {boolean} localOnly
+   * @return {UndClient} this instance (for chaining)
+   */
+  async useLedgerSigningDelegate(acc = 0, ts = 'WebUSB', localOnly = false) {
+    this._signingDelegate = LedgerSigningDelegate
+    this.isLedgerMode = true
+    let path = CONFIG.HD_PATH_ARR
+    path.push(acc)
+    this._ledgerAccount = path
+    this._ledgerTransport = ts
+
+    let transport = null;
+    try {
+      transport = await getUsbTransport(ts)
+    } catch (e) {
+      throw new Error(`error connecting to Ledger Device: ${e.toString()}`)
+    }
+
+    if(!transport) {
+      throw new Error("no transport method set")
+    }
+
+    const app = new CosmosApp(transport);
+
+    let response = await app.getAddressAndPubKey(this._ledgerAccount, CONFIG.BECH32_PREFIX);
+    if (response.return_code !== 0x9000) {
+      response = reParseLedgerError(response)
+      throw new Error(`Error [${response.return_code}] ${response.error_message}`);
+    }
+
+    this.address = response.bech32_address
+
+    if (!localOnly) {
+      // _setPkPromise is used in _sendTransaction for non-await calls
+      const promise = this._setPkPromise = this._httpClient.request("get", `${CONFIG.API_QUERY_ACCOUNT}/${this.address}`)
+      const data = await promise
+      try {
+        this.account_number = data.result.result.account.value.account_number
+      } catch (e) {
+        this.account_number = null
+      }
+    }
+
     return this
   }
 
@@ -180,7 +247,12 @@ export class UndClient {
 
     const sendMsg = new GenMsg(msgData)
 
-    const signedTx = await this._prepareTx(sendMsg, fromAddress, fee, sequence, memo)
+    let signedTx = null
+    try {
+      signedTx = await this._prepareTx(sendMsg, fromAddress, fee, sequence, memo)
+    } catch(e) {
+      throw(e)
+    }
 
     return this._broadcastDelegate(signedTx)
   }
@@ -218,7 +290,12 @@ export class UndClient {
 
     const sendMsg = new GenMsg(msgData)
 
-    const signedTx = await this._prepareTx(sendMsg, fromAddress, fee, sequence, memo)
+    let signedTx = null
+    try {
+      signedTx = await this._prepareTx(sendMsg, fromAddress, fee, sequence, memo)
+    } catch(e) {
+      throw(e)
+    }
 
     return this._broadcastDelegate(signedTx)
   }
@@ -268,7 +345,12 @@ export class UndClient {
 
     const sendMsg = new GenMsg(msgData)
 
-    const signedTx = await this._prepareTx(sendMsg, fromAddress, fee, sequence, memo)
+    let signedTx = null
+    try {
+      signedTx = await this._prepareTx(sendMsg, fromAddress, fee, sequence, memo)
+    } catch(e) {
+      throw(e)
+    }
 
     return this._broadcastDelegate(signedTx)
   }
@@ -327,7 +409,12 @@ export class UndClient {
 
     const sendMsg = new GenMsg(msgData)
 
-    const signedTx = await this._prepareTx(sendMsg, fromAddress, fee, sequence, memo)
+    let signedTx = null
+    try {
+      signedTx = await this._prepareTx(sendMsg, fromAddress, fee, sequence, memo)
+    } catch(e) {
+      throw(e)
+    }
 
     return this._broadcastDelegate(signedTx)
   }
@@ -384,7 +471,12 @@ export class UndClient {
 
     const sendMsg = new GenMsg(msgData)
 
-    const signedTx = await this._prepareTx(sendMsg, fromAddress, fee, sequence, memo)
+    let signedTx = null
+    try {
+      signedTx = await this._prepareTx(sendMsg, fromAddress, fee, sequence, memo)
+    } catch(e) {
+      throw(e)
+    }
 
     return this._broadcastDelegate(signedTx)
   }
@@ -451,7 +543,12 @@ export class UndClient {
 
     const sendMsg = new GenMsg(msgData)
 
-    const signedTx = await this._prepareTx(sendMsg, fromAddress, fee, sequence, memo)
+    let signedTx = null
+    try {
+      signedTx = await this._prepareTx(sendMsg, fromAddress, fee, sequence, memo)
+    } catch(e) {
+      throw(e)
+    }
 
     return this._broadcastDelegate(signedTx)
   }
@@ -497,7 +594,12 @@ export class UndClient {
 
     const sendMsg = new GenMsg(msgData)
 
-    const signedTx = await this._prepareTx(sendMsg, delegator, fee, sequence, memo)
+    let signedTx = null
+    try {
+      signedTx = await this._prepareTx(sendMsg, delegator, fee, sequence, memo)
+    } catch(e) {
+      throw(e)
+    }
 
     return this._broadcastDelegate(signedTx)
   }
@@ -543,7 +645,12 @@ export class UndClient {
 
     const sendMsg = new GenMsg(msgData)
 
-    const signedTx = await this._prepareTx(sendMsg, delegator, fee, sequence, memo)
+    let signedTx = null
+    try {
+      signedTx = await this._prepareTx(sendMsg, delegator, fee, sequence, memo)
+    } catch(e) {
+      throw(e)
+    }
 
     return this._broadcastDelegate(signedTx)
   }
@@ -597,7 +704,12 @@ export class UndClient {
 
     const sendMsg = new GenMsg(msgData)
 
-    const signedTx = await this._prepareTx(sendMsg, delegator, fee, sequence, memo)
+    let signedTx = null
+    try {
+      signedTx = await this._prepareTx(sendMsg, delegator, fee, sequence, memo)
+    } catch(e) {
+      throw(e)
+    }
 
     return this._broadcastDelegate(signedTx)
   }
@@ -634,7 +746,12 @@ export class UndClient {
 
     const sendMsg = new GenMsg(msgData)
 
-    const signedTx = await this._prepareTx(sendMsg, delegator, fee, sequence, memo)
+    let signedTx = null
+    try {
+      signedTx = await this._prepareTx(sendMsg, delegator, fee, sequence, memo)
+    } catch(e) {
+      throw(e)
+    }
 
     return this._broadcastDelegate(signedTx)
   }
@@ -668,7 +785,12 @@ export class UndClient {
 
     const sendMsg = new GenMsg(msgData)
 
-    const signedTx = await this._prepareTx(sendMsg, delegator, fee, sequence, memo)
+    let signedTx = null
+    try {
+      signedTx = await this._prepareTx(sendMsg, delegator, fee, sequence, memo)
+    } catch(e) {
+      throw(e)
+    }
 
     return this._broadcastDelegate(signedTx)
   }
@@ -685,10 +807,14 @@ export class UndClient {
    */
   async _prepareTx(msg, address, fee, sequence = null, memo = "") {
     if ((!this.account_number || (sequence !== 0 && !sequence)) && address) {
-      const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_ACCOUNT}/${address}`)
-      const accData = data.result.result.account.value
-      sequence = accData.sequence
-      this.account_number = accData.account_number
+      try {
+        const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_ACCOUNT}/${address}`)
+        const accData = data.result.result.account.value
+        sequence = accData.sequence
+        this.account_number = accData.account_number
+      } catch(e) {
+        throw(e)
+      }
       // if user has not used `await` in its call to setPrivateKey (old API), we should wait for the promise here
     } else if (this._setPkPromise) {
       await this._setPkPromise
@@ -704,7 +830,11 @@ export class UndClient {
     }
 
     const tx = new Transaction(options)
-    this._signingDelegate.call(this, tx)
+    try {
+      await this._signingDelegate.call(this, tx)
+    } catch(e) {
+      throw(e)
+    }
     return tx.genSignedTx(this._broadcastMode)
   }
 
@@ -729,7 +859,12 @@ export class UndClient {
         "content-type": "text/plain",
       }
     }
-    return this._httpClient.request("post", `${CONFIG.API_BROADCAST_TX}`, null, opts)
+    try {
+      const data = this._httpClient.request("post", `${CONFIG.API_BROADCAST_TX}`, null, opts)
+      return data
+    } catch (err) {
+      return this._stdError(err.toString())
+    }
   }
 
   /**
