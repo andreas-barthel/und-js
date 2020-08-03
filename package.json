@@ -27,7 +27,6 @@
     "@babel/runtime": "^7.10.5",
     "@ledgerhq/hw-transport": "^5.19.1",
     "@ledgerhq/hw-transport-u2f": "^4.78.0",
-    "@ledgerhq/hw-transport-web-ble": "^4.78.0",
     "@ledgerhq/hw-transport-webusb": "^5.19.1",
     "axios": "^0.19.2",
     "bech32": "^1.1.4",
@@ -54,15 +53,13 @@
     "varstruct": "^6.1.2",
     "websocket-stream": "^5.5.2"
   },
-  "optionalDependencies": {
-    "@ledgerhq/hw-transport-node-hid": "^4.78.0"
-  },
   "devDependencies": {
     "@babel/cli": "^7.10.5",
     "@babel/core": "^7.10.5",
     "@babel/plugin-proposal-class-properties": "^7.10.4",
     "@babel/plugin-transform-async-to-generator": "^7.10.4",
     "@babel/plugin-transform-runtime": "^7.10.5",
+    "@ledgerhq/hw-transport-node-hid": "^4.78.0",
     "@babel/preset-env": "^7.10.4",
     "babel-core": "^7.0.0-0",
     "babel-eslint": "^10.1.0",
