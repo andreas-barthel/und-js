@@ -8,7 +8,6 @@ import SHA256 from "crypto-js/sha256"
 import RIPEMD160 from "crypto-js/ripemd160"
 import TransportWebUSB from "@ledgerhq/hw-transport-webusb"
 import TransportU2F from "@ledgerhq/hw-transport-u2f"
-import TransportNodeHid from "@ledgerhq/hw-transport-node-hid"
 
 /**
  * @param {arrayBuffer} buf
@@ -300,21 +299,24 @@ export const JSONsort = (o) => {
 
 export const getUsbTransport = async (transportType = "WebUSB") => {
   let transport = null;
-  try {
-    switch(transportType) {
-      case "WebUSB":
-      default:
-        transport = await TransportWebUSB.create();
-        break;
-      case "U2F":
-        transport = await TransportU2F.create();
-        break;
-      case "NodeHID":
-        transport = await TransportNodeHid.open("");
-        break;
+  if(typeof ts === "string") {
+    try {
+      switch (transportType) {
+        case "WebUSB":
+        default:
+          transport = await TransportWebUSB.create();
+          break;
+        case "U2F":
+          transport = await TransportU2F.create();
+          break;
+      }
+    } catch (e) {
+      throw new Error(`error connecting to Ledger Device: ${e.toString()}`)
     }
-  } catch (e) {
-    throw new Error(`error connecting to Ledger Device: ${e.toString()}`)
+  } else if(typeof transportType === "object") {
+    if(transportType.constructor.name === "TransportNodeHid") {
+      return transportType
+    }
   }
 
   return transport

@@ -148,9 +148,10 @@ export class UndClient {
   }
 
   /**
-   * Applies the Ledger device signing delegate.
+   * Applies the Ledger device signing delegate. For unit testing,
+   * the Node-HID transport can be passed instead of a string
    * @param {Number} acc
-   * @param {String} ts
+   * @param {String | Transport} ts
    * @param {boolean} localOnly
    * @return {UndClient} this instance (for chaining)
    */
@@ -163,10 +164,17 @@ export class UndClient {
     this._ledgerTransport = ts
 
     let transport = null;
-    try {
-      transport = await getUsbTransport(ts)
-    } catch (e) {
-      throw new Error(`error connecting to Ledger Device: ${e.toString()}`)
+
+    if(typeof ts === "string") {
+      try {
+        transport = await getUsbTransport(ts)
+      } catch (e) {
+        throw new Error(`error connecting to Ledger Device: ${e.toString()}`)
+      }
+    } else if(typeof ts === "object") {
+      if(ts.constructor.name === "TransportNodeHid") {
+        transport = ts
+      }
     }
 
     if(!transport) {
