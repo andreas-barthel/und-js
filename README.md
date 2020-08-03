@@ -35,21 +35,6 @@ $ sudo apt-get install libudev-dev libusb-dev usbutils
 $ npm i @unification-com/und-js --no-optional
 ```
 
-### Use with Webpack
-
-We often see Webpack builds failing with the SDK due to the `usb` 
-dependency, but adding this to your Webpack config should fix that:
-
-```js
-module.exports = {
-  plugins: [new webpack.IgnorePlugin(/^usb$/)]
-}
-```
-or
-```js
-config.plugins.push(new webpack.IgnorePlugin(/^usb$/))
-```
-
 # API
 
 For up-to-date API documentation, please check the 
