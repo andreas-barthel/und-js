@@ -2,8 +2,10 @@
 
 See commits for individual file changes.
 
-## v1.8.2: 03/08/2020 [PR19](https://github.com/unification-com/und-js/pull/19)
+## v1.8.3: 03/08/2020 [PR19](https://github.com/unification-com/und-js/pull/19)
 
+* [[`c13f9132cd`](https://github.com/unification-com/und-js/commit/c13f9132cd)] - use ES6 array clone method (Codegnosis)
+* [[`731d4017aa`](https://github.com/unification-com/und-js/commit/731d4017aa)] - typo (Codegnosis)
 * [[`c88df3502e`](https://github.com/unification-com/und-js/commit/c88df3502e)] - docs - rebuild jsdocs (Codegnosis)
 * [[`cad9a7b494`](https://github.com/unification-com/und-js/commit/cad9a7b494)] - npm package cleanup (Codegnosis)
 * [[`aa7cad7c1f`](https://github.com/unification-com/und-js/commit/aa7cad7c1f)] - eslint (Codegnosis)
