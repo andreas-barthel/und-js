@@ -54,7 +54,9 @@ export class UndClient {
     this._signingDelegate = DefaultSigningDelegate
     this._broadcastDelegate = DefaultBroadcastDelegate
     this._broadcastMode = checkBroadcastMode(broadcastMode)
-    this._ledgerAccount = CONFIG.HD_PATH + "/0"
+    let path =  [...CONFIG.HD_PATH_ARR]
+    path.push(0)
+    this._ledgerAccount = path
     this._ledgerTransport = "WebUSB"
 
     this.isLedgerMode = false
@@ -158,7 +160,7 @@ export class UndClient {
   async useLedgerSigningDelegate(acc = 0, ts = "WebUSB", localOnly = false) {
     this._signingDelegate = LedgerSigningDelegate
     this.isLedgerMode = true
-    let path = CONFIG.HD_PATH_ARR
+    let path = [...CONFIG.HD_PATH_ARR]
     path.push(acc)
     this._ledgerAccount = path
     this._ledgerTransport = ts
