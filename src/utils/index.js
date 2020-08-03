@@ -277,38 +277,38 @@ export const checkBroadcastMode = (broadcastMode) => {
 }
 
 export const isObject = (v) => {
-  return '[object Object]' === Object.prototype.toString.call(v);
-};
+  return "[object Object]" === Object.prototype.toString.call(v)
+}
 
 export const JSONsort = (o) => {
   if (Array.isArray(o)) {
-    return o.sort().map(JSONsort);
+    return o.sort().map(JSONsort)
   } else if (isObject(o)) {
     return Object
       .keys(o)
       .sort()
       .reduce(function(a, k) {
-        a[k] = JSONsort(o[k]);
+        a[k] = JSONsort(o[k])
 
-        return a;
-      }, {});
+        return a
+      }, {})
   }
 
-  return o;
+  return o
 }
 
 export const getUsbTransport = async (transportType = "WebUSB") => {
-  let transport = null;
+  let transport = null
   if(typeof ts === "string") {
     try {
       switch (transportType) {
         case "WebUSB":
         default:
-          transport = await TransportWebUSB.create();
-          break;
+          transport = await TransportWebUSB.create()
+          break
         case "U2F":
-          transport = await TransportU2F.create();
-          break;
+          transport = await TransportU2F.create()
+          break
       }
     } catch (e) {
       throw new Error(`error connecting to Ledger Device: ${e.toString()}`)

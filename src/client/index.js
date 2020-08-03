@@ -155,7 +155,7 @@ export class UndClient {
    * @param {boolean} localOnly
    * @return {UndClient} this instance (for chaining)
    */
-  async useLedgerSigningDelegate(acc = 0, ts = 'WebUSB', localOnly = false) {
+  async useLedgerSigningDelegate(acc = 0, ts = "WebUSB", localOnly = false) {
     this._signingDelegate = LedgerSigningDelegate
     this.isLedgerMode = true
     let path = CONFIG.HD_PATH_ARR
@@ -163,7 +163,7 @@ export class UndClient {
     this._ledgerAccount = path
     this._ledgerTransport = ts
 
-    let transport = null;
+    let transport = null
 
     if(typeof ts === "string") {
       try {
@@ -181,12 +181,12 @@ export class UndClient {
       throw new Error("no transport method set")
     }
 
-    const app = new CosmosApp(transport);
+    const app = new CosmosApp(transport)
 
-    let response = await app.getAddressAndPubKey(this._ledgerAccount, CONFIG.BECH32_PREFIX);
+    let response = await app.getAddressAndPubKey(this._ledgerAccount, CONFIG.BECH32_PREFIX)
     if (response.return_code !== 0x9000) {
       response = reParseLedgerError(response)
-      throw new Error(`Error [${response.return_code}] ${response.error_message}`);
+      throw new Error(`Error [${response.return_code}] ${response.error_message}`)
     }
 
     this.address = response.bech32_address
@@ -325,7 +325,7 @@ export class UndClient {
     if(!crypto.checkAddress(fromAddress, CONFIG.BECH32_PREFIX)) {
       throw new Error("invalid fromAddress")
     }
-    if(moniker === '' || moniker === null || moniker === undefined) {
+    if(moniker === "" || moniker === null || moniker === undefined) {
       throw new Error("beacon must have a moniker")
     }
     let msgData = {
@@ -335,7 +335,7 @@ export class UndClient {
       owner: fromAddress
     }
 
-    let params = await this.getBeaconParams();
+    let params = await this.getBeaconParams()
 
     let fee = {
       amount: [
@@ -385,7 +385,7 @@ export class UndClient {
     if(parseInt(beacon_id) <= 0) {
       throw new Error("must have beacon id")
     }
-    if(hash === '' || hash === null || hash === undefined) {
+    if(hash === "" || hash === null || hash === undefined) {
       throw new Error("beacon must have hash")
     }
     if(parseInt(submit_time) <= 0) {
@@ -399,7 +399,7 @@ export class UndClient {
       owner: fromAddress
     }
 
-    let params = await this.getBeaconParams();
+    let params = await this.getBeaconParams()
 
     let fee = {
       amount: [
@@ -446,10 +446,10 @@ export class UndClient {
     if(!crypto.checkAddress(fromAddress, CONFIG.BECH32_PREFIX)) {
       throw new Error("invalid fromAddress")
     }
-    if(moniker === '' || moniker === null || moniker === undefined) {
+    if(moniker === "" || moniker === null || moniker === undefined) {
       throw new Error("wrkchain must have a moniker")
     }
-    if(base_type === '' || base_type === null || base_type === undefined) {
+    if(base_type === "" || base_type === null || base_type === undefined) {
       throw new Error("wrkchain must have a type")
     }
     let msgData = {
@@ -461,7 +461,7 @@ export class UndClient {
       owner: fromAddress
     }
 
-    let params = await this.getWRKChainParams();
+    let params = await this.getWRKChainParams()
 
     let fee = {
       amount: [
@@ -472,7 +472,7 @@ export class UndClient {
       ],
       gas: gas.toString()
     }
-    if('fee_register' in params.result.result) {
+    if("fee_register" in params.result.result) {
       fee.amount[0].amount = params.result.result.fee_register
       fee.amount[0].denom = params.result.result.denom
     }
@@ -515,7 +515,7 @@ export class UndClient {
     if(parseInt(wrkchain_id) <= 0) {
       throw new Error("must have wrkchain id")
     }
-    if(blockhash === '' || blockhash === null || blockhash === undefined) {
+    if(blockhash === "" || blockhash === null || blockhash === undefined) {
       throw new Error("wrkchain must have blockhash")
     }
     if(parseInt(height) <= 0) {
@@ -533,7 +533,7 @@ export class UndClient {
       owner: fromAddress
     }
 
-    let params = await this.getWRKChainParams();
+    let params = await this.getWRKChainParams()
 
     let fee = {
       amount: [
@@ -1012,12 +1012,12 @@ export class UndClient {
   async getFilteredTransactions(filters, page = 1, limit = 100) {
     if (limit > 100) limit = 100
     try {
-      let filtersString = ''
+      let filtersString = ""
 
       if(Array.isArray(filters) && filters.length > 0) {
         filters.forEach((filter) => {
-          if('key' in filter && 'val' in filter) {
-            filtersString += '&' + filter.key + '=' + filter.val
+          if("key" in filter && "val" in filter) {
+            filtersString += "&" + filter.key + "=" + filter.val
           }
         })
       }
@@ -1070,9 +1070,9 @@ export class UndClient {
    * @param {String} valAddress optional Bech32 operator address
    * @returns {Promise} resolves with http response
    */
-  async getDelegations(address = this.address, valAddress = '') {
+  async getDelegations(address = this.address, valAddress = "") {
     try {
-      let suffix = ''
+      let suffix = ""
       if(valAddress.length > 0) {
         suffix = `/${valAddress}`
       }
@@ -1089,9 +1089,9 @@ export class UndClient {
    * @param {String} valAddress optional Bech32 operator address
    * @returns {Promise} resolves with http response
    */
-  async getUnbondingDelegations(address = this.address, valAddress = '') {
+  async getUnbondingDelegations(address = this.address, valAddress = "") {
     try {
-      let suffix = ''
+      let suffix = ""
       if(valAddress.length > 0) {
         suffix = `/${valAddress}`
       }
@@ -1108,9 +1108,9 @@ export class UndClient {
    * @param {String} valAddress optional Bech32 operator address
    * @returns {Promise} resolves with http response
    */
-  async getBondedValidators(address = this.address, valAddress = '') {
+  async getBondedValidators(address = this.address, valAddress = "") {
     try {
-      let suffix = ''
+      let suffix = ""
       if(valAddress.length > 0) {
         suffix = `/${valAddress}`
       }
@@ -1127,9 +1127,9 @@ export class UndClient {
    * @param {String} valAddress optional Bech32 operator address
    * @returns {Promise} resolves with http response
    */
-  async getDelegatorRewards(address = this.address, valAddress = '') {
+  async getDelegatorRewards(address = this.address, valAddress = "") {
     try {
-      let suffix = ''
+      let suffix = ""
       if(valAddress.length > 0) {
         suffix = `/${valAddress}`
       }
@@ -1162,7 +1162,7 @@ export class UndClient {
    * @param {String} valAddress optional Bech32 operator address
    * @returns {Promise} resolves with http response
    */
-  async getValidators(status = 'bonded', page = 1, limit = 100, valAddress = '') {
+  async getValidators(status = "bonded", page = 1, limit = 100, valAddress = "") {
     if (limit > 100) limit = 100
     switch(status) {
       case "bonded":
@@ -1221,7 +1221,7 @@ export class UndClient {
    * @param {String} valDestAddress optional valDestAddress Bech32 operator address
    * @returns {Promise} resolves with http response
    */
-  async getRedelegations(delAddress = '', valSrcAddress = '', valDestAddress = '') {
+  async getRedelegations(delAddress = "", valSrcAddress = "", valDestAddress = "") {
     try {
       const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_STAKING_REDELEGATIONS}?delegator=${delAddress}&validator_from=${valSrcAddress}&validator_to=${valDestAddress}`)
       return data

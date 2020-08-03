@@ -2,7 +2,7 @@ import * as crypto from "../crypto/"
 import * as encoder from "../encoder/"
 import { getUsbTransport, reParseLedgerError } from "../utils"
 import CosmosApp from "ledger-cosmos-js"
-import Secp256k1 from "secp256k1";
+import Secp256k1 from "secp256k1"
 
 const CONFIG = require("../config")
 const {JSONsort} = require("../utils")
@@ -48,7 +48,7 @@ class Transaction {
   }
 
   async signLedger(path, ts = "WebUSB") {
-    let transport = null;
+    let transport = null
     try {
       transport = await getUsbTransport(ts)
     } catch (e) {
@@ -59,7 +59,7 @@ class Transaction {
       throw new Error("no transport method set")
     }
 
-    const app = new CosmosApp(transport);
+    const app = new CosmosApp(transport)
 
     // Ledger app expects sorted msg data
     let sorted = JSONsort(this.stdMsg)
@@ -72,11 +72,11 @@ class Transaction {
     }
     const pubKeyBase64 = Buffer.from(pubKeyResponse.compressed_pk).toString("base64")
 
-    let response = await app.sign(path, JSON.stringify(sorted));
+    let response = await app.sign(path, JSON.stringify(sorted))
 
     if (response.return_code !== 0x9000) {
       response = reParseLedgerError(response)
-      throw new Error(`Ledger app Error [${response.return_code}] ${response.error_message}`);
+      throw new Error(`Ledger app Error [${response.return_code}] ${response.error_message}`)
     }
     const signatureBase64 = Buffer.from(Secp256k1.signatureImport(response.signature)).toString("base64")
 
