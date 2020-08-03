@@ -2,6 +2,15 @@
 
 See commits for individual file changes.
 
+## v1.8.1: 03/08/2020 [PR19](https://github.com/unification-com/und-js/pull/19)
+
+* [[`c88df3502e`](https://github.com/unification-com/und-js/commit/c88df3502e)] - docs - rebuild jsdocs (Codegnosis)
+* [[`cad9a7b494`](https://github.com/unification-com/und-js/commit/cad9a7b494)] - npm package cleanup (Codegnosis)
+* [[`aa7cad7c1f`](https://github.com/unification-com/und-js/commit/aa7cad7c1f)] - eslint (Codegnosis)
+* [[`c3834d47e9`](https://github.com/unification-com/und-js/commit/c3834d47e9)] - use Node HID transport for unit tests (Codegnosis)
+* [[`c964fab2ef`](https://github.com/unification-com/und-js/commit/c964fab2ef)] - remove Node HID transport and enable as passed parameter (Codegnosis)
+* [[`795660f99d`](https://github.com/unification-com/und-js/commit/795660f99d)] - hw-transport-node-hid should only be dev dependency (Codegnosis)
+
 ## v1.8.0: 30/07/2020 [PR18](https://github.com/unification-com/und-js/pull/18)
 
 * [[`6deeb8a333`](https://github.com/unification-com/und-js/commit/6deeb8a333)] - increment minor version (Codegnosis)
