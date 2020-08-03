@@ -299,7 +299,7 @@ export const JSONsort = (o) => {
 
 export const getUsbTransport = async (transportType = "WebUSB") => {
   let transport = null
-  if(typeof ts === "string") {
+  if(typeof transportType === "string") {
     try {
       switch (transportType) {
         case "WebUSB":
