@@ -1,9 +1,11 @@
 import UndClient from "../src"
+import TransportNodeHid from "@ledgerhq/hw-transport-node-hid"
 
 // Ledger Test Mnemonic: equip will roof matter pink blind book anxiety banner elbow sun young
 
-// Ensure this address has FUND on DevNet, or test will fail
-const ledgerAddress = "und1nkcrcf4ymjq4j9rdmuhturgn3c23lr90kxxwkj"
+// Ensure this address has FUND on DevNet and DevNet is running, or tests will fail
+const ledgerAddress = "und1nkcrcf4ymjq4j9rdmuhturgn3c23lr90kxxwkj" // adddress for 44'/5555'/0'/0/0 (account 0)
+
 const toAddress = "und150xrwj6ca9kyzz20e4x0qj6zm0206jhe4tk7nf"
 let client = null;
 
@@ -22,7 +24,8 @@ const getLedgerClient = async(acc) => {
     client.setBroadcastMode("block")
 
     try {
-      await client.useLedgerSigningDelegate(acc, "NodeHID")
+      let ts = await TransportNodeHid.open("")
+      await client.useLedgerSigningDelegate(acc, ts)
     } catch (e) {
       console.log(e.toString())
       return null

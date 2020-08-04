@@ -33,9 +33,10 @@
         * [.setPrivateKey(privateKey, localOnly)](#module_client.UndClient+setPrivateKey) ⇒ <code>Promise</code>
         * [.setBroadcastMode(broadcastMode)](#module_client.UndClient+setBroadcastMode)
         * [.setAccountNumber(accountNumber)](#module_client.UndClient+setAccountNumber)
-        * [.setSigningDelegate(delegate)](#module_client.UndClient+setSigningDelegate) ⇒ <code>UndClient</code>
+        * [.setSigningDelegate(delegate, ledgerMode)](#module_client.UndClient+setSigningDelegate) ⇒ <code>UndClient</code>
         * [.setBroadcastDelegate(delegate)](#module_client.UndClient+setBroadcastDelegate) ⇒ <code>UndClient</code>
         * [.useDefaultSigningDelegate()](#module_client.UndClient+useDefaultSigningDelegate) ⇒ <code>UndClient</code>
+        * [.useLedgerSigningDelegate(acc, ts, localOnly)](#module_client.UndClient+useLedgerSigningDelegate) ⇒ <code>UndClient</code>
         * [.useDefaultBroadcastDelegate()](#module_client.UndClient+useDefaultBroadcastDelegate) ⇒ <code>UndClient</code>
         * [.transferUnd(toAddress, amount, fee, denom, fromAddress, memo, sequence)](#module_client.UndClient+transferUnd) ⇒ <code>Promise.&lt;\*&gt;</code>
         * [.raiseEnterprisePO(amount, fee, denom, fromAddress, memo, sequence)](#module_client.UndClient+raiseEnterprisePO) ⇒ <code>Promise.&lt;\*&gt;</code>
@@ -83,6 +84,7 @@
         * [.checkAddress(address, prefix)](#module_client.UndClient+checkAddress) ⇒ <code>Boolean</code>
         * [.getClientKeyAddress()](#module_client.UndClient+getClientKeyAddress) ⇒ <code>String</code>
     * [.DefaultSigningDelegate](#module_client.DefaultSigningDelegate) ⇒ <code>Transaction</code>
+    * [.LedgerSigningDelegate](#module_client.LedgerSigningDelegate) ⇒ <code>Transaction</code>
     * [.DefaultBroadcastDelegate](#module_client.DefaultBroadcastDelegate)
 
 <a name="module_client.UndClient"></a>
@@ -98,9 +100,10 @@ The und Mainchain client.
     * [.setPrivateKey(privateKey, localOnly)](#module_client.UndClient+setPrivateKey) ⇒ <code>Promise</code>
     * [.setBroadcastMode(broadcastMode)](#module_client.UndClient+setBroadcastMode)
     * [.setAccountNumber(accountNumber)](#module_client.UndClient+setAccountNumber)
-    * [.setSigningDelegate(delegate)](#module_client.UndClient+setSigningDelegate) ⇒ <code>UndClient</code>
+    * [.setSigningDelegate(delegate, ledgerMode)](#module_client.UndClient+setSigningDelegate) ⇒ <code>UndClient</code>
     * [.setBroadcastDelegate(delegate)](#module_client.UndClient+setBroadcastDelegate) ⇒ <code>UndClient</code>
     * [.useDefaultSigningDelegate()](#module_client.UndClient+useDefaultSigningDelegate) ⇒ <code>UndClient</code>
+    * [.useLedgerSigningDelegate(acc, ts, localOnly)](#module_client.UndClient+useLedgerSigningDelegate) ⇒ <code>UndClient</code>
     * [.useDefaultBroadcastDelegate()](#module_client.UndClient+useDefaultBroadcastDelegate) ⇒ <code>UndClient</code>
     * [.transferUnd(toAddress, amount, fee, denom, fromAddress, memo, sequence)](#module_client.UndClient+transferUnd) ⇒ <code>Promise.&lt;\*&gt;</code>
     * [.raiseEnterprisePO(amount, fee, denom, fromAddress, memo, sequence)](#module_client.UndClient+raiseEnterprisePO) ⇒ <code>Promise.&lt;\*&gt;</code>
@@ -199,15 +202,16 @@ Sets the client's account number.
 
 <a name="module_client.UndClient+setSigningDelegate"></a>
 
-#### undClient.setSigningDelegate(delegate) ⇒ <code>UndClient</code>
+#### undClient.setSigningDelegate(delegate, ledgerMode) ⇒ <code>UndClient</code>
 Sets the signing delegate (for wallet integrations).
 
 **Kind**: instance method of [<code>UndClient</code>](#module_client.UndClient)  
 **Returns**: <code>UndClient</code> - this instance (for chaining)  
 
-| Param | Type |
-| --- | --- |
-| delegate | <code>function</code> | 
+| Param | Type | Default |
+| --- | --- | --- |
+| delegate | <code>function</code> |  | 
+| ledgerMode | <code>boolean</code> | <code>false</code> | 
 
 <a name="module_client.UndClient+setBroadcastDelegate"></a>
 
@@ -228,6 +232,21 @@ Applies the default signing delegate.
 
 **Kind**: instance method of [<code>UndClient</code>](#module_client.UndClient)  
 **Returns**: <code>UndClient</code> - this instance (for chaining)  
+<a name="module_client.UndClient+useLedgerSigningDelegate"></a>
+
+#### undClient.useLedgerSigningDelegate(acc, ts, localOnly) ⇒ <code>UndClient</code>
+Applies the Ledger device signing delegate. For unit testing,
+the Node-HID transport can be passed instead of a string
+
+**Kind**: instance method of [<code>UndClient</code>](#module_client.UndClient)  
+**Returns**: <code>UndClient</code> - this instance (for chaining)  
+
+| Param | Type | Default |
+| --- | --- | --- |
+| acc | <code>Number</code> | <code>0</code> | 
+| ts | <code>String</code> \| <code>Transport</code> | <code>WebUSB</code> | 
+| localOnly | <code>boolean</code> | <code>false</code> | 
+
 <a name="module_client.UndClient+useDefaultBroadcastDelegate"></a>
 
 #### undClient.useDefaultBroadcastDelegate() ⇒ <code>UndClient</code>
@@ -845,6 +864,17 @@ The default signing delegate which uses the local private key.
 | --- | --- | --- |
 | tx | <code>Transaction</code> | the transaction |
 | signMsg | <code>Object</code> | the canonical sign bytes for the msg |
+
+<a name="module_client.LedgerSigningDelegate"></a>
+
+### client.LedgerSigningDelegate ⇒ <code>Transaction</code>
+The Ledger signing delegate which uses the Ledger app over USB.
+
+**Kind**: static constant of [<code>client</code>](#module_client)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| tx | <code>Transaction</code> | the transaction |
 
 <a name="module_client.DefaultBroadcastDelegate"></a>
 
