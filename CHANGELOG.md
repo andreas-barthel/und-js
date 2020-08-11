@@ -2,6 +2,11 @@
 
 See commits for individual file changes.
 
+## v1.8.4: 11/08/2020 [PR20](https://github.com/unification-com/und-js/pull/20)
+
+* [[`807718c769`](https://github.com/unification-com/und-js/commit/807718c769)] - docs - update jsdoc with new method (Codegnosis)
+* [[`26d6a45056`](https://github.com/unification-com/und-js/commit/26d6a45056)] - client - add method for on-ledger address confirmation (Codegnosis)
+
 ## v1.8.3: 03/08/2020 [PR19](https://github.com/unification-com/und-js/pull/19)
 
 * [[`c13f9132cd`](https://github.com/unification-com/und-js/commit/c13f9132cd)] - use ES6 array clone method (Codegnosis)
