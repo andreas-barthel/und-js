@@ -37,6 +37,7 @@
         * [.setBroadcastDelegate(delegate)](#module_client.UndClient+setBroadcastDelegate) ⇒ <code>UndClient</code>
         * [.useDefaultSigningDelegate()](#module_client.UndClient+useDefaultSigningDelegate) ⇒ <code>UndClient</code>
         * [.useLedgerSigningDelegate(acc, ts, localOnly)](#module_client.UndClient+useLedgerSigningDelegate) ⇒ <code>UndClient</code>
+        * [.confirmLedgerAddress()](#module_client.UndClient+confirmLedgerAddress) ⇒ <code>Promise.&lt;\*&gt;</code>
         * [.useDefaultBroadcastDelegate()](#module_client.UndClient+useDefaultBroadcastDelegate) ⇒ <code>UndClient</code>
         * [.transferUnd(toAddress, amount, fee, denom, fromAddress, memo, sequence)](#module_client.UndClient+transferUnd) ⇒ <code>Promise.&lt;\*&gt;</code>
         * [.raiseEnterprisePO(amount, fee, denom, fromAddress, memo, sequence)](#module_client.UndClient+raiseEnterprisePO) ⇒ <code>Promise.&lt;\*&gt;</code>
@@ -104,6 +105,7 @@ The und Mainchain client.
     * [.setBroadcastDelegate(delegate)](#module_client.UndClient+setBroadcastDelegate) ⇒ <code>UndClient</code>
     * [.useDefaultSigningDelegate()](#module_client.UndClient+useDefaultSigningDelegate) ⇒ <code>UndClient</code>
     * [.useLedgerSigningDelegate(acc, ts, localOnly)](#module_client.UndClient+useLedgerSigningDelegate) ⇒ <code>UndClient</code>
+    * [.confirmLedgerAddress()](#module_client.UndClient+confirmLedgerAddress) ⇒ <code>Promise.&lt;\*&gt;</code>
     * [.useDefaultBroadcastDelegate()](#module_client.UndClient+useDefaultBroadcastDelegate) ⇒ <code>UndClient</code>
     * [.transferUnd(toAddress, amount, fee, denom, fromAddress, memo, sequence)](#module_client.UndClient+transferUnd) ⇒ <code>Promise.&lt;\*&gt;</code>
     * [.raiseEnterprisePO(amount, fee, denom, fromAddress, memo, sequence)](#module_client.UndClient+raiseEnterprisePO) ⇒ <code>Promise.&lt;\*&gt;</code>
@@ -235,8 +237,9 @@ Applies the default signing delegate.
 <a name="module_client.UndClient+useLedgerSigningDelegate"></a>
 
 #### undClient.useLedgerSigningDelegate(acc, ts, localOnly) ⇒ <code>UndClient</code>
-Applies the Ledger device signing delegate. For unit testing,
-the Node-HID transport can be passed instead of a string
+Applies the Ledger device signing delegate. Internally assigns the wallet
+address used by the SDK to the respective HD wallet path's address.
+For unit testing, the Node-HID transport can be passed instead of a string
 
 **Kind**: instance method of [<code>UndClient</code>](#module_client.UndClient)  
 **Returns**: <code>UndClient</code> - this instance (for chaining)  
@@ -247,6 +250,14 @@ the Node-HID transport can be passed instead of a string
 | ts | <code>String</code> \| <code>Transport</code> | <code>WebUSB</code> | 
 | localOnly | <code>boolean</code> | <code>false</code> | 
 
+<a name="module_client.UndClient+confirmLedgerAddress"></a>
+
+#### undClient.confirmLedgerAddress() ⇒ <code>Promise.&lt;\*&gt;</code>
+Asks the user to view and confirm the wallet address on the Ledger device
+that is currently being used by the SDK
+
+**Kind**: instance method of [<code>UndClient</code>](#module_client.UndClient)  
+**Returns**: <code>Promise.&lt;\*&gt;</code> - String containing bech32 address for external comparison  
 <a name="module_client.UndClient+useDefaultBroadcastDelegate"></a>
 
 #### undClient.useDefaultBroadcastDelegate() ⇒ <code>UndClient</code>

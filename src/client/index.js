@@ -150,8 +150,9 @@ export class UndClient {
   }
 
   /**
-   * Applies the Ledger device signing delegate. For unit testing,
-   * the Node-HID transport can be passed instead of a string
+   * Applies the Ledger device signing delegate. Internally assigns the wallet
+   * address used by the SDK to the respective HD wallet path's address.
+   * For unit testing, the Node-HID transport can be passed instead of a string
    * @param {Number} acc
    * @param {String | Transport} ts
    * @param {boolean} localOnly
@@ -205,6 +206,39 @@ export class UndClient {
     }
 
     return this
+  }
+
+  /**
+   * Asks the user to view and confirm the wallet address on the Ledger device
+   * that is currently being used by the SDK
+   * @returns {Promise<*>} String containing bech32 address for external comparison
+   */
+  async confirmLedgerAddress() {
+    if(!this.isLedgerMode) {
+      throw new Error("und-js not in Ledger mode")
+    }
+
+    let transport = null
+
+    try {
+      transport = await getUsbTransport(this._ledgerTransport)
+    } catch (e) {
+      throw new Error(`error connecting to Ledger Device: ${e.toString()}`)
+    }
+
+    if(!transport) {
+      throw new Error("no transport method set")
+    }
+
+    const app = new CosmosApp(transport)
+
+    let response = await app.showAddressAndPubKey(this._ledgerAccount, CONFIG.BECH32_PREFIX)
+    if (response.return_code !== 0x9000) {
+      response = reParseLedgerError(response)
+      throw new Error(`Error [${response.return_code}] ${response.error_message}`)
+    }
+
+    return response.bech32_address
   }
 
   /**
