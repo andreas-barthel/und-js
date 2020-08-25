@@ -7,7 +7,7 @@ import TransportNodeHid from "@ledgerhq/hw-transport-node-hid"
 const ledgerAddress = "und1nkcrcf4ymjq4j9rdmuhturgn3c23lr90kxxwkj" // adddress for 44'/5555'/0'/0/0 (account 0)
 
 const toAddress = "und150xrwj6ca9kyzz20e4x0qj6zm0206jhe4tk7nf"
-let client = null;
+let client = null
 
 const wait = ms => {
   return new Promise(function(resolve) {
