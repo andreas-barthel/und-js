@@ -1,6 +1,6 @@
 {
   "name": "@unification-com/und-js",
-  "version": "1.8.4",
+  "version": "1.8.5",
   "description": "Unification Mainchain Wallet SDK",
   "main": "lib/index.js",
   "scripts": {
