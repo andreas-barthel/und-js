@@ -33,6 +33,7 @@
         * [.setPrivateKey(privateKey, localOnly)](#module_client.UndClient+setPrivateKey) ⇒ <code>Promise</code>
         * [.setBroadcastMode(broadcastMode)](#module_client.UndClient+setBroadcastMode)
         * [.setAccountNumber(accountNumber)](#module_client.UndClient+setAccountNumber)
+        * [.setClientNameHeader(clientNameHeader)](#module_client.UndClient+setClientNameHeader) ⇒ <code>UndClient</code>
         * [.setSigningDelegate(delegate, ledgerMode)](#module_client.UndClient+setSigningDelegate) ⇒ <code>UndClient</code>
         * [.setBroadcastDelegate(delegate)](#module_client.UndClient+setBroadcastDelegate) ⇒ <code>UndClient</code>
         * [.useDefaultSigningDelegate()](#module_client.UndClient+useDefaultSigningDelegate) ⇒ <code>UndClient</code>
@@ -50,7 +51,7 @@
         * [.redelegate(validatorFrom, validatorTo, amount, fee, denom, delegator, memo, sequence)](#module_client.UndClient+redelegate) ⇒ <code>Promise.&lt;\*&gt;</code>
         * [.modifyWithdrawAddress(withdrawAddress, fee, delegator, memo, sequence)](#module_client.UndClient+modifyWithdrawAddress) ⇒ <code>Promise.&lt;\*&gt;</code>
         * [.withdrawDelegationReward(validator, fee, delegator, memo, sequence)](#module_client.UndClient+withdrawDelegationReward) ⇒ <code>Promise.&lt;\*&gt;</code>
-        * [.sendTransaction(tx)](#module_client.UndClient+sendTransaction) ⇒ <code>Promise</code>
+        * [.sendTransaction(signedTx)](#module_client.UndClient+sendTransaction) ⇒ <code>Promise</code>
         * [.sendRawTransaction(signedBz)](#module_client.UndClient+sendRawTransaction) ⇒ <code>Promise</code>
         * [.getBeaconParams()](#module_client.UndClient+getBeaconParams) ⇒ <code>Promise.&lt;({result: {error: \*}, status: number}\|{result: \*, status: \*}\|void)&gt;</code>
         * [.getWRKChainParams()](#module_client.UndClient+getWRKChainParams) ⇒ <code>Promise.&lt;({result: {error: \*}, status: number}\|{result: \*, status: \*}\|void)&gt;</code>
@@ -101,6 +102,7 @@ The und Mainchain client.
     * [.setPrivateKey(privateKey, localOnly)](#module_client.UndClient+setPrivateKey) ⇒ <code>Promise</code>
     * [.setBroadcastMode(broadcastMode)](#module_client.UndClient+setBroadcastMode)
     * [.setAccountNumber(accountNumber)](#module_client.UndClient+setAccountNumber)
+    * [.setClientNameHeader(clientNameHeader)](#module_client.UndClient+setClientNameHeader) ⇒ <code>UndClient</code>
     * [.setSigningDelegate(delegate, ledgerMode)](#module_client.UndClient+setSigningDelegate) ⇒ <code>UndClient</code>
     * [.setBroadcastDelegate(delegate)](#module_client.UndClient+setBroadcastDelegate) ⇒ <code>UndClient</code>
     * [.useDefaultSigningDelegate()](#module_client.UndClient+useDefaultSigningDelegate) ⇒ <code>UndClient</code>
@@ -118,7 +120,7 @@ The und Mainchain client.
     * [.redelegate(validatorFrom, validatorTo, amount, fee, denom, delegator, memo, sequence)](#module_client.UndClient+redelegate) ⇒ <code>Promise.&lt;\*&gt;</code>
     * [.modifyWithdrawAddress(withdrawAddress, fee, delegator, memo, sequence)](#module_client.UndClient+modifyWithdrawAddress) ⇒ <code>Promise.&lt;\*&gt;</code>
     * [.withdrawDelegationReward(validator, fee, delegator, memo, sequence)](#module_client.UndClient+withdrawDelegationReward) ⇒ <code>Promise.&lt;\*&gt;</code>
-    * [.sendTransaction(tx)](#module_client.UndClient+sendTransaction) ⇒ <code>Promise</code>
+    * [.sendTransaction(signedTx)](#module_client.UndClient+sendTransaction) ⇒ <code>Promise</code>
     * [.sendRawTransaction(signedBz)](#module_client.UndClient+sendRawTransaction) ⇒ <code>Promise</code>
     * [.getBeaconParams()](#module_client.UndClient+getBeaconParams) ⇒ <code>Promise.&lt;({result: {error: \*}, status: number}\|{result: \*, status: \*}\|void)&gt;</code>
     * [.getWRKChainParams()](#module_client.UndClient+getWRKChainParams) ⇒ <code>Promise.&lt;({result: {error: \*}, status: number}\|{result: \*, status: \*}\|void)&gt;</code>
@@ -201,6 +203,18 @@ Sets the client's account number.
 | Param | Type |
 | --- | --- |
 | accountNumber | <code>boolean</code> | 
+
+<a name="module_client.UndClient+setClientNameHeader"></a>
+
+#### undClient.setClientNameHeader(clientNameHeader) ⇒ <code>UndClient</code>
+Sets an optional clientName for HTTP headers
+
+**Kind**: instance method of [<code>UndClient</code>](#module_client.UndClient)  
+**Returns**: <code>UndClient</code> - this instance (for chaining)  
+
+| Param | Type |
+| --- | --- |
+| clientNameHeader | <code>String</code> | 
 
 <a name="module_client.UndClient+setSigningDelegate"></a>
 
@@ -452,7 +466,7 @@ Withdraw Delegator rewards
 
 <a name="module_client.UndClient+sendTransaction"></a>
 
-#### undClient.sendTransaction(tx) ⇒ <code>Promise</code>
+#### undClient.sendTransaction(signedTx) ⇒ <code>Promise</code>
 Broadcast a transaction to the blockchain.
 
 **Kind**: instance method of [<code>UndClient</code>](#module_client.UndClient)  
@@ -460,7 +474,7 @@ Broadcast a transaction to the blockchain.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| tx | <code>signedTx</code> | signed Transaction object |
+| signedTx | <code>String</code> | signed Transaction object |
 
 <a name="module_client.UndClient+sendRawTransaction"></a>
 
