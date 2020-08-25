@@ -58,6 +58,7 @@ export class UndClient {
     path.push(0)
     this._ledgerAccount = path
     this._ledgerTransport = "WebUSB"
+    this._clientNameHeader = null
 
     this.isLedgerMode = false
   }
@@ -113,6 +114,15 @@ export class UndClient {
    */
   setAccountNumber(accountNumber) {
     this.account_number = accountNumber
+  }
+
+  /**
+   * Sets an optional clientName for HTTP headers
+   * @param {String} clientNameHeader
+   * @return {UndClient} this instance (for chaining)
+   */
+  setClientNameHeader(clientNameHeader) {
+    this._clientNameHeader = clientNameHeader
   }
 
   /**
@@ -852,7 +862,8 @@ export class UndClient {
   async _prepareTx(msg, address, fee, sequence = null, memo = "") {
     if ((!this.account_number || (sequence !== 0 && !sequence)) && address) {
       try {
-        const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_ACCOUNT}/${address}`)
+        const queryString = `${CONFIG.API_QUERY_ACCOUNT}/${address}`
+        const data = await this._runHttpGetRequest(queryString)
         const accData = data.result.result.account.value
         sequence = accData.sequence
         this.account_number = accData.account_number
@@ -884,10 +895,10 @@ export class UndClient {
 
   /**
    * Broadcast a transaction to the blockchain.
-   * @param {signedTx} tx signed Transaction object
+   * @param {String} signedTx signed Transaction object
    * @return {Promise} resolves with response (success or fail)
    */
-  async sendTransaction(signedTx) {
+  async sendTransaction(signedTx = "") {
     return this.sendRawTransaction(signedTx)
   }
 
@@ -896,16 +907,18 @@ export class UndClient {
    * @param {String} signedBz signed and serialized raw transaction
    * @return {Promise} resolves with response (success or fail)
    */
-  async sendRawTransaction(signedBz) {
+  async sendRawTransaction(signedBz = "") {
     const opts = {
       data: JSON.stringify(signedBz),
       headers: {
         "content-type": "text/plain",
       }
     }
+    if(this._clientNameHeader) {
+      opts.headers["clientName"] = this._clientNameHeader
+    }
     try {
-      const data = this._httpClient.request("post", `${CONFIG.API_BROADCAST_TX}`, null, opts)
-      return data
+      return this._httpClient.request("post", `${CONFIG.API_BROADCAST_TX}`, null, opts)
     } catch (err) {
       return this._stdError(err.toString())
     }
@@ -916,12 +929,8 @@ export class UndClient {
    * @returns {Promise<{result: {error: *}, status: number}|{result: *, status: *}|void>}
    */
   async getBeaconParams() {
-    try {
-      const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_BEACON_PARAMS}`)
-      return data
-    } catch (err) {
-      return this._stdError(err.toString())
-    }
+    const queryString = `${CONFIG.API_QUERY_BEACON_PARAMS}`
+    return await this._runHttpGetRequest(queryString)
   }
 
   /**
@@ -929,12 +938,8 @@ export class UndClient {
    * @returns {Promise<{result: {error: *}, status: number}|{result: *, status: *}|void>}
    */
   async getWRKChainParams() {
-    try {
-      const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_WRKCHAIN_PARAMS}`)
-      return data
-    } catch (err) {
-      return this._stdError(err.toString())
-    }
+    const queryString = `${CONFIG.API_QUERY_WRKCHAIN_PARAMS}`
+    return await this._runHttpGetRequest(queryString)
   }
 
   /**
@@ -946,12 +951,9 @@ export class UndClient {
     if (!address) {
       throw new Error("address should not be falsy")
     }
-    try {
-      const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_ACCOUNT}/${address}`)
-      return data
-    } catch (err) {
-      return this._stdError(err.toString())
-    }
+
+    const queryString = `${CONFIG.API_QUERY_ACCOUNT}/${address}`
+    return await this._runHttpGetRequest(queryString)
   }
 
   /**
@@ -995,12 +997,9 @@ export class UndClient {
    */
   async getTransactions(address = this.address, page = 1, limit = 100) {
     if (limit > 100) limit = 100
-    try {
-      const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_TXS}?message.sender=${address}&page=${page}&limit=${limit}`)
-      return data
-    } catch (err) {
-      return this._stdError(err.toString())
-    }
+
+    const queryString = `${CONFIG.API_QUERY_TXS}?message.sender=${address}&page=${page}&limit=${limit}`
+    return await this._runHttpGetRequest(queryString)
   }
 
   /**
@@ -1012,12 +1011,9 @@ export class UndClient {
    */
   async getTransactionsReceived(address = this.address, page = 1, limit = 100) {
     if (limit > 100) limit = 100
-    try {
-      const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_TXS}?transfer.recipient=${address}&page=${page}&limit=${limit}`)
-      return data
-    } catch (err) {
-      return this._stdError(err.toString())
-    }
+
+    const queryString = `${CONFIG.API_QUERY_TXS}?transfer.recipient=${address}&page=${page}&limit=${limit}`
+    return await this._runHttpGetRequest(queryString)
   }
 
   /**
@@ -1047,26 +1043,24 @@ export class UndClient {
    */
   async getFilteredTransactions(filters, page = 1, limit = 100) {
     if (limit > 100) limit = 100
-    try {
-      let filtersString = ""
 
-      if(Array.isArray(filters) && filters.length > 0) {
+    let filtersString = ""
+
+    if(Array.isArray(filters)) {
+      if(filters.length > 0) {
         filters.forEach((filter) => {
-          if("key" in filter && "val" in filter) {
+          if ("key" in filter && "val" in filter) {
             filtersString += "&" + filter.key + "=" + filter.val
           }
         })
       }
-
-      if(filtersString.length === 0) {
-        return this._stdError("getFilteredTransactions error: must include at least one filter passed as an array")
-      }
-
-      const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_TXS}?page=${page}&limit=${limit}&${filtersString}`)
-      return data
-    } catch (err) {
-      return this._stdError(err.toString())
     }
+    if(filtersString.length === 0) {
+      return this._stdError("getFilteredTransactions error: must include at least one filter passed as an array")
+    }
+
+    const queryString = `${CONFIG.API_QUERY_TXS}?page=${page}&limit=${limit}&${filtersString}`
+    return await this._runHttpGetRequest(queryString)
   }
 
   /**
@@ -1075,12 +1069,8 @@ export class UndClient {
    * @return {Promise} resolves with http response
    */
   async getTx(hash) {
-    try {
-      const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_TX}/${hash}`)
-      return data
-    } catch (err) {
-      return this._stdError(err.toString())
-    }
+    const queryString = `${CONFIG.API_QUERY_TX}/${hash}`
+    return await this._runHttpGetRequest(queryString)
   }
 
   /**
@@ -1092,12 +1082,9 @@ export class UndClient {
    */
   async getEnteprisePos(address = this.address, page = 1, limit = 100) {
     if (limit > 100) limit = 100
-    try {
-      const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_ENT_POS}?purchaser=${address}&page=${page}&limit=${limit}`)
-      return data
-    } catch (err) {
-      return this._stdError(err.toString())
-    }
+
+    const queryString = `${CONFIG.API_QUERY_ENT_POS}?purchaser=${address}&page=${page}&limit=${limit}`
+    return await this._runHttpGetRequest(queryString)
   }
 
   /**
@@ -1107,16 +1094,13 @@ export class UndClient {
    * @returns {Promise} resolves with http response
    */
   async getDelegations(address = this.address, valAddress = "") {
-    try {
-      let suffix = ""
-      if(valAddress.length > 0) {
-        suffix = `/${valAddress}`
-      }
-      const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_STAKING_DELEGATORS_PREFIX}/${address}/${CONFIG.API_QUERY_STAKING_DELEGATIONS_SUFFIX}${suffix}`)
-      return data
-    } catch (err) {
-      return this._stdError(err.toString())
+    let suffix = ""
+    if(valAddress.length > 0) {
+      suffix = `/${valAddress}`
     }
+
+    const queryString = `${CONFIG.API_QUERY_STAKING_DELEGATORS_PREFIX}/${address}/${CONFIG.API_QUERY_STAKING_DELEGATIONS_SUFFIX}${suffix}`
+    return await this._runHttpGetRequest(queryString)
   }
 
   /**
@@ -1126,16 +1110,13 @@ export class UndClient {
    * @returns {Promise} resolves with http response
    */
   async getUnbondingDelegations(address = this.address, valAddress = "") {
-    try {
-      let suffix = ""
-      if(valAddress.length > 0) {
-        suffix = `/${valAddress}`
-      }
-      const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_STAKING_DELEGATORS_PREFIX}/${address}/${CONFIG.API_QUERY_STAKING_UNBONDING_DELEGATIONS_SUFFIX}${suffix}`)
-      return data
-    } catch (err) {
-      return this._stdError(err.toString())
+    let suffix = ""
+    if(valAddress.length > 0) {
+      suffix = `/${valAddress}`
     }
+
+    const queryString = `${CONFIG.API_QUERY_STAKING_DELEGATORS_PREFIX}/${address}/${CONFIG.API_QUERY_STAKING_UNBONDING_DELEGATIONS_SUFFIX}${suffix}`
+    return await this._runHttpGetRequest(queryString)
   }
 
   /**
@@ -1145,16 +1126,13 @@ export class UndClient {
    * @returns {Promise} resolves with http response
    */
   async getBondedValidators(address = this.address, valAddress = "") {
-    try {
-      let suffix = ""
-      if(valAddress.length > 0) {
-        suffix = `/${valAddress}`
-      }
-      const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_STAKING_DELEGATORS_PREFIX}/${address}/${CONFIG.API_QUERY_STAKING_VALIDATORS_SUFFIX}${suffix}`)
-      return data
-    } catch (err) {
-      return this._stdError(err.toString())
+    let suffix = ""
+    if(valAddress.length > 0) {
+      suffix = `/${valAddress}`
     }
+
+    const queryString = `${CONFIG.API_QUERY_STAKING_DELEGATORS_PREFIX}/${address}/${CONFIG.API_QUERY_STAKING_VALIDATORS_SUFFIX}${suffix}`
+    return await this._runHttpGetRequest(queryString)
   }
 
   /**
@@ -1164,16 +1142,13 @@ export class UndClient {
    * @returns {Promise} resolves with http response
    */
   async getDelegatorRewards(address = this.address, valAddress = "") {
-    try {
-      let suffix = ""
-      if(valAddress.length > 0) {
-        suffix = `/${valAddress}`
-      }
-      const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_DISTRIBUTION_DELEGATORS_PREFIX}/${address}/${CONFIG.API_QUERY_DISTRIBUTION_REWARDS_SUFFIX}${suffix}`)
-      return data
-    } catch (err) {
-      return this._stdError(err.toString())
+    let suffix = ""
+    if(valAddress.length > 0) {
+      suffix = `/${valAddress}`
     }
+
+    const queryString = `${CONFIG.API_QUERY_DISTRIBUTION_DELEGATORS_PREFIX}/${address}/${CONFIG.API_QUERY_DISTRIBUTION_REWARDS_SUFFIX}${suffix}`
+    return await this._runHttpGetRequest(queryString)
   }
 
   /**
@@ -1182,12 +1157,8 @@ export class UndClient {
    * @returns {Promise} resolves with http response
    */
   async getDelegatorWithdrawAddress(address = this.address) {
-    try {
-      const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_DISTRIBUTION_DELEGATORS_PREFIX}/${address}/${CONFIG.API_QUERY_DISTRIBUTION_WITHDRAW_ADDRESS_SUFFIX}`)
-      return data
-    } catch (err) {
-      return this._stdError(err.toString())
-    }
+    const queryString = `${CONFIG.API_QUERY_DISTRIBUTION_DELEGATORS_PREFIX}/${address}/${CONFIG.API_QUERY_DISTRIBUTION_WITHDRAW_ADDRESS_SUFFIX}`
+    return await this._runHttpGetRequest(queryString)
   }
 
   /**
@@ -1214,12 +1185,9 @@ export class UndClient {
     if(valAddress.length > 0) {
       suffix = `/${valAddress}`
     }
-    try {
-      const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_STAKING_VALIDATORS_PREFIX}${suffix}`)
-      return data
-    } catch (err) {
-      return this._stdError(err.toString())
-    }
+
+    const queryString = `${CONFIG.API_QUERY_STAKING_VALIDATORS_PREFIX}${suffix}`
+    return await this._runHttpGetRequest(queryString)
   }
 
   /**
@@ -1228,12 +1196,8 @@ export class UndClient {
    * @returns {Promise} resolves with http response
    */
   async getValidatorDelegations(valAddress) {
-    try {
-      const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_STAKING_VALIDATORS_PREFIX}/${valAddress}/${CONFIG.API_QUERY_STAKING_DELEGATIONS_SUFFIX}`)
-      return data
-    } catch (err) {
-      return this._stdError(err.toString())
-    }
+    const queryString = `${CONFIG.API_QUERY_STAKING_VALIDATORS_PREFIX}/${valAddress}/${CONFIG.API_QUERY_STAKING_DELEGATIONS_SUFFIX}`
+    return await this._runHttpGetRequest(queryString)
   }
 
   /**
@@ -1242,12 +1206,8 @@ export class UndClient {
    * @returns {Promise} resolves with http response
    */
   async getValidatorUnbondingDelegations(valAddress) {
-    try {
-      const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_STAKING_VALIDATORS_PREFIX}/${valAddress}/${CONFIG.API_QUERY_STAKING_UNBONDING_DELEGATIONS_SUFFIX}`)
-      return data
-    } catch (err) {
-      return this._stdError(err.toString())
-    }
+    const queryString = `${CONFIG.API_QUERY_STAKING_VALIDATORS_PREFIX}/${valAddress}/${CONFIG.API_QUERY_STAKING_UNBONDING_DELEGATIONS_SUFFIX}`
+    return await this._runHttpGetRequest(queryString)
   }
 
   /**
@@ -1258,12 +1218,8 @@ export class UndClient {
    * @returns {Promise} resolves with http response
    */
   async getRedelegations(delAddress = "", valSrcAddress = "", valDestAddress = "") {
-    try {
-      const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_STAKING_REDELEGATIONS}?delegator=${delAddress}&validator_from=${valSrcAddress}&validator_to=${valDestAddress}`)
-      return data
-    } catch (err) {
-      return this._stdError(err.toString())
-    }
+    const queryString = `${CONFIG.API_QUERY_STAKING_REDELEGATIONS}?delegator=${delAddress}&validator_from=${valSrcAddress}&validator_to=${valDestAddress}`
+    return await this._runHttpGetRequest(queryString)
   }
 
   /**
@@ -1272,12 +1228,8 @@ export class UndClient {
    * @returns {Promise} resolves with http response
    */
   async getValidatorDistributionInfo(valAddress) {
-    try {
-      const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_DISTRIBUTION_VALIDATORS_PREFIX}/${valAddress}`)
-      return data
-    } catch (err) {
-      return this._stdError(err.toString())
-    }
+    const queryString = `${CONFIG.API_QUERY_DISTRIBUTION_VALIDATORS_PREFIX}/${valAddress}`
+    return await this._runHttpGetRequest(queryString)
   }
 
   /**
@@ -1286,12 +1238,8 @@ export class UndClient {
    * @returns {Promise} resolves with http response
    */
   async getValidatorDistributionOutstandingRewards(valAddress) {
-    try {
-      const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_DISTRIBUTION_VALIDATORS_PREFIX}/${valAddress}/${CONFIG.API_QUERY_DISTRIBUTION_OUTSTANDING_REWARDS_SUFFIX}`)
-      return data
-    } catch (err) {
-      return this._stdError(err.toString())
-    }
+    const queryString = `${CONFIG.API_QUERY_DISTRIBUTION_VALIDATORS_PREFIX}/${valAddress}/${CONFIG.API_QUERY_DISTRIBUTION_OUTSTANDING_REWARDS_SUFFIX}`
+    return await this._runHttpGetRequest(queryString)
   }
 
   /**
@@ -1300,12 +1248,8 @@ export class UndClient {
    * @returns {Promise} resolves with http response
    */
   async getValidatorDistributionRewards(valAddress) {
-    try {
-      const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_DISTRIBUTION_VALIDATORS_PREFIX}/${valAddress}/${CONFIG.API_QUERY_DISTRIBUTION_REWARDS_SUFFIX}`)
-      return data
-    } catch (err) {
-      return this._stdError(err.toString())
-    }
+    const queryString = `${CONFIG.API_QUERY_DISTRIBUTION_VALIDATORS_PREFIX}/${valAddress}/${CONFIG.API_QUERY_DISTRIBUTION_REWARDS_SUFFIX}`
+    return await this._runHttpGetRequest(queryString)
   }
 
   /**
@@ -1313,12 +1257,8 @@ export class UndClient {
    * @returns {Promise} resolves with http response
    */
   async getTotalSupply() {
-    try {
-      const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_SUPPLY}`)
-      return data
-    } catch (err) {
-      return this._stdError(err.toString())
-    }
+    const queryString = `${CONFIG.API_QUERY_SUPPLY}`
+    return await this._runHttpGetRequest(queryString)
   }
 
   /**
@@ -1327,12 +1267,44 @@ export class UndClient {
    * @returns {Promise} resolves with http response
    */
   async getIsAddressEntWhitelisted(address = this.address) {
+    const queryString = `${CONFIG.API_QUERY_ENT_WHITELISTED}/${address}`
+    return await this._runHttpGetRequest(queryString)
+  }
+
+  /**
+   * Run HTTP Get request with passed query string
+   * @param {String} queryString URL and GET query
+   * @returns {Promise} resolves with http response or standardised error JSON
+   * @private
+   */
+  async _runHttpGetRequest(queryString) {
     try {
-      const data = await this._httpClient.request("get", `${CONFIG.API_QUERY_ENT_WHITELISTED}/${address}`)
-      return data
+      let opts = this._getHttpHeaderOpts()
+      if(opts) {
+        return await this._httpClient.request("get", queryString, null, opts)
+      } else {
+        return await this._httpClient.request("get", queryString)
+      }
     } catch (err) {
       return this._stdError(err.toString())
     }
+  }
+
+  /**
+   * generate optional HTTP Headers for GET requests.
+   * @returns {Object} return optional HTTP headers for GET request
+   * @private
+   */
+  _getHttpHeaderOpts() {
+    let opts = null
+    if(this._clientNameHeader) {
+      opts = {
+        headers: {
+          "clientName": this._clientNameHeader,
+        }
+      }
+    }
+    return opts
   }
 
   /**
