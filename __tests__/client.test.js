@@ -45,22 +45,22 @@ const keystores = {
 }
 
 const targetAddress = "und150xrwj6ca9kyzz20e4x0qj6zm0206jhe4tk7nf"
-const delAddress = "und1x8pl6wzqf9atkm77ymc5vn5dnpl5xytmn200xy"
+// const delAddress = "und1x8pl6wzqf9atkm77ymc5vn5dnpl5xytmn200xy"
 const valAddress = "undvaloper1eq239sgefyzm4crl85nfyvt7kw83vrna6lrjet"
 const redelValAddress = "undvaloper13lyhcfekkdczaugqaexya60ckn23l5wazf07px"
-let testTxHash = ''
+let testTxHash = ""
 
 let beaconId = 0
 let wrkchainId = 0
 
 const makeHash = (length) => {
-  var result           = '';
-  var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  var charactersLength = characters.length;
+  var result           = ""
+  var characters       = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+  var charactersLength = characters.length
   for ( var i = 0; i < length; i++ ) {
-    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    result += characters.charAt(Math.floor(Math.random() * charactersLength))
   }
-  return result;
+  return result
 }
 
 const wait = ms => {
@@ -850,12 +850,12 @@ it("test get filtered txs with filter", async () => {
 
   let filters = [
     {
-      'key': 'message.sender',
-      'val': 'und1x8pl6wzqf9atkm77ymc5vn5dnpl5xytmn200xy'
+      "key": "message.sender",
+      "val": "und1x8pl6wzqf9atkm77ymc5vn5dnpl5xytmn200xy"
     },
     {
-      'key': 'message.action',
-      'val': 'raise_enterprise_purchase_order'
+      "key": "message.action",
+      "val": "raise_enterprise_purchase_order"
     },
   ]
 
@@ -870,12 +870,12 @@ it("test get filtered txs with rubbish filter", async () => {
 
   let filters = [
     {
-      'key': 'mesge.sendr',
-      'val': 'und1x8pl6wzqf9atkm77ymc5vn5dnpl5xytmn200xy'
+      "key": "mesge.sendr",
+      "val": "und1x8pl6wzqf9atkm77ymc5vn5dnpl5xytmn200xy"
     },
     {
-      'key': 'not.valid.filter',
-      'val': 'raise_enterprise_purchase_order'
+      "key": "not.valid.filter",
+      "val": "raise_enterprise_purchase_order"
     },
   ]
 
@@ -883,7 +883,7 @@ it("test get filtered txs with rubbish filter", async () => {
   expect(status).toBe(200)
   expect(transactions).toHaveProperty("txs")
   expect(transactions).toHaveProperty("total_count")
-  expect(transactions.total_count).toBe('0')
+  expect(transactions.total_count).toBe("0")
 })
 
 it("test check address is enterprise whitelisted given address", async () => {
@@ -940,8 +940,8 @@ it("record beacon timestamp", async () => {
     `/auth/accounts/${addr}`
   )
 
-  const now = new Date();
-  const timestamp = Math.round(now.getTime() / 1000);
+  const now = new Date()
+  const timestamp = Math.round(now.getTime() / 1000)
 
   const sequence = account.result && account.result.result.account.value.sequence
   const res = await client.recordBeaconTimestamp(
@@ -1004,8 +1004,8 @@ it("record wrkchain hashes", async () => {
     `/auth/accounts/${addr}`
   )
 
-  const now = new Date();
-  const timestamp = Math.round(now.getTime() / 1000);
+  const now = new Date()
+  const timestamp = Math.round(now.getTime() / 1000)
 
   const sequence = account.result && account.result.result.account.value.sequence
   const res = await client.recordWRKChainBlock(

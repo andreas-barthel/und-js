@@ -7,9 +7,8 @@ it("test unsupported message type", () => {
   const msgData = {
     type: "Unsupported"
   }
-  let sendMsg = null
   expect(() => {
-    sendMsg = new GenMsg(msgData)
+    new GenMsg(msgData)
   }).toThrow()
 })
 

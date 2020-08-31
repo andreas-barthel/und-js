@@ -2,6 +2,12 @@
 
 See commits for individual file changes.
 
+## v1.8.5: 25/08/2020 [PR21](https://github.com/unification-com/und-js/pull/21)
+
+* [[`6c0cc618e0`](https://github.com/unification-com/und-js/commit/6c0cc618e0)] - docs - rebuild jsdoc (Codegnosis)
+* [[`a887e678ce`](https://github.com/unification-com/und-js/commit/a887e678ce)] - tests - linting (Codegnosis)
+* [[`ba27e7a0d7`](https://github.com/unification-com/und-js/commit/ba27e7a0d7)] - client - add support for HTTP header (Codegnosis)
+
 ## v1.8.4: 11/08/2020 [PR20](https://github.com/unification-com/und-js/pull/20)
 
 * [[`807718c769`](https://github.com/unification-com/und-js/commit/807718c769)] - docs - update jsdoc with new method (Codegnosis)
