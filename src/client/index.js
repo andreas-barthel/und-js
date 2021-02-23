@@ -122,6 +122,7 @@ export class UndClient {
    * @return {UndClient} this instance (for chaining)
    */
   setClientNameHeader(clientNameHeader) {
+    // Note - currently unused
     this._clientNameHeader = clientNameHeader
   }
 
@@ -914,9 +915,6 @@ export class UndClient {
         "content-type": "text/plain",
       }
     }
-    if(this._clientNameHeader) {
-      opts.headers["clientName"] = this._clientNameHeader
-    }
     try {
       return this._httpClient.request("post", `${CONFIG.API_BROADCAST_TX}`, null, opts)
     } catch (err) {
@@ -1279,12 +1277,7 @@ export class UndClient {
    */
   async _runHttpGetRequest(queryString) {
     try {
-      let opts = this._getHttpHeaderOpts()
-      if(opts) {
-        return await this._httpClient.request("get", queryString, null, opts)
-      } else {
-        return await this._httpClient.request("get", queryString)
-      }
+      return await this._httpClient.request("get", queryString)
     } catch (err) {
       return this._stdError(err.toString())
     }
@@ -1292,6 +1285,7 @@ export class UndClient {
 
   /**
    * generate optional HTTP Headers for GET requests.
+   * Note: currently unused
    * @returns {Object} return optional HTTP headers for GET request
    * @private
    */
