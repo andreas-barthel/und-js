@@ -2,6 +2,11 @@
 
 See commits for individual file changes.
 
+## v1.8.6: 23/02/2021 [PR23](https://github.com/unification-com/und-js/pull/23
+
+* [[`d4289c78f5`](https://github.com/unification-com/und-js/commit/d4289c78f5)] - disable custom http header - currently causing issues (Codegnosis)
+* [[`0ba9cb1927`](https://github.com/unification-com/und-js/commit/0ba9cb1927)] - update npm packages & bump patch version (Codegnosis)
+
 ## v1.8.5: 25/08/2020 [PR21](https://github.com/unification-com/und-js/pull/21)
 
 * [[`6c0cc618e0`](https://github.com/unification-com/und-js/commit/6c0cc618e0)] - docs - rebuild jsdoc (Codegnosis)
